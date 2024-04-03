@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import SongPlayer from '../components/SongPlayer'
+import AddSongs from '../components/AddSongs'
 
 const HomePage = () => {
+
+    useEffect(()=>{
+
+    },[])
+
   return (
-    <div className='w-full h-[100vh] relative  mt-[20vh] md:mt-[15vh] '>
-       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, molestiae animi. Consectetur quaerat, animi esse corrupti tempora libero aut quas, accusamus, nesciunt delectus perferendis quis aspernatur provident reiciendis? Molestiae, fuga accusamus! Quas officia impedit aliquam delectus accusamus. Excepturi corporis dicta sapiente minus reprehenderit pariatur culpa nam, soluta atque odio voluptatibus recusandae animi inventore a error?</p>
+    <div className='w-full h-[100vh] relative  mt-[20vh] md:mt-[15vh] flex flex-col items-center gap-3'>
+       <h1 className='text-5xl font-extrabold text-center'>Welcome to my songs list</h1>
+       <div className="container w-full h-[50vh] bg-slate-700">
+        <SongPlayer/>
+
+        <AddSongs/>
+       </div>
+
+
     </div>
   )
 }
