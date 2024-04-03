@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import javax.sound.midi.Patch;
 
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 
 import com.songon.model.SongModel;
 import com.songon.repo.SongRepo;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +28,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class SongController {
 	@Autowired
 	SongRepo songRepo;
+	
+	@GetMapping("/songs")
+	@ResponseBody
+	public List<SongModel> getSongs(){
+		List<SongModel> songs = songRepo.findAll();
+		return songs;
+	}
+	
+	
 	
 	@PostMapping(path = "uploadSong",consumes = { "multipart/form-data" })
 	@ResponseBody
