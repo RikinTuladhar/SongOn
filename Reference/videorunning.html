@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Next</h2>
+    <audio id="myAudio" autoplay controls width="600px">
+        <source src="file:///C:/Users/User/Downloads/Delete%20later/check/Future252C+Kendrick+Lamar+-+Like+That+29-(1080p).mp4" type="video/mp4">
+    </audio>
+
+    <button onclick="previousSong()">Previous Song</button>
+    <button onclick="nextSong()">Next Song</button>
+
+    <button onclick="backward()">Backward</button>
+    <button onclick="forward()">Forward</button>
+
+    <script>
+        var audioSources = [
+            "file:///C:/Users/User/Downloads/Delete%20later/check/Future252C+Kendrick+Lamar+-+Like+That+29-(1080p).mp4",
+            "file:///C:/Users/User/Downloads/Delete%20later/check/youknowyoulikeit.mp4",
+            "file:///C:/Users/User/Downloads/Delete%20later/check/outmyname.mp4",
+            "file:///C:/Users/User/Downloads/Delete%20later/check/wasnenverthere.mp4",
+            
+
+
+        ];
+        var currentIndex = 0;
+        var audio = document.getElementById("myAudio");
+
+        function previousSong() {
+            currentIndex = (currentIndex - 1 + audioSources.length) % audioSources.length;
+            audio.src = audioSources[currentIndex];
+            audio.play();
+        }
+
+        function nextSong() {
+            currentIndex = (currentIndex + 1) % audioSources.length;
+            audio.src = audioSources[currentIndex];
+            audio.play();
+        }
+        function backward() {
+            audio.currentTime -= 10; // Go back 10 seconds
+        }
+
+        function forward() {
+            audio.currentTime += 10; // Go forward 10 seconds
+        }
+    </script>
+</body>
+</html>
