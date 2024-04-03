@@ -1,0 +1,14 @@
+root color : 0F0F0F
+
+
+white : #E5E7EB
+
+main color  : bg-[#000000]
+
+container-color: bg-[#11111182]
+
+text-[#E5E7EB]
+
+hr -> <div className='w-full mt-[3px] h-[2px] bg-black '></div>
+
+secondary color  #9C9EA0

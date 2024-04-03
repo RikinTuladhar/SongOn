@@ -21,7 +21,7 @@ import com.songon.model.SongModel;
 import com.songon.repo.SongRepo;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:5174")
+@CrossOrigin(origins = "http://localhost:5173")
 public class SongController {
 
     @Autowired

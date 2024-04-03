@@ -6,11 +6,11 @@ import ReloadProvider from "../contextprovider/ReloadProvider";
 
 const Layout = () => {
   return (
-    <div>
+    <div className="w-full ">
       <ReloadProvider>
         <Navbar />
         <Outlet />
-        <Footer />
+        {/* <Footer /> */}
       </ReloadProvider>
     </div>
   );

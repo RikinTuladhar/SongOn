@@ -52,14 +52,14 @@ const SongPlayer = () => {
   console.log(audioSources[currentIndex]);
   return (
     <div className="fixed bottom-4">
-      <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
+      <footer class="bg-[#000000] rounded-lg shadow m-4 bg-[#000000]">
         <div class="w-full mx-auto max-w-screen-xl p-4">
           <ul class="flex flex-wrap gap-16 justify-center items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
             <li>
-              <button className="border px-5 py-2 rounded-2xl" onClick={previousSong}>Previous Song</button>
+              <button className="px-5 py-2 border rounded-2xl" onClick={previousSong}>Previous Song</button>
             </li>
             <li>
-              <button className="border px-5 py-2 rounded-2xl" onClick={backward}>Backward</button>
+              <button className="px-5 py-2 border rounded-2xl" onClick={backward}>Backward</button>
             </li>
             <li>
               <audio ref={audioRef} autoPlay controls width="600px">
@@ -68,11 +68,12 @@ const SongPlayer = () => {
             </li>
 
             <li>
-              <button className="border px-5 py-2 rounded-2xl" onClick={nextSong}>Next Song</button>
+            <button className="px-5 py-2 border rounded-2xl" onClick={forward}>Forward</button>
+             
             </li>
-
+            <button className="px-5 py-2 border rounded-2xl" onClick={nextSong}>Next Song</button>
             <li>
-              <button className="border px-5 py-2 rounded-2xl" onClick={forward}>Forward</button>
+              
             </li>
           </ul>
         </div>
