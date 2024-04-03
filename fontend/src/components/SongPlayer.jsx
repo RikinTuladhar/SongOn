@@ -2,6 +2,7 @@ import { data } from "autoprefixer";
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
+
 const SongPlayer = () => {
   const { reload, setReload } = useContext(ReloadContext);
 
@@ -53,10 +54,14 @@ const SongPlayer = () => {
   return (
     <div className="fixed bottom-4">
       <footer class="bg-[#000000] rounded-lg shadow m-4 bg-[#000000]">
-        <div class="w-full mx-auto max-w-screen-xl p-4">
+        <div class="w-full flex gap-6 mx-auto max-w-screen-xl p-4 ">
+          <div className="text-[#E5E7EB] flex flex-col gap-5 ">
+          <div className="px-10 text-base text-white">Song</div>
+          <div className="px-10 text-sm text-[#E5E7EB]">Artist</div>
+          </div>
           <ul class="flex flex-wrap gap-16 justify-center items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
             <li>
-              <button className="px-5 py-2 border rounded-2xl" onClick={previousSong}>Previous Song</button>
+              <button className="px-5 py-2 border rounded-2xl" onClick={previousSong}>Previous Song  </button>
             </li>
             <li>
               <button className="px-5 py-2 border rounded-2xl" onClick={backward}>Backward</button>
