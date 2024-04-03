@@ -1,9 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import axios from "axios";
+import {ReloadContext} from "../contextprovider/ReloadProvider"
 const AddSongs = () => {
+    const {reload,setReload} = useContext(ReloadContext);
+   
   const stopPost = useRef();
   const [songUpload, setSongUpload] = useState(null);
   const [songlist, setSongList] = useState(null);
@@ -38,6 +41,7 @@ const AddSongs = () => {
             values
           );
           console.log(response);
+          setReload(true)
           alert("Success!");
         }
       } catch (error) {

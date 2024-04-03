@@ -6,5 +6,4 @@ import com.songon.model.SongModel;
 
 public interface SongRepo extends JpaRepository<SongModel, Integer>{
 	
-
 }
