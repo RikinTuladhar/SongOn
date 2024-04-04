@@ -16,7 +16,7 @@ const AddSongs = () => {
     autoPath: "",
   });
 
-
+//file saved in firebase 
   const handleSubmit = async (e) => {
     e.preventDefault();
     stopPost.current.disabled = true;
@@ -33,6 +33,8 @@ const AddSongs = () => {
   };
   
   useEffect(() => {
+    //then after the  file save it will rerender the componenet as values.autoPath is filled with url so
+    // it will add data in database by this function 
     const postSong = async () => {
       try {
         if (values.autoPath !== "") {

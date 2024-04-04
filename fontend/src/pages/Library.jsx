@@ -21,12 +21,13 @@ const Library = () => {
           <span>Title </span>
           <span>Artist Name</span>
         </div>
-        <div className="flex flex-col gap-2">
-        <div className="w-full h-20 bg-[#111827] "></div>
-        <div className="w-full h-20 bg-[#111827] "></div>
-        <div className="w-full h-20 bg-[#111827] "></div>
-        <div className="w-full h-20 bg-[#111827] "></div>
-        <div className="w-full h-20 bg-[#111827] "></div>
+        <div className="flex flex-col gap-2 px-2">
+        <div className="w-full h-20 bg-[#090909] "></div>
+        <div className="w-full h-20 bg-[#090909] "></div>
+        <div className="w-full h-20 bg-[#090909] "></div>
+        <div className="w-full h-20 bg-[#090909] "></div>
+        <div className="w-full h-20 bg-[#090909] "></div>
+       
        
 
 
