@@ -17,7 +17,7 @@ const HomePage = () => {
         <HomeLeft/>
         <HomeRight/>
        </div>
-       <div className='flex justify-center'><SongPlayer/> </div>
+      
 
     </div>
   )

@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import Layout from "./pages/Layout";
 import About from "./pages/About";
 import AddSongPage from "./pages/AddSongPage";
+import Library from "./pages/Library";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,9 +23,11 @@ function App() {
           path: "/about",
           element: <About />,
         },
-        { path: "/addSongs", element: <AddSongPage /> },
+        { path: "/addSongs", element: <AddSongPage /> }
+        , {path:"/library/:id",element: <Library/>}
+        
       ],
-    },
+    }
   ]);
 
   // console.log(router)

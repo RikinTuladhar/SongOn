@@ -109,8 +109,8 @@ const HomeRight = () => {
       </h1>
       <div className='w-full mt-3 h-[2px] bg-black  '></div>
       <div className="flex flex-wrap items-center justify-center gap-10 mt-6 overflow-y-auto">
-        {artist.map((card,i)=>(
-          <CardLib/>
+        {artist.map((card,id)=>(
+          <CardLib id={card.id}/>
         ))}
       </div>
 
