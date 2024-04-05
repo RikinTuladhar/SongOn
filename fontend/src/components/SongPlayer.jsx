@@ -31,10 +31,7 @@ const SongPlayer = () => {
         setaudioSources(paths);
         // console.log(name);
         // setaudioSources(res);
-       setReload(true)
-       return ()=> {
-        setReload(false)
-       }
+        setReload(!prev)
       });
   }, [reload,SongAPI]);
 

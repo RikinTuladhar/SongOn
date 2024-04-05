@@ -19,7 +19,7 @@ const Library = () => {
       setSongAPi(`http://localhost:8080/by-genre/${id}`)
       console.log(res.data)
       setSongs(res.data)
-      setReload(true)
+      setReload(!prev)
       
     })
   },[reload])

@@ -10,6 +10,7 @@ const LibraryLeft = () => {
   const [songDetail,setSongDetail ] = useState();
   useEffect(()=>{
     setSongDetail(songDetails[0])
+    
   },[songDetails])
 
 

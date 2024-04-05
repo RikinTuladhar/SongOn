@@ -12,3 +12,5 @@ text-[#E5E7EB]
 hr -> <div className='w-full mt-[3px] h-[2px] bg-black '></div>
 
 secondary color  #9C9EA0
+
+hover on cards effect  hover:bg-[#1b1b1bd3]
