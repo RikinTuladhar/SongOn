@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 const CardLib = ({id,name,songlist}) => {
-  console.log(songlist)
+  // console.log(songlist)
   return (
     // /library/1 -> hiphop 
     // /library/2 -> classic 

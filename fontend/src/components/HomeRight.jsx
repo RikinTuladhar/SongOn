@@ -20,7 +20,7 @@ const HomeRight = () => {
   },[])
 
   return (
-    <div className="w-[80%] h-auto overflow-y-auto  mt-3 px-10 py-10 bg-[#11111182] rounded-xl ">
+    <div className="w-[80%] h-auto  mt-3 px-10 py-10 bg-[#11111182] rounded-xl ">
       <h1
         className="text-2xl text-[#E5E7EB] "
       >

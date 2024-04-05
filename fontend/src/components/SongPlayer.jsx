@@ -2,9 +2,10 @@ import { data } from "autoprefixer";
 import axios from "axios";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
-
-const SongPlayer = ({API ="http://localhost:8080/songs"}) => {
+import { SongContext } from "../contextprovider/SongProvider";
+const SongPlayer = () => {
   const { reload, setReload } = useContext(ReloadContext);
+  const {SongAPI } = useContext(SongContext);
 
   const [name, setName] = useState([]);
   const [audioSources, setaudioSources] = useState([]);
@@ -12,10 +13,13 @@ const SongPlayer = ({API ="http://localhost:8080/songs"}) => {
   //   return index
   // }
   
+  // console.log(SongAPI)
 
   useEffect(() => {
+    // var i= 1;
+    // console.log("Song player loaded"  + i);
     axios
-      .get(API)
+      .get(SongAPI)
       .then((res) => {
         return res.data;
       })
@@ -27,9 +31,12 @@ const SongPlayer = ({API ="http://localhost:8080/songs"}) => {
         setaudioSources(paths);
         // console.log(name);
         // setaudioSources(res);
-
+       setReload(true)
+       return ()=> {
+        setReload(false)
+       }
       });
-  }, [reload]);
+  }, [reload,SongAPI]);
 
   // console.log(audioSources);
   // mapping(audioSources[currentIndex]);
@@ -64,11 +71,11 @@ const SongPlayer = ({API ="http://localhost:8080/songs"}) => {
   // console.log(name)
 
   return (
-    <div className="fixed bottom-4 border rounded-lg">
+    <div className="fixed border rounded-lg bottom-4">
       <footer class="bg-[#000000] rounded-lg shadow  bg-[#000000]">
         <div class="w-full flex gap-6 mx-auto max-w-screen-xl p-5  justify-center items-center ">
           <div className="text-[#E5E7EB] flex flex-col gap-5 ">
-          <div className="px-10 text-base text-white flex gap-2"><span>Song:</span><span>{name[currentIndex]}</span></div>
+          <div className="flex gap-2 px-10 text-base text-white"><span>Song:</span><span>{name[currentIndex]}</span></div>
           <div className="px-10 text-sm text-[#E5E7EB]">Artist</div>
           </div>
           <ul class="flex flex-wrap gap-10 justify-center items-center  text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">

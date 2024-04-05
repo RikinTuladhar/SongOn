@@ -36,6 +36,24 @@ public class ArtistController {
 		 return artists;
 	}
 	
+	@GetMapping("/{id}")
+	ArtistModel getArtistById(@PathVariable int id) {
+		ArtistModel artistModel = artistRepo.findById(id).orElse(null);
+		return artistModel;
+	}
+	
+	@GetMapping("/name/{name}")
+	ArtistModel getArtistByName(@PathVariable String name) {
+		return  artistRepo.findByName(name);
+	}
+	
+	@GetMapping("/By-songid/{song_id}")
+	List<ArtistModel> getArtistBySongId(@PathVariable int song_id) {
+		return artistRepo.findArtistBySongId(song_id);
+		
+	}
+	
+	
 	@PostMapping
 	ArtistModel createArtist(@RequestBody ArtistModel artistModel ) {
 		return artistRepo.save(artistModel);

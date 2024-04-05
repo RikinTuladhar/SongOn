@@ -1,6 +1,18 @@
-import React from 'react'
-
+import React, { useContext, useEffect, useState } from 'react'
+import {SongContext} from '../contextprovider/SongProvider'
 const LibraryLeft = () => {
+  const {songDetails,ArtistDetails} = useContext(SongContext);
+  console.log(songDetails)
+  console.log(ArtistDetails)
+
+  
+
+  const [songDetail,setSongDetail ] = useState();
+  useEffect(()=>{
+    setSongDetail(songDetails[0])
+  },[songDetails])
+
+
   return (
     <>
        {/* left  */}
@@ -10,16 +22,19 @@ const LibraryLeft = () => {
         <div className="w-full h-[110vh] pb-[200px]  mt-9  justify-between flex flex-col gap-10">
           {/* top card  */}
           <div className="w-full px-5 py-10 rounded-lg  bg-[#111827] flex flex-col gap-5">
-            <div class="min-w-[250px]"><img src="/Artist/future.jpg" alt="" className="w-full h-full rounded-lg"  /></div>
-            <div className="text-2xl text-[#FFFFFF]">Song name</div>
+            <div class="min-w-[250px]"><img src="/Artist/future.jpg" alt="" className="w-full h-full rounded"  /></div>
+            <div className="text-2xl text-[#FFFFFF]">{songDetail?.name}</div>
             <div className="text-lg text-[#E5E7EB]">Artist</div>
           </div>
           {/* bottom card  */}
          
           <div className="w-full  pb-5  rounded-lg  bg-[#111827] flex flex-col gap-5">
             <div class="w-full"><img src="/Artist/future.jpg" alt="" className="w-full h-full rounded-md" /></div>
-            <div className="px-5 flex flex-col gap-2">
-              <div className="text-xl text-[#FFFFFF]">Artist name</div>
+            <div className="flex flex-col gap-2 px-5">
+              {ArtistDetails?.map((artist)=>(
+              <div className="text-xl text-[#FFFFFF]">{artist?.name}</div>
+              ))}
+            
               <div className="text-lg text-[#E5E7EB]">Artist</div>
               <div className="text-base text-[#E5E7EB]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam dolores repellendus rerum.</div>
             </div>
