@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const CardLib = ({id}) => {
+const CardLib = ({id,name,songlist}) => {
+  console.log(songlist)
   return (
     // /library/1 -> hiphop 
     // /library/2 -> classic 
@@ -15,12 +16,16 @@ const CardLib = ({id}) => {
         </div>
         <div>
           <h1 className="text-base font-semibold text-[#E5E7EB]">
-            Daily Mix 3
+          {name}
           </h1>
         </div>
         <div>
-          <span className="text-[#E5E7EB]">
-            The weeknd,Ruith B,metro boomin
+          <span className="text-[#E5E7EB] flex flex-wrap gap-2">
+            { songlist.slice(0,3)?.map((song)=>(
+              <span key={song.id}>{song.name},</span>
+            ))
+            }
+             <span>..More</span>
           </span>
         </div>
       </div>
