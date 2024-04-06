@@ -1,4 +1,5 @@
 package com.songon.controller;
+import org.hibernate.Hibernate;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,9 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
+import com.songon.dto.SongWithArtistsDTO;
+import com.songon.model.ArtistModel;
 import com.songon.model.GenreModel;
 import com.songon.model.SongModel;
 import com.songon.repo.SongRepo;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -63,11 +69,24 @@ public class SongController {
     	return songRepo.findSongsByArtistId(artistId);
     }
     
-	@GetMapping("/by-genre/{genre_id}")
-	public List<SongModel> getSongByGenreId(@PathVariable int genre_id){
-		return songRepo.findSongsByGenreId(genre_id);
-		
-	}
+    @GetMapping("/by-genre/{genre_id}")
+    public List<SongWithArtistsDTO> getSongByGenreId(@PathVariable int genre_id) {
+        List<SongModel> songs = songRepo.findSongsByGenreId(genre_id);
+        
+        List<SongWithArtistsDTO> songWithArtistsDTOs = new ArrayList<>();
+        for(SongModel song:songs) {
+        	SongWithArtistsDTO songWithArtistsDTO = new SongWithArtistsDTO();
+        	songWithArtistsDTO.setId(song.getId());
+        	songWithArtistsDTO.setName(song.getName());
+        	songWithArtistsDTO.setAutoPath(song.getAutoPath());
+        	songWithArtistsDTO.setArtist(new ArrayList<>(song.getArtists()));
+        	songWithArtistsDTOs.add(songWithArtistsDTO);
+        }
+        
+        
+        return songWithArtistsDTOs;
+    }
+
     
  
 

@@ -85,6 +85,7 @@ const SongPlayer = () => {
             <li>
               <audio ref={audioRef} autoPlay controls width="600px">
                 <source src={audioSources[currentIndex]} type="video/mp4" />
+                <source src={audioSources[currentIndex]} type="audio/mpeg" />
               </audio>
             </li>
 

@@ -8,6 +8,7 @@ import Layout from "./pages/Layout";
 import About from "./pages/About";
 import AddSongPage from "./pages/AddSongPage";
 import Library from "./pages/Library";
+import Artist from "./pages/Artist";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,7 +25,8 @@ function App() {
           element: <About />,
         },
         { path: "/addSongs", element: <AddSongPage /> }
-        , {path:"/library/:id",element: <Library/>}
+        , {path:"/library/:id",element: <Library/>},
+        {path:"/artist/:id",element:<Artist/>}
         
       ],
     }

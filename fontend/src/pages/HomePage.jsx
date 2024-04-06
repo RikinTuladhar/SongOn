@@ -11,7 +11,7 @@ const HomePage = () => {
     },[])
 
   return (
-    <div className='w-full h-[120vh] bg-[#000000] relative  mt-[20vh] pt-5 pb-40 md:mt-[10vh] overflow-hidden flex flex-col items-center gap-3'>
+    <div className='w-full h-[auto] bg-[#000000] relative  mt-[20vh] pt-5 pb-40 md:mt-[10vh] overflow-hidden flex flex-col items-center gap-3'>
        <h1 className='text-3xl font-extrabold text-center text-[#E5E7EB] '>Welcome to my songs list</h1>
        <div className="container flex w-full h-full gap-5">
         <HomeLeft/>

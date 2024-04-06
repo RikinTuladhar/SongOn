@@ -33,6 +33,8 @@ public class SongModel {
 		return genre;
 	}
 
+	
+
 	public SongModel(int id, String name, String autoPath, Set<ArtistModel> artists, Set<GenreModel> genre) {
 		super();
 		this.id = id;
@@ -41,6 +43,8 @@ public class SongModel {
 		this.artists = artists;
 		this.genre = genre;
 	}
+	
+	
 
 	public void setGenre(Set<GenreModel> genre) {
 		this.genre = genre;
