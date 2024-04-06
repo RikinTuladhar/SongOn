@@ -23,7 +23,59 @@ public class ArtistModel {
 	
 	private String name;
 	
-//	@JsonIgnore
+	private String bio;
+	
+	private	String gender;
+	
+	
+
+	
+public ArtistModel(int id, String name, String bio, String gender, Set<SongModel> songs) {
+		
+		this.id = id;
+		this.name = name;
+		this.bio = bio;
+		this.gender = gender;
+		this.songs = songs;
+	}
+
+
+
+public String getGender() {
+		return gender;
+	}
+
+
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+
+
+public String getBio() {
+		return bio;
+	}
+
+
+
+	public ArtistModel(int id, String name, String bio, Set<SongModel> songs) {
+
+	this.id = id;
+	this.name = name;
+	this.bio = bio;
+	this.songs = songs;
+}
+
+
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+
+
+
+	//	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 			name ="person_song",
@@ -68,7 +120,8 @@ public class ArtistModel {
 	}
 	@Override
 	public String toString() {
-		return "ArtistModel [id=" + id + ", name=" + name + ", songs=" + songs + "]";
+		return "ArtistModel [id=" + id + ", name=" + name + ", bio=" + bio + ", gender=" + gender + ", songs=" + songs
+				+ "]";
 	}
 
 

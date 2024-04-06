@@ -9,6 +9,8 @@ import About from "./pages/About";
 import AddSongPage from "./pages/AddSongPage";
 import Library from "./pages/Library";
 import Artist from "./pages/Artist";
+import AddArtist from "./pages/AddArtist";
+import AddGenre from "./pages/AddGenre";
 
 function App() {
   const router = createBrowserRouter([
@@ -26,7 +28,9 @@ function App() {
         },
         { path: "/addSongs", element: <AddSongPage /> }
         , {path:"/library/:id",element: <Library/>},
-        {path:"/artist/:id",element:<Artist/>}
+        {path:"/artist/:id",element:<Artist/>},
+        {path:"/addArtist", element:<AddArtist/>},
+        {path:"/addGenre",element:<AddGenre/>}
         
       ],
     }

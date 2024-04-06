@@ -17,8 +17,25 @@ public class GenreModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
+	private String bio;
 	
 	
+	public GenreModel(int id, String name, String bio, Set<SongModel> songs) {
+		
+		this.id = id;
+		this.name = name;
+		this.bio = bio;
+		this.songs = songs;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+
 	@ManyToMany
 	@JoinTable(
 			name = "genre_song",
@@ -64,7 +81,7 @@ public class GenreModel {
 
 	@Override
 	public String toString() {
-		return "GenreModel [id=" + id + ", name=" + name + ", songs=" + songs + "]";
+		return "GenreModel [id=" + id + ", name=" + name + ", bio=" + bio + ", songs=" + songs + "]";
 	}
 	
 	//important to do so that song data  it will be saved 
