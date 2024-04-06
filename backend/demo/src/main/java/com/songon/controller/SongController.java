@@ -27,10 +27,13 @@ import com.songon.dto.SongWithArtistsDTO;
 import com.songon.model.ArtistModel;
 import com.songon.model.GenreModel;
 import com.songon.model.SongModel;
+import com.songon.repo.ArtistRepo;
+import com.songon.repo.GenreRepo;
 import com.songon.repo.SongRepo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 @RestController
@@ -40,6 +43,12 @@ public class SongController {
     @Autowired
     SongRepo songRepo;
     // Method to retrieve all songs
+    @Autowired
+    ArtistRepo artistRepo;
+    
+    @Autowired
+    GenreRepo genreRepo;
+    
     @GetMapping("/songs")
     @ResponseBody
     public List<SongModel> getSongs() {
@@ -91,10 +100,34 @@ public class SongController {
  
 
     // Method to handle file upload
-    @PostMapping("/uploadSong")
+//    @PostMapping("/uploadSong")
+//    @ResponseBody
+//    public SongModel uploadSong(@RequestBody SongModel songModel) {
+//    	songRepo.save(songModel);
+//    	return songModel;
+//    }
+    
+    @PostMapping("/uploadSong/{generic_id}/{artist_id}")
     @ResponseBody
-    public SongModel uploadSong(@RequestBody SongModel songModel) {
-    	songRepo.save(songModel);
-    	return songModel;
+    public SongModel uploadSong(
+    		@RequestBody SongModel songModel,
+    		@PathVariable int generic_id,
+    		@PathVariable int artist_id
+    		) {
+    	
+    	ArtistModel artistModel = artistRepo.findById(artist_id).get();
+    	GenreModel genreModel = genreRepo.findById(generic_id).get();
+    	
+    	artistModel.songs(songModel);
+    	genreModel.songs(songModel);
+        songRepo.save(songModel);
+
+    	artistRepo.save(artistModel);
+    	genreRepo.save(genreModel);
+    	
+    
+        return songModel;
     }
+
+
 }
