@@ -19,7 +19,6 @@ const Artist = () => {
       setSongs(res.data.songs)
       setArtistName(res.data.name)
       setReload(!prev)
-      
     })
   },[reload])
 

@@ -8,10 +8,10 @@ import SongProvider from "../contextprovider/SongProvider";
 
 const Layout = () => {
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <SongProvider>
       <ReloadProvider>
-        <Navbar />
+        {/* <Navbar /> */}
         <Outlet />
          <div className='flex justify-center'><SongPlayer/> </div>
         {/* <Footer /> */}

@@ -25,18 +25,21 @@ const ArtistMiddle = ({songs,artistName}) => {
        {/* songs list  */}
        <div className="w-full h-auto px-2 flex justify-center items-center flex-col gap-2 py-4 md:py-10 bg-[#0f0f0f]">
         {/* headings */}
-        <div className="text-[#E5E7EB] mb-5   md:px-10 w-full h-5 items-center  flex justify-between">
-          <div className="md:w-[20%] text-base md:text-lg text-left  font-bold"> #</div>
-          <div className="  text-base  w-full md:text-lg font-bold text-center">Song - Name</div>
-          {/* <div className="w-full  text-base  md:text-lg font-bold text-center">Artists</div> */}
-        </div>
+        {/* <div className="text-[#E5E7EB] mb-5 md:px-10 w-full h-5 items-center  flex justify-around md:justify-between">
+          <div className=" md:w-[20%] text-base md:text-lg text-left  font-bold"> #</div>
+          <div className="text-base font-bold text-center md:w-full md:text-lg">Song - Name</div> */}
+          {/* <div className="w-full text-base font-bold text-center md:text-lg">Artists</div> */}
+        {/* </div> */}
        
-        <div className="w-full px-2 flex flex-col gap-2 md:px-2">
-        {songs?.map((song,i)=>(
-        <div onClick={e=>handleSong(song.id)} key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] gap-2 flex justify-start md:justify-between">
-        <div key={song.id}   className="w-[20%] text-center md:text-left"> {i+1}</div>
-        <div key={song.id} className="md:w-full text-lef md:text-center">{(song?.name?.length < 25) ? (song?.name) : (song?.name.slice(0,6) + "...")}</div>
-        {/* <div key={song.id} className="md:w-full text-center">{song?.artist?.slice(0,3).map((artist)=>(
+        <div className="text-[#E5E7EB] mt-5 mb-5 md:px-10 w-full  items-center flex-wrap flex justify-around md:justify-between">
+
+        {
+        songs?.length === 0 ? (<div className='text-xl tracking-wider'>No Songs Available</div>) : 
+        songs?.map((song,i)=>(
+        <div onClick={e=>handleSong(song.id)} key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] gap-2 flex justify-around md:justify-between">
+        <div key={song.id}   className="md:w-[20%] text-base md:text-lg text-left  font-bold"> {i+1}</div>
+        <div key={song.id} className="text-base font-bold text-center md:w-full md:text-lg">{(song?.name?.length < 25) ? (song?.name) : (song?.name.slice(0,6) + "...")}</div>
+        {/* <div key={song.id} className="text-center md:w-full">{song?.artist?.slice(0,3).map((artist)=>(
         <span className='ml-3' key={artist?.id}>
         {artist?.name}
         </span>

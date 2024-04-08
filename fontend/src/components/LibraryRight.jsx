@@ -25,22 +25,24 @@ const LibraryRight = ({songs,artistName}) => {
        {/* songs list  */}
        <div className="w-full h-auto px-2 flex justify-center items-center flex-col gap-2 py-4 md:py-10 bg-[#0f0f0f]">
         {/* headings */}
-        <div className="text-[#E5E7EB] mb-5   md:px-10 w-full h-5 items-center  flex justify-between">
+        {/* <div className="text-[#E5E7EB] mb-5   md:px-10 w-full h-5 items-center  flex justify-between">
           <div className="md:w-[20%] text-base md:text-lg text-left  font-bold"> #</div>
-          <div className="  text-base  w-full md:text-lg font-bold text-center">Song - Name</div>
-          <div className="w-full  text-base  md:text-lg font-bold text-center">Artists</div>
-        </div>
-        <div className="flex flex-col gap-2 md:px-2">
+          <div className="w-full text-base font-bold text-center md:text-lg">Song - Name</div>
+          <div className="w-full text-base font-bold text-center md:text-lg">Artists</div>
+        </div> */}
+        <div className="flex flex-col w-full gap-2 md:px-2">
 
-        {songs?.map((song,i)=>(
+        {
+         songs?.length === 0 ? (<div className='text-xl tracking-wider'>No Songs Available</div>) : 
+        songs?.map((song,i)=>(
         <div onClick={e=>handleSong(song.id)} key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between">
         <div key={song.id}   className="w-[20%] text-center md:text-left"> {i+1}</div>
-        <div key={song.id} className="md:w-full text-center">{song?.name}</div>
-        <div key={song.id} className="md:w-full text-center">{song?.artist?.slice(0,3).map((artist)=>(
-        <span className='ml-3' key={artist?.id}>
+        <div key={song.id} className="text-center md:w-full">{song?.name}</div>
+        <div key={song.id} className="text-center md:w-full">{song?.artist?.slice(0,3)?.map((artist)=>(
+        <span className='ml-3 mr-3' key={artist?.id}>
         {artist?.name}
         </span>
-        ))} <span>..</span> </div>
+        ))}</div>
         </div> 
         ))}
   
