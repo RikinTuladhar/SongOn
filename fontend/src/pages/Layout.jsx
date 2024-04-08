@@ -11,7 +11,7 @@ const Layout = () => {
     <div className="w-full">
       <SongProvider>
       <ReloadProvider>
-        {/* <Navbar /> */}
+        <Navbar />
         <Outlet />
          <div className='flex justify-center'><SongPlayer/> </div>
         {/* <Footer /> */}
