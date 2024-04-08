@@ -25,7 +25,7 @@ const Library = () => {
   },[reload])
 
   return (
-    <div className="w-full h-[120vh]  mt-[20vh] pt-5  md:mt-[10vh] bg-[#000000] flex justify-around">
+    <div className="w-full  md:h-[120vh]  md:mt-[10vh] pt-5  mt-[10vh] bg-[#000000] flex-wrap flex justify-around">
      <LibraryLeft/>
      <LibraryRight songs={songs}/>
     </div>

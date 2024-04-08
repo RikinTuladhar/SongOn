@@ -5,6 +5,7 @@ import { SongContext } from "../contextprovider/SongProvider";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import ArtistMiddle from "../components/ArtistMiddle";
 const Artist = () => {
   const {SongAPI,setSongAPi,API} = useContext(SongContext);
   const {reload,setReload} = useContext(ReloadContext);
@@ -23,9 +24,10 @@ const Artist = () => {
   },[reload])
 
   return (
-    <div className="w-full h-[120vh]  mt-[20vh] pt-5  md:mt-[10vh] bg-[#000000] flex justify-around">
+    <div className="w-full h-[120vh]  mt-[15vh] pt-5  md:mt-[10vh] bg-[#000000] flex justify-around">
       {/* <LibraryLeft/> */}
-      <LibraryRight artistName={artistName} songs={songs}/>
+
+      <ArtistMiddle artistName={artistName} songs={songs}/>
     </div>
   )
 }

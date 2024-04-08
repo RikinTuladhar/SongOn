@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { SongContext } from '../contextprovider/SongProvider'
 import { ReloadContext } from '../contextprovider/ReloadProvider'
 import axios from 'axios'
-const LibraryRight = ({songs,artistName}) => {
+const ArtistMiddle = ({songs,artistName}) => {
   const {SongAPI,setSongAPi,setSongId,API} = useContext(SongContext)
   const {reload,setReload} = useContext(ReloadContext);
 
@@ -28,19 +28,19 @@ const LibraryRight = ({songs,artistName}) => {
         <div className="text-[#E5E7EB] mb-5   md:px-10 w-full h-5 items-center  flex justify-between">
           <div className="md:w-[20%] text-base md:text-lg text-left  font-bold"> #</div>
           <div className="  text-base  w-full md:text-lg font-bold text-center">Song - Name</div>
-          <div className="w-full  text-base  md:text-lg font-bold text-center">Artists</div>
+          {/* <div className="w-full  text-base  md:text-lg font-bold text-center">Artists</div> */}
         </div>
-        <div className="flex flex-col gap-2 md:px-2">
-
+       
+        <div className="w-full px-2 flex flex-col gap-2 md:px-2">
         {songs?.map((song,i)=>(
-        <div onClick={e=>handleSong(song.id)} key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between">
+        <div onClick={e=>handleSong(song.id)} key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] gap-2 flex justify-start md:justify-between">
         <div key={song.id}   className="w-[20%] text-center md:text-left"> {i+1}</div>
-        <div key={song.id} className="md:w-full text-center">{song?.name}</div>
-        <div key={song.id} className="md:w-full text-center">{song?.artist?.slice(0,3).map((artist)=>(
+        <div key={song.id} className="md:w-full text-lef md:text-center">{(song?.name?.length < 25) ? (song?.name) : (song?.name.slice(0,6) + "...")}</div>
+        {/* <div key={song.id} className="md:w-full text-center">{song?.artist?.slice(0,3).map((artist)=>(
         <span className='ml-3' key={artist?.id}>
         {artist?.name}
         </span>
-        ))} <span>..</span> </div>
+        ))} <span>..</span> </div> */}
         </div> 
         ))}
   
@@ -53,4 +53,4 @@ const LibraryRight = ({songs,artistName}) => {
   )
 }
 
-export default LibraryRight
+export default ArtistMiddle

@@ -65,7 +65,7 @@ const SongPlayer = () => {
   };
 
   return (
-    <div className="fixed border rounded-lg bottom-0  md:bottom-4 ">
+    <div className="fixed border rounded-lg bottom-4 ">
       <footer class="bg-[#000000] rounded-lg shadow  ">
         {/* parent */}
         <div class="w-full flex-wrap  flex gap-6 md:gap-1 mx-auto max-w-screen-xl md:p-5   md:justify-center  md:items-center ">
