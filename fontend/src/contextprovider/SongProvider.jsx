@@ -7,10 +7,11 @@ const SongProvider = ({children}) => {
     const [SongAPI,setSongAPi] = useState("http://localhost:8080/songs")
     const [API,setAPI] = useState("https://songonbackend.onrender.com");
   
+    const [play,setPlay] = useState(false);
+
     const [songId,setSongId] = useState(null)
     const [songName,setSongName] = useState(null);
-
-    console.log(songId)
+    
     const [songDetails,setSongDetails] = useState([])
     const [ArtistDetails,setArtistDetails] = useState([])
 
@@ -34,7 +35,7 @@ const SongProvider = ({children}) => {
 
 
   return (
-    <SongContext.Provider value={{SongAPI,setSongAPi,songId,setSongId,songDetails,ArtistDetails,API}}>
+    <SongContext.Provider value={{SongAPI,setSongAPi,songId,setSongId,songDetails,ArtistDetails,API,play,setPlay}}>
       {children}
     </SongContext.Provider>
   )

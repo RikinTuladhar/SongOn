@@ -5,7 +5,9 @@ import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
 const SongPlayer = () => {
   const { reload, setReload } = useContext(ReloadContext);
-  const {SongAPI } = useContext(SongContext);
+  const {SongAPI,play,setPlay } = useContext(SongContext);
+
+  const [nextSongState,setNextSongState] = useState(false);
 
   const [name, setName] = useState([]);
   const [audioSources, setaudioSources] = useState([]);
@@ -13,12 +15,14 @@ const SongPlayer = () => {
   //   return index
   // }
   
-  // console.log(SongAPI)
+  console.log(SongAPI)
+  console.log(play)
+
 
   useEffect(() => {
     // var i= 1;
     // console.log("Song player loaded"  + i);
-    nextSong();
+
     axios
       .get(SongAPI)
       .then((res) => {
@@ -27,15 +31,24 @@ const SongPlayer = () => {
       .then((res) => {
         // console.log(res);
         const name = res.map((name)=>name.name);
+        console.log(name)
         setName(name);
         const paths = res.map((song) => song.autoPath);
+        console.log(paths)
         setaudioSources(paths);
         // console.log(name);
         // setaudioSources(res);
         setReload(!prev)
+        return ()=>{
+          setReload(!prev)
+        }
       });
   }, [reload,SongAPI]);
 
+
+ 
+
+  
   // console.log(audioSources);
   // mapping(audioSources[currentIndex]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -52,7 +65,7 @@ const SongPlayer = () => {
 
   const nextSong = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % audioSources.length);
-    // audioRef.current.pause(); // Pause the audio before changing the source
+    audioRef.current.pause(); // Pause the audio before changing the source
     audioRef.current.load(); // Load the new source
     audioRef.current.play(); // Play the audio
   };
@@ -86,7 +99,7 @@ const SongPlayer = () => {
             <li className="order-1 mx-5 mx-auto my-0 md:px-0 md:order-3">
               <audio className=" bg-black h-[30px] md:h-[10vh] text-white rounded" ref={audioRef} autoPlay controls width="600px">
                 <source src={audioSources[currentIndex]} type="video/mp4" />
-                <source src={audioSources[currentIndex]} type="audio/mpeg" />
+                {/* <source src={audioSources[currentIndex]} type="audio/mpeg" /> */}
               </audio>
             </li>
 
