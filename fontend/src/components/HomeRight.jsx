@@ -2,13 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import CardLib from "./CardLib";
 import axios from "axios";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
+import { SongContext } from '../contextprovider/SongProvider';
 const HomeRight = () => {
   const {reload,setReload} = useContext(ReloadContext)
   const [artist,setArtist] = useState([])
   const [songList,setSongList] = useState([])
+  const{API} = useContext(SongContext)
   
   useEffect(()=>{
-    axios.get("http://localhost:8080/genre").then((res)=>{
+    axios.get(`${API}/genre`).then((res)=>{
       setArtist(res.data)
       console.log(res.data[0].songs)
       setReload(!prev)

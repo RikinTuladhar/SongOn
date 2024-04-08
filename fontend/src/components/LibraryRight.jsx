@@ -3,21 +3,17 @@ import { SongContext } from '../contextprovider/SongProvider'
 import { ReloadContext } from '../contextprovider/ReloadProvider'
 import axios from 'axios'
 const LibraryRight = ({songs,artistName}) => {
-  const {SongAPI,setSongAPi,setSongId} = useContext(SongContext)
+  const {SongAPI,setSongAPi,setSongId,API} = useContext(SongContext)
   const {reload,setReload} = useContext(ReloadContext);
 
 
   // click play song 
   const handleSong = (id) =>{
     // console.log("song clicked" + id)
-    setSongAPi( `http://localhost:8080/songs/${id}`);
+    setSongAPi( `${API}/songs/${id}`);
     setSongId(id)
     setReload(!prev)
   }
-
-  // useEffect(()=>{
-  //   axios.get(`http://localhost:8080/artist/By-songid/${songId}`)
-  // },[])
   
   return (
     <>

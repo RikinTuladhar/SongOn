@@ -5,6 +5,8 @@ export const SongContext = createContext();
 
 const SongProvider = ({children}) => {
     const [SongAPI,setSongAPi] = useState("http://localhost:8080/songs")
+    const [API,setAPI] = useState("https://songonbackend.onrender.com");
+  
     const [songId,setSongId] = useState(null)
     const [songName,setSongName] = useState(null);
 
@@ -16,14 +18,14 @@ const SongProvider = ({children}) => {
 
 
     useEffect(()=>{
-      axios.get(`http://localhost:8080/songs/${songId}`).then((res)=>{
+      axios.get(`${API}/songs/${songId}`).then((res)=>{
         setSongDetails(res.data)
         
       }).catch((err)=>{
         console.log(err)
       })
 
-      axios.get(`http://localhost:8080/artist/By-songid/${songId}`).then((res)=>{
+      axios.get(`${API}/artist/By-songid/${songId}`).then((res)=>{
         setArtistDetails(res.data)
       }).catch((err)=>{console.log(err)})
 
@@ -32,7 +34,7 @@ const SongProvider = ({children}) => {
 
 
   return (
-    <SongContext.Provider value={{SongAPI,setSongAPi,songId,setSongId,songDetails,ArtistDetails}}>
+    <SongContext.Provider value={{SongAPI,setSongAPi,songId,setSongId,songDetails,ArtistDetails,API}}>
       {children}
     </SongContext.Provider>
   )

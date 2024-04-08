@@ -1,12 +1,15 @@
 
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import axios from "axios";
+import { SongContext } from "../contextprovider/SongProvider";
 const AddArtist = () => {
   const [artist, setArtist] = useState({
     name: "",
     bio: "",
     gender: "",
   });
+
+  const {API} = useContext(SongContext);
 
   const stopPost = useRef();
 
@@ -21,7 +24,7 @@ const AddArtist = () => {
     stopPost.current.disabled = true;
     const {name ,bio ,gender } = artist; 
     if(name && bio && gender){
-        axios.post(`http://localhost:8080/artist`,artist).then((res)=>{
+        axios.post(`${API}/artist`,artist).then((res)=>{
             if(res){
                 alert("Artist Added Successfully")
                 setArtist({

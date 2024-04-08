@@ -7,7 +7,7 @@ import axios from "axios";
 import { SongContext } from "../contextprovider/SongProvider";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 const Library = () => {
-  const {SongAPI,setSongAPi} = useContext(SongContext);
+  const {SongAPI,setSongAPi,API} = useContext(SongContext);
   const {reload,setReload} = useContext(ReloadContext);
 
   const {id} = useParams();
@@ -15,8 +15,8 @@ const Library = () => {
   // console.log(SongAPI)
   // alert(id)
   useEffect(()=>{
-    axios.get(`http://localhost:8080/by-genre/${id}`).then((res)=>{
-      setSongAPi(`http://localhost:8080/by-genre/${id}`)
+    axios.get(`${API}/by-genre/${id}`).then((res)=>{
+      setSongAPi(`${API}/by-genre/${id}`)
       console.log(res.data)
       setSongs(res.data)
       setReload(!prev)

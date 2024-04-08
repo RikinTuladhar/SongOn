@@ -1,6 +1,8 @@
-import React,{useRef, useState} from 'react'
+import React,{useContext, useRef, useState} from 'react'
 import axios from 'axios'
+import { SongContext } from '../contextprovider/SongProvider';
 const AddGenre = () => {
+  const {API} = useContext(SongContext);
     const [genre, setGenre] = useState({
         name: "",
         bio: "",
@@ -21,7 +23,7 @@ const AddGenre = () => {
         const {name,bio} = event.target
 
         if(name && bio){
-            axios.post(`http://localhost:8080/addGenre`,genre).then((res)=>{
+            axios.post(`${API}/addGenre`,genre).then((res)=>{
             if(res){
                 alert("Success!")
                 setGenre({

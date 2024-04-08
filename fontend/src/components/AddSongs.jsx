@@ -4,9 +4,11 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import axios from "axios";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
+import { SongContext } from "../contextprovider/SongProvider";
 const AddSongs = () => {
   const { reload, setReload } = useContext(ReloadContext);
-
+ const {API} = useContext(SongContext);
+  console.log(API)
   const stopPost = useRef();
   const [songUpload, setSongUpload] = useState(null);
   const [songlist, setSongList] = useState(null);
@@ -47,7 +49,7 @@ const AddSongs = () => {
       try {
         if (values.autoPath !== "") {
           const response = await axios.post(
-            `http://localhost:8080/uploadSong/${ids.generic_id}/${ids.artist_id}`,
+            `${API}/uploadSong/${ids.generic_id}/${ids.artist_id}`,
             values
           );
           console.log(response);
@@ -64,13 +66,13 @@ const AddSongs = () => {
 
   // fetching artist and  genere from database 
   useEffect(()=>{
-    axios.get(`http://localhost:8080/artist`).then((res)=>{
+    axios.get(`${API}/artist`).then((res)=>{
       setArtist(res.data);
       // console.log(res);
 
     }).catch((err)=>{console.error("Error:", err);})
 
-    axios.get(`http://localhost:8080/genre`).then((res)=>{
+    axios.get(`${API}/genre`).then((res)=>{
       // console.log(res);
       setGenre(res.data)
     }).catch((err)=>{console.error("Error:", err);})
@@ -143,7 +145,7 @@ const AddSongs = () => {
                 Select Artist
               </label>
               <select name="artist" onChange={e=>setIds((prev)=>({...prev,artist_id:e.target.value}))} id="artist">
-                <option disabled value="">Select The Artist</option>
+                <option selected disabled value="">Select The Artist</option>
                {artist?.map((artist) =>(
                 <option value={artist.id}>{artist.name}</option>
                ))}
@@ -153,7 +155,7 @@ const AddSongs = () => {
                   Select Generic
                 </label>
                 <select name="artist" id="artist" onChange={e=>setIds((prev)=>({...prev,generic_id:e.target.value}))} >
-                <option disabled value="">Select The Artist</option>
+                <option selected disabled value="">Select The Artist</option>
                {genre?.map((genre) =>(
                 <option value={genre.id}>{genre.name}</option>
                ))}

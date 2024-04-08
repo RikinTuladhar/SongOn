@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ArtistList from './ArtistList'
 import { Link } from 'react-router-dom'
 import axios from "axios";
-
+import { SongContext } from '../contextprovider/SongProvider';
 const HomeLeft = () => {
   const [artist,setArtist] = useState([])
+  const{API} = useContext(SongContext)
   useEffect(()=>{
-    axios.get("http://localhost:8080/artist").then((res)=>{
+    axios.get(`${API}/artist`).then((res)=>{
         console.log(res.data);
         setArtist(res.data)
     })

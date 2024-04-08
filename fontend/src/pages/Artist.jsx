@@ -6,13 +6,13 @@ import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 const Artist = () => {
-  const {SongAPI,setSongAPi} = useContext(SongContext);
+  const {SongAPI,setSongAPi,API} = useContext(SongContext);
   const {reload,setReload} = useContext(ReloadContext);
   const {id} = useParams();
   const [songs, setSongs] = useState([]);
   const [artistName, setArtistName] = useState([]);
   useEffect(()=>{
-    axios.get(`http://localhost:8080/artist/${id}`).then((res)=>{
+    axios.get(`${API}/artist/${id}`).then((res)=>{
       console.log(res.data.songs)
       console.log(res.data)
       setSongs(res.data.songs)
