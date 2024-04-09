@@ -11,6 +11,10 @@ import Library from "./pages/Library";
 import Artist from "./pages/Artist";
 import AddArtist from "./pages/AddArtist";
 import AddGenre from "./pages/AddGenre";
+import Practice from "./pages/Practice";
+import SongProvider from "./contextprovider/SongProvider";
+import ReloadProvider from "./contextprovider/ReloadProvider";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const router = createBrowserRouter([
@@ -26,21 +30,28 @@ function App() {
           path: "/about",
           element: <About />,
         },
-        { path: "/addSongs", element: <AddSongPage /> }
-        , {path:"/library/:id",element: <Library/>},
-        {path:"/artist/:id",element:<Artist/>},
-        {path:"/addArtist", element:<AddArtist/>},
-        {path:"/addGenre",element:<AddGenre/>}
-        
+
+        ,
+        { path: "/library/:id", element: <Library /> },
+        { path: "/artist/:id", element: <Artist /> },
       ],
-    }
+    },
+    { path: "/p", element: <Practice /> },
+    { path: "/addSongs", element: <AddSongPage /> },
+    { path: "/addArtist", element: <AddArtist /> },
+    { path: "/addGenre", element: <AddGenre /> },
+    {path:"/*" , element:<NotFound/>}
   ]);
 
   // console.log(router)
 
   return (
     <>
+    <ReloadProvider>
+    <SongProvider>
       <RouterProvider router={router} />
+      </SongProvider>
+      </ReloadProvider>
     </>
   );
 }

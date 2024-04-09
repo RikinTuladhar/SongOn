@@ -12,7 +12,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="w-full h-[auto] min-h-[100vh] bg-[#000000] relative  mt-[10vh] pt-5 md:pb-40 md:mt-[10vh] overflow-hidden flex flex-col items-center gap-3">
+    <div className="w-full h-[auto] min-h-[100vh] bg-[#000000] relative  pt-5 md:pb-40  overflow-hidden flex flex-col items-center gap-3">
       <ToastContainer
         position="top-center"
         autoClose={false}

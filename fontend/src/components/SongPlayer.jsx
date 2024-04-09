@@ -5,7 +5,7 @@ import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
 const SongPlayer = () => {
   const { reload, setReload } = useContext(ReloadContext);
-  const {SongAPI,play,setPlay } = useContext(SongContext);
+  const {SongAPI,count} = useContext(SongContext);
 
   const [nextSongState,setNextSongState] = useState(false);
 
@@ -16,12 +16,16 @@ const SongPlayer = () => {
   // }
   
   console.log(SongAPI)
-  console.log(play)
+ 
 
 
   useEffect(() => {
     // var i= 1;
     // console.log("Song player loaded"  + i);
+    if(count > 0 ){
+      audioRef.current.load(); // Load the new source
+    audioRef.current.play(); // Play the audio
+    }
 
     axios
       .get(SongAPI)

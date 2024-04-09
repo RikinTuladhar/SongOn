@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useEffect, useState } from 'react'
 import axios from 'axios';
 
 export const SongContext = createContext();
@@ -7,7 +7,7 @@ const SongProvider = ({children}) => {
     const [SongAPI,setSongAPi] = useState("http://localhost:8080/songs")
     const [API,setAPI] = useState("https://songonbackend.onrender.com");
   
-    const [play,setPlay] = useState(false);
+    const [count,setCount] = useState(0);
 
     const [songId,setSongId] = useState(null)
     const [songName,setSongName] = useState(null);
@@ -17,6 +17,10 @@ const SongProvider = ({children}) => {
 
     console.log(songDetails)  
 
+    const handleClickOnSong = useCallback(()=>{
+      setCount(count +1);
+    },[songDetails,count])
+    console.log(count)
 
     useEffect(()=>{
       axios.get(`${API}/songs/${songId}`).then((res)=>{
@@ -35,7 +39,7 @@ const SongProvider = ({children}) => {
 
 
   return (
-    <SongContext.Provider value={{SongAPI,setSongAPi,songId,setSongId,songDetails,ArtistDetails,API,play,setPlay}}>
+    <SongContext.Provider value={{SongAPI,setSongAPi,songId,setSongId,songDetails,ArtistDetails,API,count,handleClickOnSong}}>
       {children}
     </SongContext.Provider>
   )

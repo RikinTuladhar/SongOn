@@ -1,6 +1,7 @@
 import React,{useContext, useRef, useState} from 'react'
 import axios from 'axios'
 import { SongContext } from '../contextprovider/SongProvider';
+import Navbar from '../components/Navbar';
 const AddGenre = () => {
   const {API} = useContext(SongContext);
     const [genre, setGenre] = useState({
@@ -42,6 +43,7 @@ const AddGenre = () => {
       }
   return (
     <div>
+      <Navbar/>
       <div>
         <div className="w-full h-[100vh] bg-slate-500 flex justify-center items-center">
           <div>

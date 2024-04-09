@@ -1,22 +1,21 @@
-import React, { useContext, useEffect } from 'react'
+import React, { memo, useContext, useEffect } from 'react'
 import { SongContext } from '../contextprovider/SongProvider'
 import { ReloadContext } from '../contextprovider/ReloadProvider'
 import axios from 'axios'
-const LibraryRight = ({songs,artistName}) => {
-  const {SongAPI,setSongAPi,setSongId,API,play,setPlay} = useContext(SongContext)
+const LibraryRight = ({songs,artistName,handleClickOnSong}) => {
+  const {SongAPI,setSongAPi,setSongId,API,count} = useContext(SongContext)
   const {reload,setReload} = useContext(ReloadContext);
 
 
   // click play song 
-  const handleSong = async(id) =>{
+  const handleSong = (id) =>{
     console.log("song clicked" + id)
     setSongAPi( `${API}/songs/${id}`);
-    setPlay(true);
+    
     setSongId(id)
     setReload(!prev)
 
   }
-  console.log(play)
   return (
     <>
        <div className="w-full md:w-[70%] h-[100vh] overflow-y-auto  mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
@@ -31,7 +30,12 @@ const LibraryRight = ({songs,artistName}) => {
         {
          songs?.length === 0 ? (<div className='text-xl tracking-wider'>No Songs Available</div>) : 
         songs?.map((song,i)=>(
-        <div onClick={e=>handleSong(song.id)} key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between">
+        <div onClick={e=>{
+          handleSong(song.id);
+          handleClickOnSong();  
+        }
+          } 
+          key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between">
         <div key={song.id}   className="w-[20%] text-center md:text-left"> {i+1}</div>
         <div key={song.id} className="text-center md:w-full">{song?.name}</div>
         <div key={song.id} className="text-center md:w-full">{song?.artist?.slice(0,3)?.map((artist)=>(
@@ -51,4 +55,4 @@ const LibraryRight = ({songs,artistName}) => {
   )
 }
 
-export default LibraryRight
+export default memo(LibraryRight);

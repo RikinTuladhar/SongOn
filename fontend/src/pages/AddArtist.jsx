@@ -2,6 +2,7 @@
 import React, { useContext, useRef, useState } from "react";
 import axios from "axios";
 import { SongContext } from "../contextprovider/SongProvider";
+import Navbar from "../components/Navbar";
 const AddArtist = () => {
   const [artist, setArtist] = useState({
     name: "",
@@ -47,6 +48,7 @@ const AddArtist = () => {
 
   return (
     <div>
+      <Navbar/>
       <div>
         <div className="w-full h-[100vh] bg-slate-500 flex justify-center items-center">
           <div>
