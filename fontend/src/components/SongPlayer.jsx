@@ -1,32 +1,19 @@
 import { data } from "autoprefixer";
 import axios from "axios";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { memo, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
+import { PannelContext } from "../contextprovider/PannelProvider";
 const SongPlayer = () => {
+
   const { reload, setReload } = useContext(ReloadContext);
+
+  const {audioRef,currentIndex,setCurrentIndex,audioSources,setaudioSources,nextSongState,setNextSongState,previousSong,nextSong,backward,forward} = useContext(PannelContext);
   const {SongAPI,count} = useContext(SongContext);
-
-  const [nextSongState,setNextSongState] = useState(false);
-
-  const [name, setName] = useState([]);
-  const [audioSources, setaudioSources] = useState([]);
-  // const mapping = async(index)=>{
-  //   return index
-  // }
-  
+  const [name, setName] = useState([]);  
   console.log(SongAPI)
- 
-
 
   useEffect(() => {
-    // var i= 1;
-    // console.log("Song player loaded"  + i);
-    if(count > 0 ){
-      audioRef.current.load(); // Load the new source
-    audioRef.current.play(); // Play the audio
-    }
-
     axios
       .get(SongAPI)
       .then((res) => {
@@ -48,39 +35,6 @@ const SongPlayer = () => {
         }
       });
   }, [reload,SongAPI]);
-
-
- 
-
-  
-  // console.log(audioSources);
-  // mapping(audioSources[currentIndex]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const audioRef = useRef(null);
-
-  const previousSong = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + audioSources.length) % audioSources.length
-    );
-    audioRef.current.pause(); // Pause the audio before changing the source
-    audioRef.current.load(); // Load the new source
-    audioRef.current.play(); // Play the audio
-  };
-
-  const nextSong = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % audioSources.length);
-    audioRef.current.pause(); // Pause the audio before changing the source
-    audioRef.current.load(); // Load the new source
-    audioRef.current.play(); // Play the audio
-  };
-
-  const backward = () => {
-    audioRef.current.currentTime -= 10; // Go back 10 seconds
-  };
-
-  const forward = () => {
-    audioRef.current.currentTime += 10; // Go forward 10 seconds
-  };
 
   return (
     <div className="fixed border rounded-lg bottom-4 ">
@@ -122,4 +76,4 @@ const SongPlayer = () => {
   );
 };
 
-export default SongPlayer;
+export default memo(SongPlayer);

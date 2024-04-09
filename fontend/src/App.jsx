@@ -15,6 +15,7 @@ import Practice from "./pages/Practice";
 import SongProvider from "./contextprovider/SongProvider";
 import ReloadProvider from "./contextprovider/ReloadProvider";
 import NotFound from "./pages/NotFound";
+import PannelProvider, { PannelContext } from "./contextprovider/PannelProvider";
 
 function App() {
   const router = createBrowserRouter([
@@ -48,9 +49,11 @@ function App() {
   return (
     <>
     <ReloadProvider>
+      <PannelProvider>
     <SongProvider>
       <RouterProvider router={router} />
       </SongProvider>
+      </PannelProvider>
       </ReloadProvider>
     </>
   );

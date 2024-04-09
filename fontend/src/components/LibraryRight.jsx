@@ -1,19 +1,23 @@
 import React, { memo, useContext, useEffect } from 'react'
 import { SongContext } from '../contextprovider/SongProvider'
 import { ReloadContext } from '../contextprovider/ReloadProvider'
+import { PannelContext } from '../contextprovider/PannelProvider'
 import axios from 'axios'
-const LibraryRight = ({songs,artistName,handleClickOnSong}) => {
+const LibraryRight = ({songs,artistName}) => {
   const {SongAPI,setSongAPi,setSongId,API,count} = useContext(SongContext)
+  const {nextSong} = useContext(PannelContext)
   const {reload,setReload} = useContext(ReloadContext);
 
 
   // click play song 
   const handleSong = (id) =>{
+
     console.log("song clicked" + id)
     setSongAPi( `${API}/songs/${id}`);
     
     setSongId(id)
-    setReload(!prev)
+    // setReload(!prev)
+    nextSong();
 
   }
   return (
@@ -30,9 +34,9 @@ const LibraryRight = ({songs,artistName,handleClickOnSong}) => {
         {
          songs?.length === 0 ? (<div className='text-xl tracking-wider'>No Songs Available</div>) : 
         songs?.map((song,i)=>(
+
         <div onClick={e=>{
           handleSong(song.id);
-          handleClickOnSong();  
         }
           } 
           key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between">
