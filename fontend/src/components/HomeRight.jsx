@@ -38,6 +38,7 @@ const HomeRight = () => {
               .fill()
               .map((_, i) => (
                 <div
+                key={i}
                   role="status"
                   className="animate-pulse w-52 h-auto px-5  py-2 rounded-md min-h-52 hover:bg-[#1b1b1bd3]  hover:ease-in"
                 >

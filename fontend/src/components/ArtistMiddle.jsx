@@ -12,7 +12,8 @@ const ArtistMiddle = ({songs,artistName}) => {
     // console.log("song clicked" + id)
     setSongAPi( `${API}/songs/${id}`);
     setSongId(id)
-    setReload(!prev)
+    setReload(true)
+    setReload(false)
   }
   
   return (

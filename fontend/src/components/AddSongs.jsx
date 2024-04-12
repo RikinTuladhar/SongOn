@@ -55,6 +55,7 @@ const AddSongs = () => {
           console.log(response);
           setReload(true);
           alert("Success!");
+          setReload(false)
         }
       } catch (error) {
         console.error("Error:", error);
