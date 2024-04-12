@@ -14,14 +14,14 @@ const PannelProvider = ({children}) => {
         setCurrentIndex(
           (prevIndex) => (prevIndex - 1 + audioSources.length) % audioSources.length
         );
-        audioRef.current.pause(); // Pause the audio before changing the source
+        // audioRef.current.pause(); // Pause the audio before changing the source
         audioRef.current.load(); // Load the new source
         audioRef.current.play(); // Play the audio
       };
 
       const nextSong = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % audioSources.length);
-        audioRef.current.pause(); // Pause the audio before changing the source
+        // audioRef.current.pause(); // Pause the audio before changing the source
         audioRef.current.load(); // Load the new source
         audioRef.current.play(); // Play the audio
       };
