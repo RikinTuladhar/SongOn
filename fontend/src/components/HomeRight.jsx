@@ -15,7 +15,7 @@ const HomeRight = () => {
       .then((res) => {
         setArtist(res.data);
         console.log(res.data[0].songs);
-        setReload(!prev);
+        // setReload(!prev);
         console.log(res.data);
       })
       .catch((err) => {

@@ -21,7 +21,7 @@ const PannelProvider = ({children}) => {
 
       const nextSong = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % audioSources.length);
-        // audioRef.current.pause(); // Pause the audio before changing the source
+        audioRef.current.pause(); // Pause the audio before changing the source
         audioRef.current.load(); // Load the new source
         audioRef.current.play(); // Play the audio
       };

@@ -17,7 +17,7 @@ const LibraryRight = ({songs,artistName}) => {
     
     setSongId(id)
     // setReload(!prev)
-    nextSong();
+    // nextSong();
 
   }
   return (
