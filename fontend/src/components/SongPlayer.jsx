@@ -54,7 +54,7 @@ const SongPlayer = () => {
             <li className="order-3 md:order-2">
               <button className="px-2 py-1 border md:px-5 md:py-2 rounded-2xl" onClick={backward}>Backward</button>
             </li>
-            <li className="order-1 mx-5 mx-auto my-0 md:px-0 md:order-3">
+            <li className="order-1 mx-auto my-0 md:px-0 md:order-3">
               <audio className=" bg-black h-[30px] md:h-[10vh] text-white rounded" ref={audioRef} autoPlay controls width="600px">
                 <source src={audioSources[currentIndex]} type="video/mp4" />
                 <source src={audioSources[currentIndex]} type="audio/mpeg" />
