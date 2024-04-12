@@ -19,7 +19,7 @@ const HomeLeft = () => {
     >
       <h1 className=" text-[#E5E7EB]"> Artist List</h1>
       <div className="w-full   rounded-lg  h-[2px] bg-black mt-10">
-        {artist?.length !== 0
+        {artist?.length === 0
           ? Array(10)
               .fill()
               .map(() => (
