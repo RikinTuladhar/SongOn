@@ -23,8 +23,8 @@ const CardLib = ({id,name,songlist}) => {
         </div>
         <div>
           <span className="text-[#E5E7EB] flex flex-wrap gap-2">
-            { songlist.slice(0,3)?.map((song)=>(
-              <span key={song.id}>{song.name},</span>
+            { songlist.slice(0,2)?.map((song)=>(
+              <span key={song.id}>{song.name.length > 15 ? song.name.slice(0,15) : song.name},</span>
             ))
             }
              <span>..More</span>

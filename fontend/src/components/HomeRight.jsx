@@ -14,16 +14,11 @@ const HomeRight = () => {
       .get(`${API}/genre`)
       .then((res) => {
         setArtist(res.data);
-        // console.log(res.data[0].songs);
-        // setReload(!prev);
-        // console.log(res.data);
       })
       .catch((err) => {
         console.log("Error is :" + err);
       });
   }, [reload]);
-
-  // console.log(reload);
 
   return (
     <div className="mb-32 md:mb-0 mx-10 mt-10 md:mx-0  md:w-[80%] h-auto  md:mt-3  py-10 bg-[#11111182] rounded-xl ">
