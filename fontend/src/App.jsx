@@ -21,6 +21,7 @@ import AddArtist from "./components/AddArtist";
 import AddArtistPage from "./pages/AddArtistPage";
 import AddGenrePage from "./pages/AddGenre";
 import EditArtist from "./pages/Admin/pages/EditArtist";
+import EditGenre from "./pages/Admin/pages/EditGenre";
 function App() {
   const router = createBrowserRouter([
     {
@@ -55,20 +56,25 @@ function App() {
           element: <AdminHome />,
         },
         {
-          path:"/admin/addSongs",
-          element:<AddSongs/>
+          path: "/admin/addSongs",
+          element: <AddSongs />,
         },
         {
-          path:"/admin/addArtist",
-          element:<AddArtist/>
+          path: "/admin/addArtist",
+          element: <AddArtist />,
         },
         {
-          path:"/admin/addGenre",
-          element:<AddGenre/>
-        },{
-          path:"/admin/edit/artist",
-          element:<EditArtist/>
-        }
+          path: "/admin/addGenre",
+          element: <AddGenre />,
+        },
+        {
+          path: "/admin/edit/artist",
+          element: <EditArtist />,
+        },
+        {
+          path: "/admin/edit/genre",
+          element: <EditGenre />,
+        },
       ],
     },
   ]);

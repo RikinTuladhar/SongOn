@@ -21,12 +21,12 @@ const HomeRight = () => {
   }, [reload]);
 
   return (
-    <div className="mb-32 md:mb-0 mx-10 mt-10 md:mx-0  md:w-[80%] h-auto  md:mt-3  py-10 bg-[#11111182] rounded-xl ">
+    <div className=" w-[100%] mb-32 md:mb-0 mx-10 mt-10 md:mx-0  md:w-[80%] h-auto  md:mt-3  py-10 bg-[#11111182] rounded-xl ">
       <h1 className="text-center md:ml-10 md:text-left text-2xl text-[#E5E7EB] ">
         Librarys
       </h1>
       <div className="w-full mt-3 h-[2px] bg-black  "></div>
-      <div className="flex flex-wrap items-center justify-center gap-10 mt-6 overflow-y-auto">
+      <div className="grid items-center justify-center gap-5 overflow-y-auto md:gap-10 md:grid-cols-3 md:m-16">
         {artist?.length === 0 ? (
           <>
             {Array(6)

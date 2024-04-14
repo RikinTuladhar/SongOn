@@ -1,7 +1,7 @@
 import React from "react";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
-const ArtistCard = ({ artist }) => {
+const ArtistCard = ({ artist,handleDelete }) => {
   const { id, name, gender, bio } = artist;
   return (
     <div key={id}  className="rounded-xl  w-[150px] md:w-[250px] flex flex-col h-[300px] bg-slate-500">
@@ -27,7 +27,7 @@ const ArtistCard = ({ artist }) => {
           <button className="text-2xl">
             <CiEdit />
           </button>{" "}
-          <button className="text-2xl">
+          <button className="text-2xl" onClick={e=>handleDelete(id)}>
             <MdDeleteOutline />
           </button>{" "}
         </div>

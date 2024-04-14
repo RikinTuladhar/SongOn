@@ -1,27 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ArtistApi from "../../../Apis/ArtistApi";
 import ArtistCard from "../components/ArtistCard";
-
+import { ReloadContext } from "../../../contextprovider/ReloadProvider";
 const EditArtist = () => {
-  const { getArtist } = ArtistApi();
+  const { getArtist, deleteArtist } = ArtistApi();
+  const {reload,setReload} = useContext(ReloadContext)
   const [artists, setArtists] = useState([]);
+  
   useEffect(() => {
     //ife
     (async () => {
       const data = await getArtist("/artist");
-      console.log(data);
       setArtists(data);
     })();
-  }, []);
+  }, [reload]);
+
+  const handleDelete = async (id) => {
+    // console.log(id);
+    setReload(true);
+    const response = await deleteArtist(`/artist/${id}`);
+    alert("Deleted");
+    setReload(false)
+  };
+
   return (
     <div>
       <div>
         <p className="text-3xl font-bold text-center">Artist List</p>
       </div>
-      <div className="mt-16 ml-10 ">
-        <div className="grid w-full grid-cols-3 gap-10">
+      <div className="mt-16 ">
+        <div className="grid w-full gap-10 justify-items-center md:grid-cols-3">
           {artists?.map((artist) => (
-            <ArtistCard key={artist.id} artist={artist} />
+            <ArtistCard
+              key={artist.id}
+              artist={artist}
+              handleDelete={handleDelete}
+            />
           ))}
         </div>
       </div>
