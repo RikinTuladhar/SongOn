@@ -16,7 +16,7 @@ const AddGenre = () => {
         setGenre({...genre,[name]:value});
         
       }
-      console.log(genre)
+      // console.log(genre)
 
       const handleSubmit = (event)=>{
         event.preventDefault();

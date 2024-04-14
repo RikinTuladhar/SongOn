@@ -12,7 +12,7 @@ const LibraryRight = ({songs,artistName}) => {
   // click play song 
   const handleSong = (id) =>{
 
-    console.log("song clicked" + id)
+    // console.log("song clicked" + id)
     setSongAPi( `${API}/songs/${id}`);
     
     setSongId(id)

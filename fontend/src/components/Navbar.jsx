@@ -6,7 +6,7 @@ const Navbar = () => {
   const handeNav = () => {
     setHiden(!hiden);
   }
-  console.log(hiden)
+  // console.log(hiden)
   return (
     
 <nav class="bg-white border-gray-200 dark:bg-gray-900">

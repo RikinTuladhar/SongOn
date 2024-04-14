@@ -14,8 +14,8 @@ const Artist = () => {
   const [artistName, setArtistName] = useState([]);
   useEffect(()=>{
     axios.get(`${API}/artist/${id}`).then((res)=>{
-      console.log(res.data.songs)
-      console.log(res.data)
+      // console.log(res.data.songs)
+      // console.log(res.data)
       setSongs(res.data.songs)
       setArtistName(res.data.name)
       setReload(!prev)

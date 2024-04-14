@@ -8,7 +8,7 @@ import { SongContext } from "../contextprovider/SongProvider";
 const AddSongs = () => {
   const { reload, setReload } = useContext(ReloadContext);
  const {API} = useContext(SongContext);
-  console.log(API)
+  // console.log(API)
   const stopPost = useRef();
   const [songUpload, setSongUpload] = useState(null);
   const [songlist, setSongList] = useState(null);
@@ -35,7 +35,7 @@ const AddSongs = () => {
     uploadBytes(songRef, songUpload).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
         alert("song uploaded ");
-        console.log(url);
+        // console.log(url);
         setValues({ ...values, autoPath: url });
       });
     });
@@ -52,7 +52,7 @@ const AddSongs = () => {
             `${API}/uploadSong/${ids.generic_id}/${ids.artist_id}`,
             values
           );
-          console.log(response);
+          // console.log(response);
           setReload(true);
           alert("Success!");
           setReload(false)
@@ -82,7 +82,7 @@ const AddSongs = () => {
 
   const songRef = ref(storage, "songs/");
 
-  console.log(ids)
+  // console.log(ids)
 
   return (
     <div>

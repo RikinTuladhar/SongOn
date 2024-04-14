@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import {SongContext} from '../contextprovider/SongProvider'
 const LibraryLeft = () => {
   const {songDetails,ArtistDetails} = useContext(SongContext);
-  console.log(songDetails)
-  console.log(ArtistDetails)
+  // console.log(songDetails)
+  // console.log(ArtistDetails)
 
   
 

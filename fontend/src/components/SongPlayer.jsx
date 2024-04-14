@@ -11,7 +11,7 @@ const SongPlayer = () => {
   const {audioRef,currentIndex,setCurrentIndex,audioSources,setaudioSources,nextSongState,setNextSongState,previousSong,nextSong,backward,forward} = useContext(PannelContext);
   const {SongAPI,count} = useContext(SongContext);
   const [name, setName] = useState([]);  
-  console.log(SongAPI)
+  // console.log(SongAPI)
 
   useEffect(() => {
     axios
@@ -22,10 +22,10 @@ const SongPlayer = () => {
       .then((res) => {
         // console.log(res);
         const name = res.map((name)=>name.name);
-        console.log(name)
+        // console.log(name)
         setName(name);
         const paths = res.map((song) => song.autoPath);
-        console.log(paths)
+        // console.log(paths)
         setaudioSources(paths);
         // console.log(name);
         // setaudioSources(res);

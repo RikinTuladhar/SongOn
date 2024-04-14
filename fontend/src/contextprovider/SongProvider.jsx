@@ -15,12 +15,12 @@ const SongProvider = ({children}) => {
     const [songDetails,setSongDetails] = useState([])
     const [ArtistDetails,setArtistDetails] = useState([])
 
-    console.log(songDetails)  
+    // console.log(songDetails)  
 
     const handleClickOnSong = useCallback(()=>{
       setCount(count +1);
     },[songDetails,count])
-    console.log(count)
+    // console.log(count)
 
     useEffect(()=>{
       axios.get(`${API}/songs/${songId}`).then((res)=>{
