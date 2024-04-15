@@ -9,7 +9,7 @@ const ArtistApi = () => {
     try {
       const response = await axios.get(URL);
       const data = await response.data;
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (error) {
       console.error(error);

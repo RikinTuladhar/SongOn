@@ -15,7 +15,7 @@ import PannelProvider, {
   PannelContext,
 } from "./contextprovider/PannelProvider";
 import Admin from "./pages/Admin/Admin";
-import AdminHome from "./pages/Admin/AdminHome";
+
 import AddSongs from "./components/AddSongs";
 import AddArtist from "./components/AddArtist";
 import AddArtistPage from "./pages/AddArtistPage";
@@ -51,10 +51,6 @@ function App() {
       path: "/admin",
       element: <Admin />,
       children: [
-        {
-          path: "/admin",
-          element: <AdminHome />,
-        },
         {
           path: "/admin/addSongs",
           element: <AddSongs />,

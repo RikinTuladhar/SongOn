@@ -12,7 +12,16 @@ const GenreApi = () => {
         console.log(data)
 
     }
-    return {getGenre}
+
+    async function deleteGenre(endpoint){
+        const URL = baseUrl + endpoint;
+        // console.log(URL)
+        const response = await axios.delete(URL);
+        const data = await response.data;
+        return data;
+    }
+
+    return {getGenre,deleteGenre}
 }
 
 export default GenreApi

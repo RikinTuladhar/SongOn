@@ -17,7 +17,7 @@ const Library = () => {
   useEffect(()=>{
     axios.get(`${API}/by-genre/${id}`).then((res)=>{
       setSongAPi(`${API}/by-genre/${id}`)
-      console.log(res.data)
+      // console.log(res.data)
       setSongs(res.data)
       setReload(!prev)
       
