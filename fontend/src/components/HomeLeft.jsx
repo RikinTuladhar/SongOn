@@ -22,8 +22,8 @@ const HomeLeft = () => {
         {artist?.length === 0
           ? Array(10)
               .fill()
-              .map(() => (
-                <div   role="status" className="animate-pulse  w-full h-20 bg-[#0F0F0F]   px-5 py-2 flex items-center gap-5">
+              .map((data,i) => (
+                <div key={i}  role="status" className="animate-pulse  w-full h-20 bg-[#0F0F0F]   px-5 py-2 flex items-center gap-5">
                   <div className="w-[40px] h-[40px] flex justify-center">
                     <svg
                       class="w-10 h-10 text-gray-200 dark:text-gray-600"
@@ -47,8 +47,7 @@ const HomeLeft = () => {
               ))
           : artist?.map((artist, i) => (
               <Link key={i} to={`/artist/${artist.id}`}>
-                {" "}
-                <ArtistList name={artist.name} />
+                <ArtistList name={artist.name} image={artist.imgArtist}/>
               </Link>
             ))}
       </div>

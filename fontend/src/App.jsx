@@ -22,6 +22,7 @@ import AddArtistPage from "./pages/AddArtistPage";
 import AddGenrePage from "./pages/AddGenre";
 import EditArtist from "./pages/Admin/pages/EditArtist";
 import EditGenre from "./pages/Admin/pages/EditGenre";
+import EditSong from "./pages/Admin/pages/EditSong";
 function App() {
   const router = createBrowserRouter([
     {
@@ -71,6 +72,10 @@ function App() {
           path: "/admin/edit/genre",
           element: <EditGenre />,
         },
+        {
+          path:"/admin/edit/song",
+          element:<EditSong/>
+        }
       ],
     },
   ]);

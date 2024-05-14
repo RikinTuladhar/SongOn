@@ -7,80 +7,142 @@ import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
 const AddSongs = () => {
   const { reload, setReload } = useContext(ReloadContext);
- const {API} = useContext(SongContext);
+  const { API } = useContext(SongContext);
   // console.log(API)
   const stopPost = useRef();
   const [songUpload, setSongUpload] = useState(null);
+  const [songImageUpload, setSongImageUpload] = useState(null);
   const [songlist, setSongList] = useState(null);
 
-  const [genre,setGenre] = useState([])
-  const [artist,setArtist] = useState([])
+  const [genre, setGenre] = useState([]);
+  const [artist, setArtist] = useState([]);
 
   const [values, setValues] = useState({
     name: "",
     autoPath: "",
+    imgPath: "",
   });
-  const [ids,setIds] = useState({
-    generic_id:"",
-    artist_id:""
-  })
+  const [ids, setIds] = useState({
+    generic_id: "",
+    artist_id: "",
+  });
+
+  const songRef = ref(storage, "songs/");
+  const songImgRef = ref(storage, "songimage/");
+
 
   //file saved in firebase
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   stopPost.current.disabled = true;
+  //   console.log("clicked submit button");
+  //   console.log(songUpload);
+
+  //   if (songUpload == null) return alert("no song upload");
+
+  //   try {
+  //     const songRef = ref(storage, `songs/${songUpload.name + v4()}`);
+  //     const songImgRef = ref(storage, `songimage/${songImageUpload.name + v4()}`);
+
+  //     const [songSnapshot, imageSnapshot] = await Promise.all([
+  //       uploadBytes(songRef, songUpload),
+  //       uploadBytes(songImgRef, songImageUpload)
+  //     ]);
+
+  //     const [songUrl, imageUrl] = await Promise.all([
+  //       getDownloadURL(songSnapshot.ref),
+  //       getDownloadURL(imageSnapshot.ref)
+  //     ]);
+
+  //     // Update state using state updater function
+  //     await setValues(prevValues => ({
+  //       ...prevValues,
+  //       autoPath: songUrl,
+  //       imgPath: imageUrl
+  //     }));
+
+  //     // Check if all necessary fields are filled before making the POST request
+  //     if (values.name !== "" && values.autoPath !== "" && values.imgPath !== "") {
+  //       await axios.post(`${API}/uploadSong/${ids.generic_id}/${ids.artist_id}`, values);
+  //       setReload(true);
+  //       alert("Success!");
+  //       setReload(false);
+  //     } else {
+  //       alert("Please fill in all fields before submitting.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
+  const handleSubmit = (e) => {
     e.preventDefault();
     stopPost.current.disabled = true;
 
-    if (songUpload == null) return;
+    if (songUpload == null || songImageUpload == null) {
+      stopPost.current.disabled = false;
+      alert("no song upload");
+     
+    }
+
     const songRef = ref(storage, `songs/${songUpload.name + v4()}`);
-    uploadBytes(songRef, songUpload).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        alert("song uploaded ");
-        // console.log(url);
-        setValues({ ...values, autoPath: url });
+    const songImgRef = ref(storage, `songimage/${songImageUpload.name + v4()}`);
+
+    Promise.all([
+      uploadBytes(songRef, songUpload),
+      uploadBytes(songImgRef, songImageUpload),
+    ])
+      .then(([songSnapshot, imageSnapshot]) => {
+        return Promise.all([
+          getDownloadURL(songSnapshot.ref),
+          getDownloadURL(imageSnapshot.ref),
+        ]);
+      })
+      .then(([songUrl, imageUrl]) => {
+        setValues((prevValues) => ({
+          ...prevValues,
+          autoPath: songUrl,
+          imgPath: imageUrl,
+        }));
+
+        return axios.post(
+          `${API}/uploadSong/${ids.generic_id}/${ids.artist_id}`,
+          { ...values, autoPath: songUrl, imgPath: imageUrl }
+        );
+      })
+      .then((res) => {
+        setReload(true);
+        alert("Success!");
+        setReload(false);
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
       });
-    });
   };
 
-  // posting in database 
+  // posting in database
+
+  // fetching artist and  genere from database
   useEffect(() => {
-    //then after the  file save it will rerender the componenet as values.autoPath is filled with url so
-    // it will add data in database by this function
-    const postSong = async () => {
-      try {
-        if (values.autoPath !== "") {
-          const response = await axios.post(
-            `${API}/uploadSong/${ids.generic_id}/${ids.artist_id}`,
-            values
-          );
-          // console.log(response);
-          setReload(true);
-          alert("Success!");
-          setReload(false)
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-    postSong();
-  }, [values.autoPath]);
+    axios
+      .get(`${API}/artist`)
+      .then((res) => {
+        setArtist(res.data);
+        // console.log(res);
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
 
-
-  // fetching artist and  genere from database 
-  useEffect(()=>{
-    axios.get(`${API}/artist`).then((res)=>{
-      setArtist(res.data);
-      // console.log(res);
-
-    }).catch((err)=>{console.error("Error:", err);})
-
-    axios.get(`${API}/genre`).then((res)=>{
-      // console.log(res);
-      setGenre(res.data)
-    }).catch((err)=>{console.error("Error:", err);})
-
-  },[])
-
-  const songRef = ref(storage, "songs/");
+    axios
+      .get(`${API}/genre`)
+      .then((res) => {
+        // console.log(res);
+        setGenre(res.data);
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
+  }, []);
 
   // console.log(ids)
 
@@ -100,67 +162,72 @@ const AddSongs = () => {
                 name="name"
                 onChange={(e) => setValues({ ...values, name: e.target.value })}
               />
+              {/* picture  */}
               <label className="text-lg font-bold" htmlFor="form-2-picture">
                 Picture
               </label>
-              <div className="relative w-full">
+              <div key={"picture upload"} className="relative w-full">
                 <input
-                  id="form-2-picture"
-                  className="sr-only"
-                  aria-hidden="true"
+                  type="file"
+                  name="imgPath"
+                  onChange={(event) => {
+                    setSongImageUpload(event.target.files[0]);
+                    alert("img halyo");
+                  }}
+                />
+              </div>
+              {/* audio file  */}
+              <label className="text-lg font-bold" htmlFor="form-2-picture">
+                Audio
+              </label>
+              <div key={"audio upload"} className="relative w-full">
+                <input
                   type="file"
                   name="autoPath"
                   onChange={(event) => {
                     setSongUpload(event.target.files[0]);
+                    alert("halyo hai");
                   }}
                 />
-                <label
-                  htmlFor="form-2-picture"
-                  className="flex items-center w-full gap-2 px-3 py-2 text-sm transition-colors duration-150 border border-gray-300 border-dashed rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-600"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-4 h-4"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" x2="12" y1="3" y2="15"></line>
-                  </svg>
-                  <span>Choose a file…</span>
-                </label>
               </div>
-
               <label
                 className="mt-3 text-lg font-bold"
                 htmlFor="text-lg font-bold"
-
               >
                 Select Artist
               </label>
-              <select name="artist" onChange={e=>setIds((prev)=>({...prev,artist_id:e.target.value}))} id="artist">
-                <option selected disabled value="">Select The Artist</option>
-               {artist?.map((artist) =>(
-                <option value={artist.id}>{artist.name}</option>
-               ))}
+              <select
+                name="artist"
+                onChange={(e) =>
+                  setIds((prev) => ({ ...prev, artist_id: e.target.value }))
+                }
+                id="artist"
+              >
+                <option selected disabled value="">
+                  Select The Artist
+                </option>
+                {artist?.map((artist) => (
+                  <option value={artist.id}>{artist.name}</option>
+                ))}
               </select>
               <div className="flex flex-col w-full h-auto">
                 <label className="mt-3 text-lg font-bold" htmlFor="">
                   Select Generic
                 </label>
-                <select name="artist" id="artist" onChange={e=>setIds((prev)=>({...prev,generic_id:e.target.value}))} >
-                <option selected disabled value="">Select The Artist</option>
-               {genre?.map((genre) =>(
-                <option value={genre.id}>{genre.name}</option>
-               ))}
-              </select>
+                <select
+                  name="artist"
+                  id="artist"
+                  onChange={(e) =>
+                    setIds((prev) => ({ ...prev, generic_id: e.target.value }))
+                  }
+                >
+                  <option selected disabled value="">
+                    Select The Artist
+                  </option>
+                  {genre?.map((genre) => (
+                    <option value={genre.id}>{genre.name}</option>
+                  ))}
+                </select>
               </div>
 
               <button type="submit" ref={stopPost}>
