@@ -1,6 +1,7 @@
 import React,{useContext, useRef, useState} from 'react'
 import axios from 'axios'
 import { SongContext } from '../contextprovider/SongProvider';
+import GenreApi from '../Apis/GenreApi';
 const AddGenre = () => {
     const {API} = useContext(SongContext);
     const [genre, setGenre] = useState({
@@ -9,6 +10,8 @@ const AddGenre = () => {
       });
 
       const stopPost = useRef();
+
+      const {postGenre}=GenreApi();
 
       const getValues = (event) =>{
         const {name,value} = event.target
@@ -23,7 +26,8 @@ const AddGenre = () => {
         const {name,bio} = event.target
 
         if(name && bio){
-            axios.post(`${API}/addGenre`,genre).then((res)=>{
+
+          postGenre(genre).then((res)=>{
             if(res){
                 alert("Success!")
                 setGenre({

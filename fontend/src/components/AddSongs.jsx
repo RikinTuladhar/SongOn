@@ -5,6 +5,10 @@ import { v4 } from "uuid";
 import axios from "axios";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
+import ArtistApi from "../Apis/ArtistApi"
+import GenreApi from "../Apis/GenreApi"
+import SongApi from "../Apis/SongApi";
+
 const AddSongs = () => {
   const { reload, setReload } = useContext(ReloadContext);
   const { API } = useContext(SongContext);
@@ -13,6 +17,10 @@ const AddSongs = () => {
   const [songUpload, setSongUpload] = useState(null);
   const [songImageUpload, setSongImageUpload] = useState(null);
   const [songlist, setSongList] = useState(null);
+  const {getArtist} = ArtistApi();
+const {addSong} =SongApi()
+  const {getGenre} = GenreApi();
+  
 
   const [genre, setGenre] = useState([]);
   const [artist, setArtist] = useState([]);
@@ -30,50 +38,6 @@ const AddSongs = () => {
   const songRef = ref(storage, "songs/");
   const songImgRef = ref(storage, "songimage/");
 
-
-  //file saved in firebase
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   stopPost.current.disabled = true;
-  //   console.log("clicked submit button");
-  //   console.log(songUpload);
-
-  //   if (songUpload == null) return alert("no song upload");
-
-  //   try {
-  //     const songRef = ref(storage, `songs/${songUpload.name + v4()}`);
-  //     const songImgRef = ref(storage, `songimage/${songImageUpload.name + v4()}`);
-
-  //     const [songSnapshot, imageSnapshot] = await Promise.all([
-  //       uploadBytes(songRef, songUpload),
-  //       uploadBytes(songImgRef, songImageUpload)
-  //     ]);
-
-  //     const [songUrl, imageUrl] = await Promise.all([
-  //       getDownloadURL(songSnapshot.ref),
-  //       getDownloadURL(imageSnapshot.ref)
-  //     ]);
-
-  //     // Update state using state updater function
-  //     await setValues(prevValues => ({
-  //       ...prevValues,
-  //       autoPath: songUrl,
-  //       imgPath: imageUrl
-  //     }));
-
-  //     // Check if all necessary fields are filled before making the POST request
-  //     if (values.name !== "" && values.autoPath !== "" && values.imgPath !== "") {
-  //       await axios.post(`${API}/uploadSong/${ids.generic_id}/${ids.artist_id}`, values);
-  //       setReload(true);
-  //       alert("Success!");
-  //       setReload(false);
-  //     } else {
-  //       alert("Please fill in all fields before submitting.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
   const handleSubmit = (e) => {
     e.preventDefault();
     stopPost.current.disabled = true;
@@ -103,11 +67,9 @@ const AddSongs = () => {
           autoPath: songUrl,
           imgPath: imageUrl,
         }));
-
-        return axios.post(
-          `${API}/uploadSong/${ids.generic_id}/${ids.artist_id}`,
-          { ...values, autoPath: songUrl, imgPath: imageUrl }
-        );
+        // `${API}/uploadSong/${ids.generic_id}/${ids.artist_id}`,
+        // { ...values, autoPath: songUrl, imgPath: imageUrl }
+        return addSong(ids.generic_id,ids.artist_id,{ ...values, autoPath: songUrl, imgPath: imageUrl })
       })
       .then((res) => {
         setReload(true);
@@ -123,21 +85,19 @@ const AddSongs = () => {
 
   // fetching artist and  genere from database
   useEffect(() => {
-    axios
-      .get(`${API}/artist`)
+    getArtist()
       .then((res) => {
-        setArtist(res.data);
+        setArtist(res);
         // console.log(res);
       })
       .catch((err) => {
         console.error("Error:", err);
       });
 
-    axios
-      .get(`${API}/genre`)
+      getGenre()
       .then((res) => {
         // console.log(res);
-        setGenre(res.data);
+        setGenre(res);
       })
       .catch((err) => {
         console.error("Error:", err);

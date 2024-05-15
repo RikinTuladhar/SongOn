@@ -4,8 +4,8 @@ import React from "react";
 const ArtistApi = () => {
   const baseUrl = "https://songonbackend.onrender.com";
 
-  async function getArtist(endpoint) {
-    const URL = baseUrl + endpoint;
+  async function getArtist() {
+    const URL = baseUrl + "/artist";
     try {
       const response = await axios.get(URL);
       const data = await response.data;
@@ -15,6 +15,49 @@ const ArtistApi = () => {
       console.error(error);
     }
   }
+
+
+  async function getArtistById(id) {
+    const URL = baseUrl + `/artist/${id}`;
+    console.log(URL)
+    try {
+      const response = await axios.get(URL);
+      const data = await response.data;
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function getSongByArtistId(id){
+    const URL = baseUrl + "/by-artist/"+id;
+    console.log(URL)
+    try{
+      const res = await axios.get(URL);
+      const data = await res.data;
+      console.log(data)
+      return data;
+
+    }catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function addArtist(artist) {
+    const URL = baseUrl + "/artist";
+    console.log(URL);
+    try {
+      const response = await axios.post(URL, artist);
+      const data = await response.data;
+      console.log(data);
+      return data
+    } catch (error) {
+      console.error("Error when adding Artist"+error);
+    }
+  }
+
+
   async function deleteArtist(endpoint) {
     const URL = baseUrl + endpoint;
     try{
@@ -27,7 +70,7 @@ const ArtistApi = () => {
     }
   }
 
-  return { getArtist,deleteArtist };
+  return { getArtist,deleteArtist,getArtistById ,getSongByArtistId,addArtist};
 };
 
 export default ArtistApi;

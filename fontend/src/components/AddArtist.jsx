@@ -5,6 +5,8 @@ import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import axios from "axios";
+import ArtistApi from "../Apis/ArtistApi";
+
 const AddArtist = () => {
   const [artist, setArtist] = useState({
     name: "",
@@ -15,7 +17,7 @@ const AddArtist = () => {
 
   const { reload, setReload } = useContext(ReloadContext);
 
-  const { API } = useContext(SongContext);
+const {addArtist} =ArtistApi();
   const [artistImage, setArtistImage] = useState(null);
   const stopPost = useRef();
 
@@ -40,7 +42,8 @@ console.log(artist);
           .then((url) => {
               console.log("Uploading" + artist)
               console.log(url)
-              return axios.post(`${API}/artist`, { ...artist, imgArtist: url ? url :""});
+              // axios.post(`${API}/artist`, { ...artist, imgArtist: url ? url :""});
+              return addArtist({ ...artist, imgArtist: url ? url :""});
             }).then((res)=>{
               alert("Uploaded");
               setReload(true);

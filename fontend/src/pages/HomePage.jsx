@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 const HomePage = () => {
   useEffect(() => {
-
     toast.info("Click on song and press next song from panel to listen!!");
   }, []);
 

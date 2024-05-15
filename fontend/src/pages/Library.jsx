@@ -2,27 +2,35 @@ import React, { useContext, useEffect, useState } from "react";
 import HomeLeft from "../components/HomeLeft";
 import LibraryLeft from "../components/LibraryLeft";
 import LibraryRight from "../components/LibraryRight";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import axios from "axios";
 import { SongContext } from "../contextprovider/SongProvider";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
-const Library = () => {
-  const {SongAPI,setSongAPi,API} = useContext(SongContext);
-  const {reload,setReload} = useContext(ReloadContext);
+import GenreApi from "../Apis/GenreApi";
 
+
+const Library = () => {
+  const {setSongArray} = useContext(SongContext);
+  const {reload,setReload} = useContext(ReloadContext);
+const {getGenreById} = GenreApi();
   const {id} = useParams();
   const [songs, setSongs] = useState([]);
+  const {setGenreId} = useOutletContext();
   // console.log(SongAPI)
   // alert(id)
   useEffect(()=>{
-    axios.get(`${API}/by-genre/${id}`).then((res)=>{
-      setSongAPi(`${API}/by-genre/${id}`)
-      // console.log(res.data)
-      setSongs(res.data)
-      setReload(!prev)
-      
+    setGenreId(id);
+    getGenreById(id).then((res)=>{
+      // setAPI(`${API}/by-genre/${id}`)
+      console.log(res)
+      setSongs(res)
+      setSongArray(res)
+      setReload(true);
+      return () => {
+        setReload(false);
+      };
     })
-  },[reload])
+  },[reload,id])
 
   return (
     <div className="w-full  md:h-[120vh]  pt-5  bg-[#000000] flex-wrap flex justify-around">

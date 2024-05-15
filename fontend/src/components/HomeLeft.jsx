@@ -3,13 +3,17 @@ import ArtistList from "./ArtistList";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { SongContext } from "../contextprovider/SongProvider";
+import ArtistApi from "../Apis/ArtistApi";
+import Artist from "../pages/Artist";
 const HomeLeft = () => {
   const [artist, setArtist] = useState([]);
   const { API } = useContext(SongContext);
+  const {getArtist} = ArtistApi();
   useEffect(() => {
-    axios.get(`${API}/artist`).then((res) => {
-      // console.log(res.data);
-      setArtist(res.data);
+    getArtist().then((res) => {
+      console.log(res);
+      setArtist(res);
+
     });
   }, []);
   return (
@@ -46,8 +50,8 @@ const HomeLeft = () => {
                 </div>
               ))
           : artist?.map((artist, i) => (
-              <Link key={i} to={`/artist/${artist.id}`}>
-                <ArtistList name={artist.name} image={artist.imgArtist}/>
+              <Link key={i} to={`/artist/${artist?.id}`}>
+                <ArtistList name={artist?.name} image={artist?.imgArtist}/>
               </Link>
             ))}
       </div>

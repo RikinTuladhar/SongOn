@@ -1,48 +1,58 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react'
-import axios from 'axios';
+import React, { createContext, useCallback, useEffect, useState } from "react";
+import axios from "axios";
 
 export const SongContext = createContext();
 
-const SongProvider = ({children}) => {
-    const [SongAPI,setSongAPi] = useState("http://localhost:8080/songs")
-    const [API,setAPI] = useState("https://songonbackend.onrender.com");
-  
-    const [count,setCount] = useState(0);
+const SongProvider = ({ children }) => {
+  const [API, setAPI] = useState("https://songonbackend.onrender.com");
 
-    const [songId,setSongId] = useState(null)
-    const [songName,setSongName] = useState(null);
-    
-    const [songDetails,setSongDetails] = useState([])
-    const [ArtistDetails,setArtistDetails] = useState([])
+  const [count, setCount] = useState(0);
 
-    // console.log(songDetails)  
+  const [songId, setSongId] = useState(null);
 
-    const handleClickOnSong = useCallback(()=>{
-      setCount(count +1);
-    },[songDetails,count])
-    // console.log(count)
+  //used by library left for filling cards
+  const [songDetails, setSongDetails] = useState([]);
+  const [ArtistDetails, setArtistDetails] = useState([]);
+  //all song list array used in library and artist 
+  const [songArray,setSongArray] = useState([]);
 
-    useEffect(()=>{
-      axios.get(`${API}/songs/${songId}`).then((res)=>{
-        setSongDetails(res.data)
-        
-      }).catch((err)=>{
-        console.log(err)
+  // console.log(songDetails + ArtistDetails)
+
+  const handleClickOnSong = useCallback(() => {
+    setCount(count + 1);
+  }, [songDetails, count]);
+  // console.log(count)
+
+  useEffect(() => {
+    Promise.all([
+      axios.get(`${API}/songs/${songId}`),
+      axios.get(`${API}/artist/By-songid/${songId}`),
+    ])
+      .then(([songRes, artistRes]) => {
+        setSongDetails(songRes.data); // name, author, img
+        setArtistDetails(artistRes.data);
       })
-
-      axios.get(`${API}/artist/By-songid/${songId}`).then((res)=>{
-        setArtistDetails(res.data)
-      }).catch((err)=>{console.log(err)})
-
-
-    },[songId])
-
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [songId]);
 
   return (
-    <SongContext.Provider value={{SongAPI,setSongAPi,songId,setSongId,songDetails,ArtistDetails,API,count,handleClickOnSong}}>
+    <SongContext.Provider
+      value={{
+        songId,
+        setSongId,
+        songDetails,
+        ArtistDetails,
+        count,
+        handleClickOnSong,
+        songArray,
+        setSongArray
+      }}
+    >
       {children}
     </SongContext.Provider>
-  )
-}
+  );
+};
 
-export default SongProvider
+export default SongProvider;

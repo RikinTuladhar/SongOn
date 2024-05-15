@@ -4,29 +4,44 @@ import LibraryRight from '../components/LibraryRight'
 import { SongContext } from "../contextprovider/SongProvider";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { useParams } from "react-router-dom";
+import ArtistApi from "../Apis/ArtistApi";
 import axios from "axios";
 import ArtistMiddle from "../components/ArtistMiddle";
+
 const Artist = () => {
-  const {SongAPI,setSongAPi,API} = useContext(SongContext);
+  const {songArray,setSongArray} = useContext(SongContext);
   const {reload,setReload} = useContext(ReloadContext);
   const {id} = useParams();
   const [songs, setSongs] = useState([]);
   const [artistName, setArtistName] = useState([]);
+  const {getArtistById,getSongByArtistId} = ArtistApi();
+  console.log(id)
   useEffect(()=>{
-    axios.get(`${API}/artist/${id}`).then((res)=>{
+    getArtistById(id).then((res)=>{
       // console.log(res.data.songs)
-      // console.log(res.data)
-      setSongs(res.data.songs)
-      setArtistName(res.data.name)
-      setReload(!prev)
+      console.log(res)
+    
+      
+      setReload(true)
+    }).then((res)=>{
+      getSongByArtistId(id).then((res)=>{
+        console.log(res);
+        setSongArray(res);
+
+      })
+      return(()=>{
+        setReload(false)
+      })
     })
+
+   
   },[reload])
 
   return (
     <div className="w-full h-[120vh]   pt-5 bg-[#000000] flex justify-around">
       {/* <LibraryLeft/> */}
 
-      <ArtistMiddle artistName={artistName} songs={songs}/>
+      <ArtistMiddle songs={songArray}/>
     </div>
   )
 }

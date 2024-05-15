@@ -11,9 +11,6 @@ import Practice from "./pages/Practice";
 import SongProvider from "./contextprovider/SongProvider";
 import ReloadProvider from "./contextprovider/ReloadProvider";
 import NotFound from "./pages/NotFound";
-import PannelProvider, {
-  PannelContext,
-} from "./contextprovider/PannelProvider";
 import Admin from "./pages/Admin/Admin";
 
 import AddSongs from "./components/AddSongs";
@@ -85,11 +82,9 @@ function App() {
   return (
     <>
       <ReloadProvider>
-        <PannelProvider>
           <SongProvider>
             <RouterProvider router={router} />
           </SongProvider>
-        </PannelProvider>
       </ReloadProvider>
     </>
   );

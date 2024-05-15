@@ -3,23 +3,24 @@ import CardLib from "./CardLib";
 import axios from "axios";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
+import GenreApi from "../Apis/GenreApi";
 const HomeRight = () => {
   const { reload, setReload } = useContext(ReloadContext);
   const [artist, setArtist] = useState([]);
   const [songList, setSongList] = useState([]);
   const { API } = useContext(SongContext);
-
+  const { getGenre} =GenreApi();
   useEffect(() => {
-    axios
-      .get(`${API}/genre`)
-      .then((res) => {
-        setArtist(res.data);
+    
+    getGenre().then((res) => {
+      console.log(res);
+        setArtist(res);
       })
       .catch((err) => {
         console.log("Error is :" + err);
       });
   }, [reload]);
-
+console.log(artist)
   return (
     <div className=" w-[100%] mb-32 md:mb-0 mx-10 mt-10 md:mx-0  md:w-[80%] h-auto  md:mt-3  py-10 bg-[#11111182] rounded-xl ">
       <h1 className="text-center md:ml-10 md:text-left text-2xl text-[#E5E7EB] ">
@@ -27,7 +28,7 @@ const HomeRight = () => {
       </h1>
       <div className="w-full mt-3 h-[2px] bg-black  "></div>
       <div className="grid items-center justify-center gap-5 overflow-y-auto md:gap-10 md:grid-cols-3 md:m-16">
-        {artist?.length === 0 ? (
+        {artist?.length === 0 || artist === undefined ? (
           <>
             {Array(6)
               .fill()

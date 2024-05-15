@@ -17,6 +17,34 @@ const SongApi = () => {
     }
   }
 
+  async function getSongById(id) {
+    const URL = baseUrl + `/songs/${id}`;
+    console.log(URL);
+    try {
+      const response = await axios.get(URL);
+      const data = await response.data;
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error(error);
+    }
+  }
+
+  async function addSong(gId,aId,song) {
+    const URL = baseUrl + `/uploadSong/${gId}/${aId}`;
+    console.log(URL);
+    try {
+      const response = await axios.post(URL, song);
+      const data = await response.data;
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.error(error);
+    }
+  }
+
+
+
   async function deleteSong(id) {
     const URL = baseUrl + `/song/delete/${id}`;
     console.log(URL);
@@ -29,7 +57,8 @@ const SongApi = () => {
       console.error(error);
     }
   }
-  return { getSong, deleteSong };
+
+  return { getSong, deleteSong,getSongById,addSong };
 };
 
 export default SongApi;
