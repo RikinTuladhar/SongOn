@@ -1,13 +1,13 @@
 import React from "react";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
-const ArtistCard = ({ artist,handleDelete }) => {
-  const { id, name, gender, bio } = artist;
+const ArtistCard = ({ artist, handleDelete }) => {
+  const { id, name, gender, bio, imgArtist } = artist;
   return (
-    <div key={id}  className="rounded-xl  w-[150px] md:w-[250px] flex flex-col h-[300px] bg-slate-500">
-      <div className="w-full bg-red-500 rounded-md h-2/3">
+    <div class="relative flex w-52 md:w-72 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+      <div class="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
         <img
-          src=""
+          src={imgArtist ? imgArtist : "/Artist/future.jpg"}
           className="object-cover w-full h-full"
           onError={(e) => {
             e.target.src = "/Artist/future.jpg";
@@ -15,19 +15,23 @@ const ArtistCard = ({ artist,handleDelete }) => {
           alt="img"
         />
       </div>
-      <div className="w-full pt-2 flex items-center justify-around bg-yellow-200 h-[50%]">
-        <span className="text-xl font-bold ">
-          <p className="text-center">{name}</p>
-        </span>{" "}
-        <span className="font-bold">{gender}</span>
+      <div class="p-6">
+        <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+          {name}
+          <p class="block font-semibold font-sans text-base leading-relaxed text-inherit antialiased">
+            {gender}
+          </p>
+        </h5>
+        <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
+          {bio}
+        </p>
       </div>
-      <div className="px-5 items-center flex justify-around w-full bg-green-300 h-[50%]">
-        <div className="w-[50%]">{bio}</div>
+      <div class="p-6 pt-0">
         <div className="flex justify-around w-[50%]">
           <button className="text-2xl">
             <CiEdit />
           </button>{" "}
-          <button className="text-2xl" onClick={e=>handleDelete(id)}>
+          <button className="text-2xl" onClick={(e) => handleDelete(id)}>
             <MdDeleteOutline />
           </button>{" "}
         </div>

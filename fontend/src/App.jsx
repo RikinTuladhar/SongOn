@@ -20,6 +20,7 @@ import AddGenrePage from "./pages/AddGenre";
 import EditArtist from "./pages/Admin/pages/EditArtist";
 import EditGenre from "./pages/Admin/pages/EditGenre";
 import EditSong from "./pages/Admin/pages/EditSong";
+import AddSongInGenre from "./components/AddSongInGenre";
 function App() {
   const router = createBrowserRouter([
     {
@@ -40,14 +41,17 @@ function App() {
         { path: "/artist/:id", element: <Artist /> },
       ],
     },
+    //solo components 
     { path: "/p", element: <Practice /> },
     { path: "/addSongs", element: <AddSongPage /> },
     { path: "/addArtist", element: <AddArtistPage /> },
     { path: "/addGenre", element: <AddGenrePage /> },
+  
     { path: "/*", element: <NotFound /> },
     {
       path: "/admin",
       element: <Admin />,
+      //pages for admin 
       children: [
         {
           path: "/admin/addSongs",
@@ -72,7 +76,7 @@ function App() {
         {
           path:"/admin/edit/song",
           element:<EditSong/>
-        }
+        },  {path:"/admin/addSongInGenre", element:<AddSongInGenre/>},
       ],
     },
   ]);

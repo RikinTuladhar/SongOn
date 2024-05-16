@@ -4,9 +4,9 @@ import ArtistCard from "../components/ArtistCard";
 import { ReloadContext } from "../../../contextprovider/ReloadProvider";
 const EditArtist = () => {
   const { getArtist, deleteArtist } = ArtistApi();
-  const {reload,setReload} = useContext(ReloadContext)
+  const { reload, setReload } = useContext(ReloadContext);
   const [artists, setArtists] = useState([]);
-  
+
   useEffect(() => {
     //ife
     (async () => {
@@ -20,7 +20,7 @@ const EditArtist = () => {
     setReload(true);
     const response = await deleteArtist(`/artist/${id}`);
     alert("Deleted");
-    setReload(false)
+    setReload(false);
   };
 
   return (

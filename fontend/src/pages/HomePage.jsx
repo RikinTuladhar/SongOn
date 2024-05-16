@@ -7,14 +7,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 const HomePage = () => {
   useEffect(() => {
-    toast.info("Click on song and press next song from panel to listen!!");
+    toast("This web application is for project-based only!!");
   }, []);
 
   return (
     <div className="w-full h-[auto] min-h-[100vh] bg-[#000000] relative  pt-5 md:pb-40  overflow-hidden flex flex-col items-center gap-3">
       <ToastContainer
         position="top-center"
-        autoClose={false}
+        autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

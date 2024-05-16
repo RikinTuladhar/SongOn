@@ -9,8 +9,8 @@ const GenreApi = () => {
         console.log(URL)
         const response = await axios.get(URL);
         const data = await response.data;
+        // console.log(data)
         return data
-        console.log(data)
 
     }
 
@@ -19,8 +19,8 @@ const GenreApi = () => {
         console.log(URL)
         const response = await axios.post(URL,value);
         const data = await response.data;
+        // console.log(data)
         return data
-        console.log(data)
 
     }
 
@@ -34,15 +34,30 @@ const GenreApi = () => {
    
     async function getGenreById(id){
         const URL = baseUrl + `/by-genre/${id}`;
-        console.log(URL)
+        // console.log(URL)
         const response = await axios.get(URL);
         const data = await response.data;
-        console.log(data)
+        // console.log(data)
         return data
      
     }
 
-    return {getGenre,deleteGenre,getGenreById,postGenre}
+    async function putSongOnGenre(genreId,songId){
+        // https://songonbackend.onrender.com/genre/21/song/70
+        const URL = baseUrl + `/genre/${genreId}/song/${songId}`;
+        // console.log(URL)
+        try {
+            const response = await axios.put(URL)
+            const data = await response.data;
+            // console.log(data)
+            
+            return data
+        } catch (error) {
+            console.log("Error when editing / putting" + genreId + " " + songId + error)
+        }
+    }
+
+    return {getGenre,deleteGenre,getGenreById,postGenre,putSongOnGenre}
 }
 
 export default GenreApi

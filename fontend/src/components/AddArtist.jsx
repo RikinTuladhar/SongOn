@@ -25,7 +25,8 @@ const {addArtist} =ArtistApi();
     const { name, value } = event.target;
     setArtist({ ...artist, [name]: value });
   };
-console.log(artist);
+// console.log(artist);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     stopPost.current.disabled = true;
@@ -40,8 +41,8 @@ console.log(artist);
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
           .then((url) => {
-              console.log("Uploading" + artist)
-              console.log(url)
+              // console.log("Uploading" + artist)
+              // console.log(url)
               // axios.post(`${API}/artist`, { ...artist, imgArtist: url ? url :""});
               return addArtist({ ...artist, imgArtist: url ? url :""});
             }).then((res)=>{
