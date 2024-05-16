@@ -8,11 +8,11 @@ const CardLib = ({ id, name, songlist, img }) => {
     // /library/2 -> classic
     <Link to={`/library/${id}`}>
       <div className="w-52 flex flex-col gap-5 h-auto px-5  py-2 rounded-md min-h-52 hover:bg-[#1b1b1bd3]  hover:ease-in">
-        <div className="w-full h-[65%] mb-2 ">
+        <div className="w-full h-[150px] mb-2 ">
           <img
             src={img ? img : "/Artist/future.jpg"}
             onError={(e) => (e.target.src = "/Artist/future.jpg")}
-            className="w-full h-full rounded-lg"
+            className="w-full h-full rounded-lg object-cover"
             alt="img"
           />
         </div>
