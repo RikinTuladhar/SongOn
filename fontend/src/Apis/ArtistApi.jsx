@@ -57,6 +57,19 @@ const ArtistApi = () => {
     }
   }
 
+  async function putSongOnArtist(artistId,songId){
+    const URL = baseUrl + `/artist/${artistId}/song/${songId}`
+    try {
+      const response = await axios.put(URL);
+      const data = await response.data;
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(`Error when puting song ${songId} on artist ${artistId} ` +  error)
+    }
+
+  }
+
 
   async function deleteArtist(endpoint) {
     const URL = baseUrl + endpoint;
@@ -70,7 +83,7 @@ const ArtistApi = () => {
     }
   }
 
-  return { getArtist,deleteArtist,getArtistById ,getSongByArtistId,addArtist};
+  return { getArtist,deleteArtist,getArtistById ,getSongByArtistId,addArtist,putSongOnArtist};
 };
 
 export default ArtistApi;
