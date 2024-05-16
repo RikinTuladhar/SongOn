@@ -15,13 +15,11 @@ const Artist = () => {
   const [songs, setSongs] = useState([]);
   const [artistName, setArtistName] = useState([]);
   const {getArtistById,getSongByArtistId} = ArtistApi();
-  console.log(id)
+  // console.log(id)
   useEffect(()=>{
     getArtistById(id).then((res)=>{
       // console.log(res.data.songs)
-      console.log(res)
-    
-      
+      // console.log(res)
       setReload(true)
     }).then((res)=>{
       getSongByArtistId(id).then((res)=>{
@@ -34,7 +32,6 @@ const Artist = () => {
       })
     })
 
-   
   },[reload])
 
   return (

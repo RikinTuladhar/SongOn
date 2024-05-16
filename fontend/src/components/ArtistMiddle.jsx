@@ -3,15 +3,18 @@ import { SongContext } from '../contextprovider/SongProvider'
 import { ReloadContext } from '../contextprovider/ReloadProvider'
 import axios from 'axios'
 const ArtistMiddle = ({songs,artistName}) => {
-  const {SongAPI,setSongAPi,setSongId,API} = useContext(SongContext)
+  const {setSongId,setSongClickedId} = useContext(SongContext)
   const {reload,setReload} = useContext(ReloadContext);
 
 
   // click play song 
-  const handleSong = (id) =>{
+  const handleSong = (songId,clickedSongId) =>{
     // console.log("song clicked" + id)
-    setSongAPi( `${API}/songs/${id}`);
-    setSongId(id)
+    // setSongAPi( `${API}/songs/${id}`);
+    setSongId(songId)
+    setSongClickedId(clickedSongId);
+    console.log(songId)
+    console.log(clickedSongId)
     setReload(true)
     setReload(false)
   }
@@ -37,7 +40,7 @@ const ArtistMiddle = ({songs,artistName}) => {
         {
         songs?.length === 0 ? (<div className='text-xl tracking-wider'>No Songs Available</div>) : 
         songs?.map((song,i)=>(
-        <div onClick={e=>handleSong(song.id)} key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] gap-2 flex justify-around md:justify-between">
+        <div onClick={e=>handleSong(song.id,i)} key={song.id}  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] gap-2 flex justify-around md:justify-between">
         <div key={song.id}   className="md:w-[20%] text-base md:text-lg text-left  font-bold"> {i+1}</div>
         <div key={song.id} className="text-base font-bold text-center md:w-full md:text-lg">{(song?.name?.length < 25) ? (song?.name) : (song?.name.slice(0,6) + "...")}</div>
         {/* <div key={song.id} className="text-center md:w-full">{song?.artist?.slice(0,3).map((artist)=>(
