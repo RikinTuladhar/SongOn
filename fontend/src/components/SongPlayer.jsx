@@ -7,10 +7,10 @@ import SongApi from "../Apis/SongApi";
 import GenreApi from "../Apis/GenreApi";
 import { useOutletContext } from "react-router-dom";
 const SongPlayer = () => {
+
+
   const { reload, setReload } = useContext(ReloadContext);
 
-  const [audioSources, setaudioSources] = useState([]);
-  const [nextSongState, setNextSongState] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
 
@@ -54,10 +54,12 @@ const SongPlayer = () => {
     audioRef.current.currentTime += 10; // Go forward 10 seconds
   };
 
-  const { songId, songArray } = useContext(SongContext);
+  const { songId,songClickedId , songArray } = useContext(SongContext);
   const { getSongById } = SongApi();
   const { getGenreById } = GenreApi();
-  console.log(songArray);
+  // console.log(songArray);
+  // console.log(songId);
+  // console.log(songClickedId);
 
   useEffect(() => {
     setReload(true);
@@ -65,10 +67,17 @@ const SongPlayer = () => {
       setReload(false);
     };
   }, [reload, songId, songArray]);
+  useEffect(()=>{
+    (()=>{
+      setCurrentIndex(songClickedId);
+      audioRef.current.load(); // Load the new source
+      audioRef.current.play()
+    })();
+  },[songClickedId])
 
-  console.log(currentIndex);
-  console.log(songArray);
-  console.log(songArray[currentIndex]?.autoPath);
+  // console.log(currentIndex);
+  // console.log(songArray);
+  // console.log(songArray[currentIndex]?.autoPath);
   return (
     <div className="fixed border rounded-lg bottom-4 ">
       <footer class="bg-[#000000] rounded-lg shadow  ">

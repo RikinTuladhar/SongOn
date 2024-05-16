@@ -6,14 +6,15 @@ import axios from "axios";
 import SongApi from "../Apis/SongApi";
 
 const LibraryRight = ({ songs, artistName }) => {
-  const { setSongId} = useContext(SongContext);
+  const { setSongId, songClickedId, setSongClickedId } =useContext(SongContext);
   const { reload, setReload } = useContext(ReloadContext);
   const { getSongById } = SongApi();
 
   // click play song
-  const handleSong = async (id) => {
-    console.log("song clicked" + id);
-    setSongId(id);
+  const handleSong = async (songId,songIndex) => {
+    console.log("song clicked" + songId);
+    setSongId(songId);
+    setSongClickedId(songIndex)
     // setReload(!prev)
     // nextSong();
   };
@@ -35,7 +36,7 @@ const LibraryRight = ({ songs, artistName }) => {
                 songs?.map((song, i) => (
                   <div
                     onClick={(e) => {
-                      handleSong(song.id);
+                      handleSong(song.id,i);
                     }}
                     key={i}
                     className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
@@ -50,7 +51,7 @@ const LibraryRight = ({ songs, artistName }) => {
                       {song?.name}
                     </div>
                     <div key={song.id} className="text-center md:w-full">
-                      {song?.artist?.slice(0, 3)?.map((artist,i) => (
+                      {song?.artist?.slice(0, 3)?.map((artist, i) => (
                         <span className="ml-3 mr-3" key={i}>
                           {artist?.name}
                         </span>

@@ -8,7 +8,10 @@ const SongProvider = ({ children }) => {
 
   const [count, setCount] = useState(0);
 
+  //passed around library and artist components
   const [songId, setSongId] = useState(null);
+  //when clicked on song list it store that id used in library and artist 
+  const [songClickedId,setSongClickedId] = useState(0);
 
   //used by library left for filling cards
   const [songDetails, setSongDetails] = useState([]);
@@ -47,7 +50,9 @@ const SongProvider = ({ children }) => {
         count,
         handleClickOnSong,
         songArray,
-        setSongArray
+        setSongArray,
+        songClickedId,
+        setSongClickedId
       }}
     >
       {children}
