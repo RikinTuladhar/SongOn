@@ -23,7 +23,7 @@ const Artist = () => {
       setReload(true)
     }).then((res)=>{
       getSongByArtistId(id).then((res)=>{
-        console.log(res);
+        // console.log(res);
         setSongArray(res);
 
       })

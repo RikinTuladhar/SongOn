@@ -9,6 +9,7 @@ const SignUp = () => {
     firstname: "",
     lastname: "",
     password: "",
+    role:"USER"
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +34,7 @@ const SignUp = () => {
       });
   };
 
-  // console.log(data)
+  console.log(data)
   return (
     <div className="bg-[#000000] w-full py-[100px] min-h-[100vh] grid place-items-center">
       <main class="flex text-white  items-center  justify-center h-screen">

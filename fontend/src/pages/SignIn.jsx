@@ -26,7 +26,8 @@ const SignIn = () => {
     SignIn(data)
       .then((res) => {
         // alert(res);
-        navigate("/")
+        
+        navigate("/");
         setToken(res);
         localStorage.setItem("token", JSON.stringify(res));
         setClicked(false);
