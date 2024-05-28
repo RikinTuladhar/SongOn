@@ -14,7 +14,7 @@ const Layout = () => {
         <Navbar />
         <Outlet context={{genreId,setGenreId,artistId,setArtistId}} />
          <div className='flex justify-center'><SongPlayer/> </div>
-        <Footer />
+        {/* <Footer /> */}
     </div>
   );
 };

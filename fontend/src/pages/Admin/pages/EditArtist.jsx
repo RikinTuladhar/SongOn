@@ -18,9 +18,15 @@ const EditArtist = () => {
   const handleDelete = async (id) => {
     // console.log(id);
     setReload(true);
-    const response = await deleteArtist(`/artist/${id}`);
-    alert("Deleted");
-    setReload(false);
+    const sure =  confirm("Are you sure you want to delete?")
+    if(sure) {
+
+      const response = await deleteArtist(`/artist/${id}`);
+      alert("Deleted");
+      setReload(false);
+    }else{
+      return
+    }
   };
 
   return (

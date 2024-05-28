@@ -22,6 +22,8 @@ import EditGenre from "./pages/Admin/pages/EditGenre";
 import EditSong from "./pages/Admin/pages/EditSong";
 import AddSongInGenre from "./components/AddSongInGenre";
 import AddSongInArtist from "./components/AddSongInArtist";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 function App() {
   const router = createBrowserRouter([
     {
@@ -47,7 +49,8 @@ function App() {
     { path: "/addSongs", element: <AddSongPage /> },
     { path: "/addArtist", element: <AddArtistPage /> },
     { path: "/addGenre", element: <AddGenrePage /> },
-
+    { path: "/signIn", element: <SignIn /> },
+    {path:"/signUp",element:<SignUp/>},
     { path: "/*", element: <NotFound /> },
     {
       path: "/admin",
