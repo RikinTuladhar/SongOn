@@ -24,6 +24,7 @@ import AddSongInGenre from "./components/AddSongInGenre";
 import AddSongInArtist from "./components/AddSongInArtist";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import UserProvider from "./contextprovider/UserProvider";
 function App() {
   const router = createBrowserRouter([
     {
@@ -50,7 +51,7 @@ function App() {
     { path: "/addArtist", element: <AddArtistPage /> },
     { path: "/addGenre", element: <AddGenrePage /> },
     { path: "/signIn", element: <SignIn /> },
-    {path:"/signUp",element:<SignUp/>},
+    { path: "/signUp", element: <SignUp /> },
     { path: "/*", element: <NotFound /> },
     {
       path: "/admin",
@@ -92,9 +93,11 @@ function App() {
   return (
     <>
       <ReloadProvider>
-        <SongProvider>
-          <RouterProvider router={router} />
-        </SongProvider>
+        <UserProvider>
+          <SongProvider>
+            <RouterProvider router={router} />
+          </SongProvider>
+        </UserProvider>
       </ReloadProvider>
     </>
   );

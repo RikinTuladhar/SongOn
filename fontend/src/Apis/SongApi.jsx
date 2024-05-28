@@ -3,6 +3,12 @@ import React from "react";
 
 const SongApi = () => {
   const baseUrl = "https://songonbackend.onrender.com";
+  const token= JSON.parse(localStorage.getItem("token"));
+  const config  = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  }
 
   async function getSong() {
     const URL = baseUrl + "/songs";
@@ -34,7 +40,7 @@ const SongApi = () => {
     const URL = baseUrl + `/uploadSong/${gId}/${aId}`;
     console.log(URL);
     try {
-      const response = await axios.post(URL, song);
+      const response = await axios.post(URL, song,config);
       const data = await response.data;
       console.log(data);
       return data;
@@ -49,7 +55,7 @@ const SongApi = () => {
     const URL = baseUrl + `/song/delete/${id}`;
     console.log(URL);
     try {
-      const response = await axios.delete(URL);
+      const response = await axios.delete(URL,config);
       const data = await response.data;
       console.log(data);
       return data;
