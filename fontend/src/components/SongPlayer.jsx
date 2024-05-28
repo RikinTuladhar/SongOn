@@ -30,8 +30,8 @@ const SongPlayer = () => {
   };
 
   const nextSong = () => {
-    console.log(currentIndex);
-    console.log( songArray.length);
+    // console.log(currentIndex);
+    // console.log( songArray.length);
     
     if (currentIndex < songArray.length-1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);

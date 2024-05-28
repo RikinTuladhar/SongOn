@@ -12,7 +12,7 @@ const AddGenre = () => {
     imgGenre: "",
   });
   const [genreImage, setGenreImage] = useState(null);
-  console.log(genreImage);
+  // console.log(genreImage);
   const stopPost = useRef();
 
   const { postGenre } = GenreApi();

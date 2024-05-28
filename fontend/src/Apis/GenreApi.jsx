@@ -4,7 +4,7 @@ import React from "react";
 const GenreApi = () => {
   const baseUrl = "https://songonbackend.onrender.com";
   const token = JSON.parse(localStorage.getItem("token"));
-  console.log(token);
+//   console.log(token);
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,

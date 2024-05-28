@@ -41,7 +41,7 @@ const ArtistApi = () => {
     try {
       const res = await axios.get(URL);
       const data = await res.data;
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (error) {
       console.error(error);

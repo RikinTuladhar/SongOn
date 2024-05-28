@@ -11,7 +11,7 @@ const HomeLeft = () => {
   const {getArtist} = ArtistApi();
   useEffect(() => {
     getArtist().then((res) => {
-      console.log(res);
+      // console.log(res);
       setArtist(res);
 
     });

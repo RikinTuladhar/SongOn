@@ -7,7 +7,7 @@ const LibraryLeft = () => {
 
   const [songDetail, setSongDetail] = useState();
   const [artistDetail, setArtistDetail] = useState();
-  console.log(songDetail);
+  // console.log(songDetail);
   useEffect(() => {
     setSongDetail(songDetails[0]);
     setArtistDetail(ArtistDetails[0]);
