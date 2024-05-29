@@ -12,7 +12,7 @@ const GenreApi = () => {
   };
   async function getGenre() {
     const URL = baseUrl + "/genre";
-    console.log(URL);
+    // console.log(URL);
     const response = await axios.get(URL);
     const data = await response.data; 
     // console.log(data)

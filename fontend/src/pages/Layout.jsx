@@ -10,7 +10,7 @@ const Layout = () => {
   const [genreId, setGenreId] = useState("");
   const [artistId, setArtistId] = useState("");
   return (
-    <div className="w-full">
+    <div className="relative w-full">
       <Navbar />
       <Outlet context={{ genreId, setGenreId, artistId, setArtistId }} />
       <div className="flex justify-center">

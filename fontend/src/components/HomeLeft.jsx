@@ -6,7 +6,6 @@ import ArtistApi from "../Apis/ArtistApi";
 import Artist from "../pages/Artist";
 const HomeLeft = () => {
   const [artist, setArtist] = useState([]);
-  const { API } = useContext(SongContext);
   const { getArtist } = ArtistApi();
   useEffect(() => {
     getArtist().then((res) => {

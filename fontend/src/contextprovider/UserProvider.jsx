@@ -20,14 +20,18 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     //fetching user data from token from api
     (() => {
-      getUser()
-        .then((res) => {
-          setUserDetails(res);
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (token != null && token != undefined) {
+        getUser()
+          .then((res) => {
+            setUserDetails(res);
+            // console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        return;
+      }
     })();
   }, [token, reload]);
   // console.log(token);

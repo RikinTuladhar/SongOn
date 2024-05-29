@@ -37,7 +37,7 @@ const UserApi = () => {
       const response = await axios.post(endpoint, value);
       const data = await response.data.token;
       console.log(data);
-      return data;
+      return "Success";
     } catch (error) {
       throw new Error("Error when register " + error);
     }
@@ -46,7 +46,7 @@ const UserApi = () => {
   async function getUser() {
     try {
       const token = localStorage.getItem("token");
-      if (token.length < 0) {
+      if (token == null) {
         return;
       }
       const res = await axios.get(

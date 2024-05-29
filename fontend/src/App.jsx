@@ -25,6 +25,7 @@ import AddSongInArtist from "./components/AddSongInArtist";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserProvider from "./contextprovider/UserProvider";
+import UserLibrary from "./pages/UserLibrary";
 function App() {
   const router = createBrowserRouter([
     {
@@ -53,6 +54,7 @@ function App() {
     { path: "/signIn", element: <SignIn /> },
     { path: "/signUp", element: <SignUp /> },
     { path: "/*", element: <NotFound /> },
+    { path: "userlibrary", element: <UserLibrary /> },
     {
       path: "/admin",
       element: <Admin />,

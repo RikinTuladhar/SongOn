@@ -2,102 +2,151 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { User } from "../contextprovider/UserProvider";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Navbar = () => {
   const [hiden, setHiden] = useState(true);
   const { reload, setReload } = useContext(ReloadContext);
   const { userDetails, token } = useContext(User);
-  const { username } = userDetails ?? "";
-  console.log(username);
+  // console.log(userDetails.username);
   const handeNav = () => {
     setHiden(!hiden);
   };
-  
+
+  const [mobileView, setMobileView] = useState(false);
+
+  useEffect(() => {
+    toast(
+      userDetails?.username?.length > 0
+        ? `Welcome user : '${userDetails?.username
+            .charAt(0)
+            .toUpperCase()}${userDetails?.username.slice(1)}' to our service`
+        : "Welcome User"
+    );
+  }, [token, userDetails]);
+  useEffect(() => {
+    const updateView = () => {
+      if (window.innerWidth <= 625) {
+        setMobileView(true);
+      } else {
+        setMobileView(false);
+      }
+    };
+
+    window.addEventListener("resize", updateView);
+    return () => window.removeEventListener("resize", updateView);
+  }, []);
+
   return (
-    <nav class="bg-white border-gray-200 dark:bg-gray-900">
-      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <div className="text-white">{username ?? "Welcome User"}</div>
-        <Link to={"/"} class="flex items-center space-x-3 rtl:space-x-reverse">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            class="h-8"
-            alt="Flowbite Logo"
-          />
-          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-            Music On
-          </span>
-        </Link>
-        <button
-          onClick={handeNav}
-          data-collapse-toggle="navbar-default"
-          type="button"
-          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-default"
-          aria-expanded="false"
-        >
-          <span class="sr-only">Open main menu</span>
-          <svg
-            class="w-5 h-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M1 1h15M1 7h15M1 13h15"
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      {mobileView === true ? (
+        <nav className="flex items-center justify-around w-full h-auto gap-10 min-h-12 bg-[#090909]">
+          <div></div>
+          <div></div>
+          <div>
+            <GiHamburgerMenu
+              className="w-5 h-5 text-white"
+              onClick={handeNav}
             />
-          </svg>
-        </button>
-        <div
-          class={`${
-            hiden === true ? "hidden" : "block"
-          }  w-full md:block md:w-auto `}
-          id="navbar-default"
-        >
-          <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-            <li>
-              <Link
-                to={"/"}
-                class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
-                aria-current="page"
-              >
+          </div>
+          {hiden && (
+            <ul
+              className={`absolute flex items-center justify-center gap-5 duration-500`}
+            >
+              <Link className="text-white" to={"/"}>
                 Home
               </Link>
-            </li>
-            {/* <li>
-          <Link  to={"/addSongs"} class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Add Songs</Link>
-        </li> */}
-            {/* <li>
-          <Link to={"/addArtist"} class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Add Artist</Link>
-        </li> */}
-            {/* <li>
-          <Link to={"/addGenre"} class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Add Generic</Link>
-        </li> */}
-            <li>
-              {username?.length > 0 ? (
+              {userDetails?.username?.length > 0 ? (
                 <Link
                   to={"/signin"}
                   onClick={(e) => localStorage.removeItem("token")}
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
                   Sign Out
                 </Link>
               ) : (
                 <Link
                   to={"/signin"}
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
                   Sign in
                 </Link>
               )}
-            </li>
-          </ul>
+            </ul>
+          )}
+        </nav>
+      ) : (
+        <div className="relative bg-black">
+          <nav className="z-50 w-full ">
+            <div className="flex flex-wrap items-center justify-between w-full max-w-screen-xl p-4 mx-auto text-lg ">
+              {/* <div className="text-white">
+            {userDetails?.username?.length > 0
+              ? `Welcome user : '${userDetails?.username
+                  .charAt(0)
+                  .toUpperCase()}${userDetails?.username.slice(
+                  1
+                )}' to our service`
+              : "Welcome User"}
+          </div> */}
+              <ul className="flex items-center justify-between w-full gap-5">
+                <div className="flex gap-5">
+                  <li>
+                    <Link
+                      to={"/"}
+                      className="block px-3 py-2 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+                      aria-current="page"
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to={"/userlibrary"}
+                      className="block px-3 py-2 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    >
+                      Your Library
+                    </Link>
+                  </li>
+                </div>
+
+                {/* sign in / sign out  */}
+                <li>
+                  {userDetails?.username?.length > 0 ? (
+                    <Link
+                      to={"/signin"}
+                      onClick={(e) => localStorage.removeItem("token")}
+                      className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    >
+                      Sign Out
+                    </Link>
+                  ) : (
+                    <Link
+                      to={"/signin"}
+                      className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    >
+                      Sign in
+                    </Link>
+                  )}
+                </li>
+              </ul>
+            </div>
+          </nav>
         </div>
-      </div>
-    </nav>
+      )}
+    </>
   );
 };
 
