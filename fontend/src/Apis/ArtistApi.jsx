@@ -3,7 +3,7 @@ import React from "react";
 
 const ArtistApi = () => {
   const baseUrl = "https://songonbackend.onrender.com";
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ const ArtistApi = () => {
   async function putSongOnArtist(artistId, songId) {
     const URL = baseUrl + `/artist/${artistId}/song/${songId}`;
     try {
-      const response = await axios.put(URL,{},config);
+      const response = await axios.put(URL, {}, config);
       const data = await response.data;
       console.log(data);
       return data;

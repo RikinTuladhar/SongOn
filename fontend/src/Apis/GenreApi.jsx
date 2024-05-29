@@ -3,7 +3,7 @@ import React from "react";
 
 const GenreApi = () => {
   const baseUrl = "https://songonbackend.onrender.com";
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
 //   console.log(token);
   const config = {
     headers: {
@@ -14,7 +14,7 @@ const GenreApi = () => {
     const URL = baseUrl + "/genre";
     console.log(URL);
     const response = await axios.get(URL);
-    const data = await response.data;
+    const data = await response.data; 
     // console.log(data)
     return data;
   }

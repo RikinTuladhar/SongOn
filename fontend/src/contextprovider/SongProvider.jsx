@@ -27,6 +27,7 @@ const SongProvider = ({ children }) => {
   // console.log(count)
 
   useEffect(() => {
+   if(songId != null){
     Promise.all([
       axios.get(`${API}/songs/${songId}`),
       axios.get(`${API}/artist/By-songid/${songId}`),
@@ -38,6 +39,7 @@ const SongProvider = ({ children }) => {
       .catch((err) => {
         console.log(err);
       });
+   }
   }, [songId]);
 
   return (

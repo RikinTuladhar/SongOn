@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { SongContext } from '../contextprovider/SongProvider'
 import { ReloadContext } from '../contextprovider/ReloadProvider'
-import axios from 'axios'
 const ArtistMiddle = ({songs,artistName}) => {
   const {setSongId,setSongClickedId} = useContext(SongContext)
   const {reload,setReload} = useContext(ReloadContext);

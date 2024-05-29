@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
-import axios from "axios";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
 import ArtistApi from "../Apis/ArtistApi"

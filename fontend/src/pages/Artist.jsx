@@ -5,7 +5,6 @@ import { SongContext } from "../contextprovider/SongProvider";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { useParams } from "react-router-dom";
 import ArtistApi from "../Apis/ArtistApi";
-import axios from "axios";
 import ArtistMiddle from "../components/ArtistMiddle";
 
 const Artist = () => {
@@ -16,6 +15,7 @@ const Artist = () => {
   const [artistName, setArtistName] = useState([]);
   const {getArtistById,getSongByArtistId} = ArtistApi();
   // console.log(id)
+  
   useEffect(()=>{
     getArtistById(id).then((res)=>{
       // console.log(res.data.songs)

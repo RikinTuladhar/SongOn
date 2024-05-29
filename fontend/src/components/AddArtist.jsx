@@ -4,7 +4,6 @@ import { v4 } from "uuid";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
-import axios from "axios";
 import ArtistApi from "../Apis/ArtistApi";
 
 const AddArtist = () => {
@@ -41,9 +40,6 @@ const {addArtist} =ArtistApi();
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
           .then((url) => {
-              // console.log("Uploading" + artist)
-              // console.log(url)
-              // axios.post(`${API}/artist`, { ...artist, imgArtist: url ? url :""});
               return addArtist({ ...artist, imgArtist: url ? url :""});
             }).then((res)=>{
               alert("Uploaded");

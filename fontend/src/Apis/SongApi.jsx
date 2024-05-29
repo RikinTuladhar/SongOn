@@ -3,7 +3,7 @@ import React from "react";
 
 const SongApi = () => {
   const baseUrl = "https://songonbackend.onrender.com";
-  const token= JSON.parse(localStorage.getItem("token"));
+  const token= localStorage.getItem("token");
   const config  = {
     headers: {
       Authorization: `Bearer ${token}`

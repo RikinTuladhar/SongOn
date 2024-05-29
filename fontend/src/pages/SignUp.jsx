@@ -34,20 +34,20 @@ const SignUp = () => {
       });
   };
 
-  console.log(data)
+  // console.log(data)
   return (
-    <div className="bg-[#000000] w-full py-[100px] min-h-[100vh] grid place-items-center">
-      <main class="flex text-white  items-center  justify-center h-screen">
-        <form onSubmit={handleSubmit}>
+    <div className="bg-[#000000] w-full md:py-[100px] h-auto md:min-h-[100vh] grid place-items-center">
+      <main class="flex text-white  items-center  justify-center h-full md:h-screen">
+        <form className="px-10 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
           <div
             class="rounded-lg bg-[#0f0f0f] border bg-card text-card-foreground shadow-sm w-full max-w-md"
             data-v0-t="card"
           >
             <div class="flex flex-col space-y-1.5 p-6">
-              <h3 class="whitespace-nowrap font-semibold tracking-tight text-2xl">
+              <h3 class="whitespace-nowrap md:py-0 md:px-0 py-2 px-2  text-xl  font-semibold tracking-tight text-2xl">
                 Sign Up
               </h3>
-              <p class="text-sm break-words text-muted-foreground">
+              <p class="text-sm md:text-base  text-muted-foreground md:py-0 md:px-0 py-1 px-5">
                 Enter email, firstname, lastname and password to create your
                 account.
               </p>
@@ -62,7 +62,7 @@ const SignUp = () => {
                 </label>
                 <input
                   class="text-black flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  id="username"
+
                   required=""
                   type="text"
                   name="username"
@@ -78,8 +78,7 @@ const SignUp = () => {
                 </label>
                 <input
                   class="text-black flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  id="firstname"
-                  required=""
+
                   type="text"
                   onChange={handleChange}
                   name="firstname"
@@ -94,8 +93,8 @@ const SignUp = () => {
                 </label>
                 <input
                   class="text-black flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  id="lastname"
-                  required=""
+               
+
                   type="text"
                   onChange={handleChange}
                   name="lastname"
@@ -110,8 +109,7 @@ const SignUp = () => {
                 </label>
                 <input
                   class="text-black flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  id="password"
-                  required=""
+                  
                   type="password"
                   onChange={handleChange}
                   name="password"
@@ -125,10 +123,10 @@ const SignUp = () => {
               className="flex items-center justify-between gap-2 px-5 py-2 text-xl font-bold break-words duration-500 border rounded-2xl hover:scale-105 hover:bg-white hover:text-black"
             >
              { clicked && <OvalLoader/>}
-              <span>Sign up</span>
+              <span className="text-sm md:text-xl">Sign up</span>
             </button>
-              <div>
-                Already have an account ? <Link to={"/signin"}>Sign in</Link>
+              <div className="text-sm md:text-lg">
+                Already have an account ? <Link to={"/signin"} className="text-blue-400 underline">Sign in</Link>
               </div>
               <div>
                 <Link to={"/"}>Go back</Link>

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import CardLib from "./CardLib";
-import axios from "axios";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
 import GenreApi from "../Apis/GenreApi";

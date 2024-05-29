@@ -1,5 +1,4 @@
 import React, { useContext, useRef, useState } from "react";
-import axios from "axios";
 import { SongContext } from "../contextprovider/SongProvider";
 import GenreApi from "../Apis/GenreApi";
 import { v4 } from "uuid";

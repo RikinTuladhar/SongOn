@@ -1,5 +1,4 @@
 import { data } from "autoprefixer";
-import axios from "axios";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";

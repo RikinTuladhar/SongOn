@@ -7,14 +7,16 @@ import SongPlayer from "../components/SongPlayer";
 import SongProvider from "../contextprovider/SongProvider";
 
 const Layout = () => {
-  const [genreId,setGenreId] = useState(10);
-  const [artistId,setArtistId] = useState("");
+  const [genreId, setGenreId] = useState("");
+  const [artistId, setArtistId] = useState("");
   return (
     <div className="w-full">
-        <Navbar />
-        <Outlet context={{genreId,setGenreId,artistId,setArtistId}} />
-         <div className='flex justify-center'><SongPlayer/> </div>
-        {/* <Footer /> */}
+      <Navbar />
+      <Outlet context={{ genreId, setGenreId, artistId, setArtistId }} />
+      <div className="flex justify-center">
+        <SongPlayer />
+      </div>
+      {/* <Footer /> */}
     </div>
   );
 };
