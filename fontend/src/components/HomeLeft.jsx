@@ -29,7 +29,7 @@ const HomeLeft = () => {
                 >
                   <div className="w-[40px] h-[40px] flex justify-center">
                     <svg
-                      class="w-10 h-10 text-gray-200 dark:text-gray-600"
+                      className="w-10 h-10 text-gray-200 dark:text-gray-600"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -40,10 +40,10 @@ const HomeLeft = () => {
                   </div>
                   <div className="w-full">
                     <div className="text-base  w-full font-bold text-[#E5E7EB]">
-                      <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-auto mb-4"></div>
+                      <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-auto mb-4"></div>
                     </div>{" "}
                     <div className="font-semibold text-sm  text-[#9C9EA0]">
-                      <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-auto mb-4"></div>
+                      <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-auto mb-4"></div>
                     </div>{" "}
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+// import React from "react";
 
 const ArtistApi = () => {
   const baseUrl = "https://songonbackend.onrender.com";

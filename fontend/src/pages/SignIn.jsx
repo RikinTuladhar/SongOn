@@ -3,9 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { User } from "../contextprovider/UserProvider";
 import UserApi from "../Apis/UserApi";
 import OvalLoader from "../components/OvalLoader";
+import { useDispatch } from "react-redux";
+import { signIn } from "../Apis/UserSlice";
+import { toast } from "react-toastify";
 
 const SignIn = () => {
-  const { setToken, setUserDetails } = useContext(User);
+  const dispatch = useDispatch();
+  // const { setToken, setUserDetails } = useContext(User);
   const navigate = useNavigate();
   const buttonRef = useRef();
   const [clicked, setClicked] = useState(false);
@@ -14,88 +18,87 @@ const SignIn = () => {
     username: "",
     password: "",
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
-  // console.log(data)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setClicked(true);
-    // alert("clicked");
-    SignIn(data)
-      .then((res) => {
-        // alert(res);
-        setUserDetails(res);
-        // console.log(res);
-        const { role } = res;
-        if (role === "USER") {
-          navigate("/");
-        } else {
-          navigate("/admin");
-        }
-        // setToken(res);
 
-        // localStorage.setItem("token", JSON.stringify(res));
-        setClicked(false);
-      })
-      .catch((err) => {
-        // alert(err);
-        console.log("error when signing in" + err);
-        setClicked(false);
-      });
+    try {
+      const resultAction = await dispatch(signIn(data)).unwrap();
+      // Handle success: resultAction contains the user details
+      // setUserDetails(resultAction);
+      console.log(resultAction);
+      const { role } = resultAction;
+      console.log(role);
+      if (role === "USER") {
+        navigate("/");
+      } else {
+        navigate("/admin");
+      }
+    } catch (error) {
+      // Handle error
+      alert("Incorrect Username or Password");
+      console.log("Error when signing in: ", error);
+    } finally {
+      setClicked(false);
+    }
   };
+
   return (
-    <main class="flex text-white  items-center bg-[#000000] justify-center h-auto md:h-screen">
+    <main className="flex text-white items-center bg-[#000000] justify-center h-auto md:h-screen">
       <form className="px-10 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
         <div
-          class="rounded-lg  bg-[#0f0f0f] border bg-card text-card-foreground shadow-sm w-full max-w-md"
+          className="rounded-lg bg-[#0f0f0f] border bg-card text-card-foreground shadow-sm w-full max-w-md"
           data-v0-t="card"
         >
-          <div class="flex flex-col space-y-1.5  md:p-6">
-            <h3 class="  whitespace-nowrap font-semibold md:py-0 md:px-0 py-2 px-2 tracking-tight text-center md:text-left text-xl md:text-2xl">
+          <div className="flex flex-col space-y-1.5 md:p-6">
+            <h3 className="px-2 py-2 text-xl font-semibold tracking-tight text-center whitespace-nowrap md:py-0 md:px-0 md:text-left md:text-2xl">
               Login
             </h3>
-            <p class="text-sm md:text-base text-muted-foreground md:py-0 md:px-0 py-1 px-5">
+            <p className="px-5 py-1 text-sm md:text-base text-muted-foreground md:py-0 md:px-0">
               Enter your email and password to access your account.
             </p>
           </div>
-          <div class="p-6 space-y-4">
-            <div class="space-y-2">
+          <div className="p-6 space-y-4">
+            <div className="space-y-2">
               <label
-                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                for="username"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                htmlFor="username"
               >
                 Username
               </label>
               <input
-                class="text-black flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                id="email"
-                required=""
+                className="flex w-full h-10 px-3 py-2 text-sm text-black border rounded-md border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                id="username"
+                required
                 type="text"
                 name="username"
                 onChange={handleChange}
               />
             </div>
-            <div class="space-y-2">
+            <div className="space-y-2">
               <label
-                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                for="password"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                htmlFor="password"
               >
                 Password
               </label>
               <input
-                class="text-black flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex w-full h-10 px-3 py-2 text-sm text-black border rounded-md border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="password"
-                required=""
+                required
                 type="password"
                 name="password"
                 onChange={handleChange}
               />
             </div>
           </div>
-          <div class="flex flex-col gap-5 items-center p-6">
+          <div className="flex flex-col items-center gap-5 p-6">
             <button
               disabled={clicked}
               type="submit"
@@ -105,13 +108,13 @@ const SignIn = () => {
               <span className="text-sm md:text-xl">Sign in</span>
             </button>
             <div className="text-sm md:text-lg">
-              Do no have an account ?{" "}
-              <Link to={"/signup"} className="text-blue-400 underline">
+              Do not have an account?{" "}
+              <Link to="/signup" className="text-blue-400 underline">
                 Sign up
               </Link>
             </div>
             <div>
-              <Link to={"/"}>Go back</Link>
+              <Link to="/">Go back</Link>
             </div>
           </div>
         </div>
@@ -119,4 +122,5 @@ const SignIn = () => {
     </main>
   );
 };
+
 export default SignIn;
