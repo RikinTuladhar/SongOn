@@ -32,9 +32,9 @@ const SignIn = () => {
       const resultAction = await dispatch(signIn(data)).unwrap();
       // Handle success: resultAction contains the user details
       // setUserDetails(resultAction);
-      console.log(resultAction);
+      // console.log(resultAction);
       const { role } = resultAction;
-      console.log(role);
+      // console.log(role);
       if (role === "USER") {
         navigate("/");
       } else {
@@ -50,7 +50,7 @@ const SignIn = () => {
   };
 
   return (
-    <main className="flex text-white items-center bg-[#000000] justify-center h-auto md:h-screen">
+    <main className="flex h-[100vh] text-white items-center bg-[#000000] justify-center  ">
       <form className="px-10 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
         <div
           className="rounded-lg bg-[#0f0f0f] border bg-card text-card-foreground shadow-sm w-full max-w-md"
