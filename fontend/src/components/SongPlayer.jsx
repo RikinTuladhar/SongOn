@@ -6,12 +6,16 @@ import SongApi from "../Apis/SongApi";
 import GenreApi from "../Apis/GenreApi";
 import { useOutletContext } from "react-router-dom";
 const SongPlayer = () => {
-
+  
+  const { songId,songClickedId , songArray } = useContext(SongContext);
 
   const { reload, setReload } = useContext(ReloadContext);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
+
+  console.log(songArray)
+  console.log(currentIndex)
 
   const previousSong = () => {
     if (currentIndex < 0) {
@@ -53,9 +57,9 @@ const SongPlayer = () => {
     audioRef.current.currentTime += 10; // Go forward 10 seconds
   };
 
-  const { songId,songClickedId , songArray } = useContext(SongContext);
   const { getSongById } = SongApi();
   const { getGenreById } = GenreApi();
+  const [lyricsClicked, setLyricsClicked] = useState(false);
   // console.log(songArray);
   // console.log(songId);
   // console.log(songClickedId);
@@ -79,6 +83,12 @@ const SongPlayer = () => {
   // console.log(songArray[currentIndex]?.autoPath);
   return (
     <div className="fixed border rounded-lg bottom-4 ">
+      <div className="relative py-10 mt-10 bg-red-700"><span>Checking</span>
+      {<pre>
+       {lyricsClicked  && (songArray[currentIndex]?.lyrics ?? "No lyrics")}
+
+      </pre> }
+      </div>
       <footer class="bg-[#000000] rounded-lg shadow  ">
         {/* parent */}
         <div class="w-full flex-wrap  flex gap-6 md:gap-1 mx-auto max-w-screen-xl md:p-5   md:justify-center  md:items-center ">
@@ -88,7 +98,8 @@ const SongPlayer = () => {
               <span>Song:</span>
               <span>{songArray[currentIndex]?.name}</span>
             </div>
-            <div className="md:px-10 text-sm text-[#E5E7EB]">Artist</div>
+            <div className="md:px-10 text-sm text-[#E5E7EB] cursor-pointer" onClick={e=>setLyricsClicked(!lyricsClicked)}>Show Lyrics</div>
+            <div className="md:px-10 text-sm text-[#E5E7EB]">Song</div>
           </div>
           {/* controller  */}
           <ul class="flex pb-5 flex-wrap gap-3 md:gap-10 justify-center items-center  font-thin text-xs md:text-lg  md:font-medium text-gray-500 dark:text-gray-400 sm:mt-0">

@@ -28,14 +28,12 @@ const {addSong} =SongApi()
     name: "",
     autoPath: "",
     imgPath: "",
+    lyrics:""
   });
   const [ids, setIds] = useState({
     generic_id: "",
     artist_id: "",
   });
-
-  const songRef = ref(storage, "songs/");
-  const songImgRef = ref(storage, "songimage/");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -107,7 +105,7 @@ const {addSong} =SongApi()
 
   return (
     <div>
-      <div className="w-full h-[100vh] bg-slate-500 flex justify-center items-center">
+      <div className="w-full min-h-[100vh] h-auto py-10 bg-slate-500 flex justify-center items-center">
         <div>
           <form onSubmit={handleSubmit}>
             <div className="grid w-full max-w-sm items-center gap-1.5 p-6 rounded-lg border width center dark:border-gray-800">
@@ -165,8 +163,8 @@ const {addSong} =SongApi()
                 <option selected disabled value="">
                   Select The Artist
                 </option>
-                {artist?.map((artist) => (
-                  <option value={artist.id}>{artist.name}</option>
+                {artist?.map((artist,i) => (
+                  <option key={i} value={artist.id}>{artist.name}</option>
                 ))}
               </select>
               <div className="flex flex-col w-full h-auto">
@@ -187,6 +185,9 @@ const {addSong} =SongApi()
                     <option value={genre.id}>{genre.name}</option>
                   ))}
                 </select>
+              </div>
+              <div  className="flex flex-col w-full h-auto bg-red-900">
+                <textarea onChange={(e) => setValues({ ...values, lyrics: e.target.value })} name="lyrics"  placeholder="Enter the lyrics"></textarea>
               </div>
 
               <button type="submit" ref={stopPost}>

@@ -12,7 +12,7 @@ const LibraryRight = ({ songs, artistName }) => {
 
   // click play song
   const handleSong = async (songId,songIndex) => {
-    console.log("song clicked" + songId);
+    // console.log("song clicked" + songId);
     setSongId(songId);
     setSongClickedId(songIndex)
     // setReload(!prev)
