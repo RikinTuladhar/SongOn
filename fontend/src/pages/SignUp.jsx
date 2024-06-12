@@ -38,13 +38,13 @@ const SignUp = () => {
   return (
     <div className="bg-[#000000] w-full md:py-[100px] h-auto md:min-h-[100vh] grid place-items-center">
       <main class="flex text-white  items-center  justify-center h-full md:h-screen">
-        <form className="px-10 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
+        <form className="px-5 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
           <div
             class="rounded-lg bg-[#0f0f0f] border bg-card text-card-foreground shadow-sm w-full max-w-md"
             data-v0-t="card"
           >
             <div class="flex flex-col space-y-1.5 p-6">
-              <h3 class="whitespace-nowrap md:py-0 md:px-0 py-2 px-2  text-xl  font-semibold tracking-tight text-2xl">
+              <h3 class="whitespace-nowrap md:py-0 md:px-0 py-2 px-2   font-semibold tracking-tight text-2xl">
                 Sign Up
               </h3>
               <p class="text-sm md:text-base  text-muted-foreground md:py-0 md:px-0 py-1 px-5">

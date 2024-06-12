@@ -83,7 +83,10 @@ const Navbar = () => {
               {userDetails?.username?.length > 0 ? (
                 <Link
                   to={"/signin"}
-                  onClick={(e) => localStorage.removeItem("token")}
+                  onClick={(e) => {
+                     //there is case for logout that hanbdles the user state.
+                    dispatch(logOut());
+                  }}
                   className="block px-3 py-2 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
                   Sign Out
@@ -139,7 +142,7 @@ const Navbar = () => {
                     <Link
                       to={"/signin"}
                       onClick={(e) => {
-                        localStorage.removeItem("token");
+                        //there is case for logout that hanbdles the user state.
                         dispatch(logOut());
                       }}
                       className="block px-3 py-2 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"

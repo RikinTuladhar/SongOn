@@ -12,11 +12,11 @@ const SongApi = () => {
 
   async function getSong() {
     const URL = baseUrl + "/songs";
-    console.log(URL);
+    // console.log(URL);
     try {
       const response = await axios.get(URL);
       const data = await response.data;
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (e) {
       console.error(error);

@@ -34,7 +34,6 @@ export const getUser = createAsyncThunk(
 
 export const logOut = createAsyncThunk("logout", async () => {
   localStorage.removeItem("token");
-  // You can return a value here if needed, but it's not necessary
   return;
 });
 

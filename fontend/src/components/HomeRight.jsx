@@ -21,7 +21,7 @@ const HomeRight = () => {
   }, [reload]);
 // console.log(library)
   return (
-    <div className=" w-[100%] mb-32 md:mb-0 mx-10 mt-10 md:mx-0  md:w-[80%] h-auto  md:mt-3  py-10 bg-[#11111182] rounded-xl ">
+    <div className=" w-[100%] mb-32 md:mb-0 mx-5 mt-10 md:mx-0  md:w-[80%] h-auto  md:mt-3  py-10 bg-[#11111182] rounded-xl ">
       <h1 className="text-center md:ml-10 md:text-left text-2xl text-[#E5E7EB] ">
         Librarys
       </h1>
@@ -51,16 +51,16 @@ const HomeRight = () => {
 
                   <div className="mb-1">
                     <h1 className="text-base font-semibold text-[#E5E7EB]">
-                      <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                      <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                      <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                      <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
                     </h1>
                   </div>
                   <div>
                     <span className="text-[#E5E7EB] flex flex-wrap gap-2">
-                      <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                      <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
                     </span>
                   </div>
                 </div>

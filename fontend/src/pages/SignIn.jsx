@@ -50,8 +50,8 @@ const SignIn = () => {
   };
 
   return (
-    <main className="flex h-auto py-5 px-3 md:py-10 md:px-10 text-white items-center bg-[#000000] justify-center  ">
-      <form className="px-10 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
+    <main className="flex h-auto min-h-[100vh]   md:py-10 md:px-10 text-white items-center bg-[#000000] justify-center  ">
+      <form className="px-5 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
         <div
           className="rounded-lg bg-[#0f0f0f] border bg-card text-card-foreground shadow-sm w-full max-w-md"
           data-v0-t="card"

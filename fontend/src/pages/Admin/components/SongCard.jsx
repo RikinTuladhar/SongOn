@@ -3,7 +3,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 const SongCard = ({ song, handleDelete }) => {
   const { id, name, autoPath, imgPath } = song;
-  console.log(song);
+  // console.log(song);
   return (
     <div class="relative flex w-52 md:w-72 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
       <div class="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">

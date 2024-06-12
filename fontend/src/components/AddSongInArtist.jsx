@@ -15,7 +15,7 @@ const AddSongInArtist = () => {
         ;(()=>{
             Promise.all([getArtist(),getSong()])
             .then(([artist,song])=>{
-                console.log(artist)
+                // console.log(artist)
                 setArtist(artist)
                 console.log(song)
                 setSong(song)
@@ -29,7 +29,7 @@ const AddSongInArtist = () => {
         const {name,value} =  e.target
         setData({...data,[name]:value})
     }
-    console.log(data)
+    // console.log(data)
 
     const handleSubmit=(e)=>{
         e.preventDefault();
@@ -49,18 +49,18 @@ const AddSongInArtist = () => {
       <div className="w-full px-5  flex justify-center items-center h-[100vh] bg-[#0E0F19] text-white">
       <div className="w-full rounded-2xl h-auto md:h-[95%] bg-[#66788F] flex flex-col justify-center items-center gap-5">
         <div className="h-[20%]  my-10">
-          <h1 className="text-2xl md:text-5xl font-bold ">Song in Genre Edit</h1>
+          <h1 className="text-2xl font-bold md:text-5xl ">Song in Genre Edit</h1>
         </div>
         <div className="w-full h-full ">
           <form
             onSubmit={handleSubmit}
-            className="w-full h-full relative text-black"
+            className="relative w-full h-full text-black"
           >
             <div className="flex w-full h-[80%] justify-around flex-wrap">
               {/* genre  */}
               <div className="flex flex-col">
                 <label
-                  className="text-xl md:text-2xl px-5 py-5 font-semibold"
+                  className="px-5 py-5 text-xl font-semibold md:text-2xl"
                   htmlFor="artistId"
                 >
                   Select Artist
@@ -85,7 +85,7 @@ const AddSongInArtist = () => {
               {/* song  */}
               <div className="flex flex-col">
                 <label
-                  className="text-xl md:text-2xl px-5 py-5 font-semibold "
+                  className="px-5 py-5 text-xl font-semibold md:text-2xl "
                   htmlFor="songId"
                 >
                   Select Song
@@ -108,13 +108,13 @@ const AddSongInArtist = () => {
               </div>
             </div>
 
-            <div className="flex mb-5 justify-center items-center">
+            <div className="flex items-center justify-center mb-5">
               <button
-                className="my-5 z-50 group cursor-pointer outline-none hover:rotate-90 duration-300"
+                className="z-50 my-5 duration-300 outline-none cursor-pointer group hover:rotate-90"
                 title="Add New"
               >
                 <svg
-                  className="stroke-teal-500 fill-none group-hover:fill-teal-800 group-active:stroke-teal-200 group-active:fill-teal-600 group-active:duration-0 duration-300"
+                  className="duration-300 stroke-teal-500 fill-none group-hover:fill-teal-800 group-active:stroke-teal-200 group-active:fill-teal-600 group-active:duration-0"
                   viewBox="0 0 24 24"
                   height="50px"
                   width="50px"
