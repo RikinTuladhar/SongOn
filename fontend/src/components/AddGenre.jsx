@@ -28,11 +28,11 @@ const AddGenre = () => {
     const { name, bio } = event.target;
 
     if (name && bio) {
-      const genreRef = ref(storage, `genreImage/${genreImage.name + v4()}`);
+      const genreRef = ref(storage, `genreImage/${genreImage?.name + v4()}`);
       uploadBytes(genreRef, genreImage).then((snapshot) => {
         getDownloadURL(snapshot.ref)
           .then((url) => {
-            console.log(url);
+            // console.log(url);
             return postGenre({ ...genre, imgGenre: url ? url : "" });
           })
           .then((res) => {

@@ -2,14 +2,8 @@ import axios from "axios";
 import React from "react";
 
 const GenreApi = () => {
-  const baseUrl = "https://songonbackend.onrender.com";
-  const token = localStorage.getItem("token");
-//   console.log(token);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  const baseUrl = "http://localhost:8080";
+
   async function getGenre() {
     const URL = baseUrl + "/genre";
     // console.log(URL);
@@ -20,9 +14,9 @@ const GenreApi = () => {
   }
 
   async function postGenre(value) {
-    const URL = baseUrl + "/addGenre";
+    const URL = baseUrl + "/genre";
     console.log(URL);
-    const response = await axios.post(URL, value, config);
+    const response = await axios.post(URL, value);
     const data = await response.data;
     // console.log(data)
     return data;
@@ -31,7 +25,7 @@ const GenreApi = () => {
   async function deleteGenre(endpoint) {
     const URL = baseUrl + endpoint;
     // console.log(URL)
-    const response = await axios.delete(URL, config);
+    const response = await axios.delete(URL);
     const data = await response.data;
     return data;
   }
@@ -50,7 +44,7 @@ const GenreApi = () => {
     const URL = baseUrl + `/genre/${genreId}/song/${songId}`;
     // console.log(URL)
     try {
-      const response = await axios.put(URL, {}, config);
+      const response = await axios.put(URL, {});
       const data = await response.data;
       // console.log(data)
 

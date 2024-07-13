@@ -21,6 +21,7 @@ const EditGenre = () => {
     const ok =  confirm("Are you sure you want to delete?")
     if(ok){
       const response = await deleteGenre(`/genre/delete/${id}`);
+      console.log(response)
       setReload(!reload);
       alert("Deleted Genre");
     }else{

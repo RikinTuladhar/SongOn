@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 
 const SongApi = () => {
-  const baseUrl = "https://songonbackend.onrender.com";
+  const baseUrl = "http://localhost:8080";
   const token= localStorage.getItem("token");
   const config  = {
     headers: {
@@ -11,7 +11,7 @@ const SongApi = () => {
   }
 
   async function getSong() {
-    const URL = baseUrl + "/songs";
+    const URL = baseUrl + "/song";
     // console.log(URL);
     try {
       const response = await axios.get(URL);
@@ -24,7 +24,7 @@ const SongApi = () => {
   }
 
   async function getSongById(id) {
-    const URL = baseUrl + `/songs/${id}`;
+    const URL = baseUrl + `/song/${id}`;
     console.log(URL);
     try {
       const response = await axios.get(URL);
@@ -37,7 +37,7 @@ const SongApi = () => {
   }
 
   async function addSong(gId,aId,song) {
-    const URL = baseUrl + `/uploadSong/${gId}/${aId}`;
+    const URL = baseUrl + `/song/uploadSong/${gId}/${aId}`;
     console.log(URL);
     try {
       const response = await axios.post(URL, song,config);

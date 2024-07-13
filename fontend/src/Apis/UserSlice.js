@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const base = "https://songonbackend.onrender.com";
+const base = "http://localhost:8080";
 const initialState = {
   userDetails: {},
   status: "idle",
@@ -13,16 +13,10 @@ export const getUser = createAsyncThunk(
   "getUser",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("No token found");
-      }
-      const endpoint = `${base}/getUser/${token}`;
-      const res = await axios.get(endpoint, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const userDetails = JSON.parse(localStorage.getItem("user"))
+      const userName = userDetails.username;
+      const endpoint = `${base}/getUser/${userName}`;
+      const res = await axios.get(endpoint);
       return res.data;
     } catch (error) {
       return rejectWithValue(
@@ -33,7 +27,7 @@ export const getUser = createAsyncThunk(
 );
 
 export const logOut = createAsyncThunk("logout", async () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("user");
   return;
 });
 
@@ -41,17 +35,10 @@ export const signIn = createAsyncThunk("signin", async (value) => {
   const endpoint = `${base}/login`;
   try {
     const response = await axios.post(endpoint, value);
-    const data = response.data.token;
-    // console.log(data);
-    localStorage.setItem("token", data);
-    const role = await axios.get(`${base}/getUser/${data}`, {
-      headers: {
-        Authorization: `Bearer ${data}`,
-      },
-    });
-    // console.log(role.data);
-
-    return role.data;
+    const data = await response.data;
+    console.log(data);
+    localStorage.setItem("user", JSON.stringify(data));
+    return data;
   } catch (error) {
     throw new Error("Error when login: " + error);
   }
