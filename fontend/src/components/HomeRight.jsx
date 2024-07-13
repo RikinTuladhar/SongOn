@@ -12,14 +12,13 @@ const HomeRight = () => {
   useEffect(() => {
     
     getGenre().then((res) => {
-      // console.log(res);
         setLibrary(res);
       })
       .catch((err) => {
         console.log("Error is :" + err);
       });
   }, [reload]);
-// console.log(library)
+  
   return (
     <div className=" w-[100%] mb-32 md:mb-0 mx-5 mt-10 md:mx-0  md:w-[80%] h-auto  md:mt-3  py-10 bg-[#11111182] rounded-xl ">
       <h1 className="text-center md:ml-10 md:text-left text-2xl text-[#E5E7EB] ">

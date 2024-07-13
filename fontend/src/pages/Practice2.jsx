@@ -10,7 +10,7 @@ const Practice2 = ({handleChange}) => {
         <h1>Inside the child component </h1>
       <button onClick={handleChange}>Inside child</button>
     </div>
-  )
+  ) 
 }
 
 export default memo(Practice2)

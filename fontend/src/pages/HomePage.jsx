@@ -28,7 +28,7 @@ const HomePage = () => {
         Welcome to my songs list
       </h1> */}
       <div className="container flex flex-wrap w-full h-full gap-5 md:flex-nowrap">
-        <HomeLeft />
+        <HomeLeft /> 
         <HomeRight />
       </div>
     </div>

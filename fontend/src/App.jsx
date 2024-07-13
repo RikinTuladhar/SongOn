@@ -28,6 +28,7 @@ import UserProvider from "./contextprovider/UserProvider";
 import UserLibrary from "./pages/UserLibrary";
 function App() {
   const router = createBrowserRouter([
+    //user view components
     {
       path: "/",
       element: <Layout />,
@@ -55,10 +56,12 @@ function App() {
     { path: "/signUp", element: <SignUp /> },
     { path: "/*", element: <NotFound /> },
     { path: "userlibrary", element: <UserLibrary /> },
+    
+     //admin components 
     {
       path: "/admin",
       element: <Admin />,
-      //pages for admin
+     
       children: [
         {
           path: "/admin/addSongs",

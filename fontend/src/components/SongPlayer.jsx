@@ -85,9 +85,6 @@ called `SongPlayer`. Here's a breakdown of what each line is doing: */
     })();
   }, [songClickedId]);
 
-  // console.log(currentIndex);
-  // console.log(songArray);
-  // console.log(songArray[currentIndex]?.autoPath);
   return (
     <>
       {lyricsClicked && (

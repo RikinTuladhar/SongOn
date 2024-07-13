@@ -14,8 +14,7 @@ const Library = () => {
   const { id } = useParams();
   const [songs, setSongs] = useState([]);
   const { setGenreId } = useOutletContext();
-  // console.log(SongAPI)
-  // alert(id)
+
   useEffect(() => {
     setGenreId(id);
     getGenreById(id).then((res) => {
@@ -32,7 +31,7 @@ const Library = () => {
 
   return (
     <div className="w-full  md:h-[120vh]  pt-5  bg-[#000000] flex-wrap flex justify-around">
-      <LibraryLeft />
+      <LibraryLeft /> 
       <LibraryRight songs={songs} />
     </div>
   );
