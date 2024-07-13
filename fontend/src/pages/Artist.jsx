@@ -37,7 +37,6 @@ const Artist = () => {
   return (
     <div className="w-full h-[120vh]   pt-5 bg-[#000000] flex justify-around">
       {/* <LibraryLeft/> */}
-
       <ArtistMiddle songs={songArray}/>
     </div>
   )

@@ -19,7 +19,7 @@ const Library = () => {
     setGenreId(id);
     getGenreById(id).then((res) => {
       // setAPI(`${API}/by-genre/${id}`)
-      // console.log(res)
+      console.log(res)
       setSongs(res);
       setSongArray(res);
       setReload(true);

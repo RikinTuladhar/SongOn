@@ -31,11 +31,11 @@ const GenreApi = () => {
   }
 
   async function getGenreById(id) {
-    const URL = baseUrl + `/by-genre/${id}`;
+    const URL = baseUrl + `/song/by-genre/${id}`;
     // console.log(URL)
     const response = await axios.get(URL);
     const data = await response.data;
-    // console.log(data)
+    console.log(data)
     return data;
   }
 

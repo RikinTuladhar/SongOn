@@ -24,8 +24,8 @@ const SignUp = () => {
       .then((res) => {
         // alert(res);
         setClicked(false)
+        alert("Registered successfully")
         navigate("/")
-        localStorage.setItem("token", JSON.stringify(res));
       })
       .catch((err) => {
         // alert(err);

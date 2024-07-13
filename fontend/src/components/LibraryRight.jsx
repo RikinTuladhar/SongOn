@@ -15,8 +15,6 @@ const LibraryRight = ({ songs, artistName }) => {
     // console.log("song clicked" + songId);
     setSongId(songId);
     setSongClickedId(songIndex)
-    // setReload(!prev)
-    // nextSong();
   };
   return (
     <>

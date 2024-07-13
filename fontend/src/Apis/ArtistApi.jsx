@@ -30,7 +30,7 @@ const ArtistApi = () => {
   }
 
   async function getSongByArtistId(id) {
-    const URL = baseUrl + "/by-artist/" + id;
+    const URL = baseUrl + "/song/by-artist/" + id;
  
     try {
       const res = await axios.get(URL);

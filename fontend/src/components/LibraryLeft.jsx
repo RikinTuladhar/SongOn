@@ -1,17 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SongContext } from "../contextprovider/SongProvider";
 const LibraryLeft = () => {
-  const { songDetails, ArtistDetails } = useContext(SongContext);
+  const { clicked,songArray,songClickedId } = useContext(SongContext);
   // console.log(songDetails);
   // console.log(ArtistDetails);
-
+  const [artist,setArtist] = useState({
+    name:"",
+    bio:"",
+    imgArtist:""
+  });
+  console.log(artist)
   const [songDetail, setSongDetail] = useState();
-  const [artistDetail, setArtistDetail] = useState();
-  // console.log(songDetail);
+  console.log(songDetail);
+
+  
   useEffect(() => {
-    setSongDetail(songDetails[0]);
-    setArtistDetail(ArtistDetails[0]);
-  }, [songDetails, artistDetail]);
+      setSongDetail(songArray[songClickedId])
+      const id = songArray[songClickedId]?.id
+      console.log(id)
+  }, [songClickedId]);
+  console.log()
+  console.log(songClickedId)
+  console.log(songArray[songClickedId]);
 
   return (
     <>
@@ -23,15 +33,9 @@ const LibraryLeft = () => {
           {/* top card  */}
           <div className="w-full py-5  md:px-5 md:py-10 rounded-lg  bg-[#111827] flex flex-col gap-5 justify-center items-center">
             <div class="w-[200px] md:min-w-[250px]">
-              <img
-                src={
-                  songDetail?.imgPath === null ||
-                  songDetail?.imgPath === undefined || 
-                  songDetail?.imgPath === ""
-                    ? "/Artist/future.jpg"
-                    : songDetail?.imgPath
-                }
-                onError={(e) => (e.target.src = "/Artist/future.jpg")}
+            <img
+                src={songDetail?.img_path}
+                // onError={(e) => (e.target.src = "/Artist/future.jpg")}
                 alt="image"
                 className="w-full h-full rounded"
               />
@@ -43,13 +47,13 @@ const LibraryLeft = () => {
 
           <div className="  md:w-full   pb-5  rounded-lg  bg-[#111827] flex flex-col gap-5">
             <div class="w-full">
-              <img
+            <img
                 src={
-                  artistDetail?.imgArtist === null ||
-                  artistDetail?.imgArtist === "" ||
-                  artistDetail?.imgArtist === undefined
+                  songDetail?.artist[0]?.imgArtist === null ||
+                  songDetail?.artist[0]?.imgArtist === "" ||
+                  songDetail?.artist[0]?.imgArtist === undefined
                     ? "/Artist/future.jpg"
-                    : artistDetail?.imgArtist
+                    : songDetail?.artist[0]?.imgArtist
                 }
                 onError={(e) => (e.target.src = "/Artist/future.jpg")}
                 alt=""
@@ -57,13 +61,13 @@ const LibraryLeft = () => {
               />
             </div>
             <div className="flex flex-col gap-2 px-5">
-              {ArtistDetails?.map((artist) => (
-                <div className="text-xl text-[#FFFFFF]">{artist?.name}</div>
-              ))}
+              {
+                <div className="text-xl text-[#FFFFFF]">{songDetail?.artist[0]?.name}</div>
+              }
 
               <div className="text-lg text-[#E5E7EB]">Artist</div>
               <div className="text-base text-[#E5E7EB]">
-               {artistDetail?.bio}
+               {/* {artistDetail?.bio} */}
               </div>
             </div>
           </div>

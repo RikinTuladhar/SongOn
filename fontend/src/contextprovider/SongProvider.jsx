@@ -4,9 +4,11 @@ import axios from "axios";
 export const SongContext = createContext();
 
 const SongProvider = ({ children }) => {
-  const [API, setAPI] = useState("https://songonbackend.onrender.com");
+  // https://songonbackend.onrender.com
+  const [API, setAPI] = useState("http://localhost:8080");
 
   const [count, setCount] = useState(0);
+  const [clicked,setClicked] = useState(0);
 
   //passed around library and artist components
   const [songId, setSongId] = useState(null);
@@ -26,21 +28,21 @@ const SongProvider = ({ children }) => {
   }, [songDetails, count]);
   // console.log(count)
 
-  useEffect(() => {
-   if(songId != null){
-    Promise.all([
-      axios.get(`${API}/songs/${songId}`),
-      axios.get(`${API}/artist/By-songid/${songId}`),
-    ])
-      .then(([songRes, artistRes]) => {
-        setSongDetails(songRes.data); // name, author, img
-        setArtistDetails(artistRes.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-   }
-  }, [songId]);
+  // useEffect(() => {
+  //  if(songId != null){
+  //   Promise.all([
+  //     axios.get(`${API}/songs/${songId}`),
+  //     axios.get(`${API}/artist/By-songid/${songId}`),
+  //   ])
+  //     .then(([songRes, artistRes]) => {
+  //       setSongDetails(songRes.data); // name, author, img
+  //       setArtistDetails(artistRes.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  //  }
+  // }, [songId]);
 
   return (
     <SongContext.Provider
@@ -54,7 +56,9 @@ const SongProvider = ({ children }) => {
         songArray,
         setSongArray,
         songClickedId,
-        setSongClickedId
+        setSongClickedId,
+        clicked,
+        setClicked
       }}
     >
       {children}

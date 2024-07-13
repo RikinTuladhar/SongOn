@@ -4,7 +4,7 @@ import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
 
 const SongPlayer = () => {
-  const { songId, songClickedId, songArray } = useContext(SongContext);
+  const { songId, songClickedId, songArray,setClicked } = useContext(SongContext);
   const { reload, setReload } = useContext(ReloadContext);
   const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
@@ -28,6 +28,7 @@ const SongPlayer = () => {
       setCurrentIndex((prevIndex) => prevIndex - 1);
     }
     audioRef.current.load();
+    audioRef.current.play()
     playAudio();
   };
 
@@ -40,6 +41,7 @@ const SongPlayer = () => {
       setCurrentIndex(0);
     }
     audioRef.current.load();
+    audioRef.current.play()
     playAudio();
   };
 
@@ -55,20 +57,21 @@ const SongPlayer = () => {
     }
   };
 
-  useEffect(() => {
-    setReload(true);
-    return () => {
-      setReload(false);
-    };
-  }, [reload, songId, songArray]);
+  // useEffect(() => {
+  //   setReload(true);
+  //   return () => {
+  //     setReload(false);
+  //   };
+  // }, [reload, songId, songArray]);
 
   useEffect(() => {
     if (!songArray || songArray.length === 0) return;
-
     setCurrentIndex(songClickedId);
     audioRef.current.load();
     playAudio();
-  }, [songClickedId, songArray]);
+ 
+    
+  }, [songClickedId]);
 
   return (
     <>
@@ -86,7 +89,7 @@ const SongPlayer = () => {
       )}
       <div className={`fixed border rounded-lg bottom-4`}>
         <footer className="bg-[#000000] py2 rounded-lg shadow">
-          <div className="w-full flex-wrap flex gap-6 md:gap-5 mx-auto max-w-screen-xl md:p-5 md:justify-center md:items-center">
+          <div className="flex flex-wrap w-full max-w-screen-xl gap-6 mx-auto md:gap-5 md:p-5 md:justify-center md:items-center">
             <div className="text-[#E5E7EB] pt-1 justify-center items-center mx-auto md:px-0 gap-10 flex flex-wrap md:flex-col md:gap-5">
               <div className="flex gap-2 text-base text-white md:px-10">
                 <span>Song:</span>
@@ -108,7 +111,7 @@ const SongPlayer = () => {
                 </div>
               )}
             </div>
-            <ul className="flex pb-5 flex-wrap gap-3 md:gap-10 justify-center items-center font-thin text-xs md:text-lg md:font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+            <ul className="flex flex-wrap items-center justify-center gap-3 pb-5 text-xs font-thin text-gray-500 md:gap-10 md:text-lg md:font-medium dark:text-gray-400 sm:mt-0">
               <li className="order-2 md:order-1">
                 <button
                   className="px-2 py-1 border md:px-5 md:py-2 rounded-2xl"
