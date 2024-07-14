@@ -16,7 +16,7 @@ const HomeRight = () => {
   const [filteredItems, setFilteredItems] = useState([]);
   const handleSearch = (e) => {
     // console.log("typing");
-    const searching = e.target.value.toLowerCase();
+    const searching = e.target.value.toLowerCase().trim();
     const filteredItems = library.filter((item) => {
       return item.name.toLowerCase().includes(searching);
     });
@@ -46,16 +46,16 @@ const HomeRight = () => {
         <h1 className="text-center md:ml-10 md:text-left text-2xl text-[#E5E7EB] ">
           Librarys
         </h1>
-        <div className="flex items-center justify-center gap-5 text-white">
+        <div className="flex items-center justify-center gap-2 text-white">
         <div>
-            <IoSearch  size={30} onClick={()=>searchRef.current.focus()} />
+            <IoSearch  size={25} onClick={()=>searchRef.current.focus()} />
           </div>
           <div className="text-xl">
             <input
               type="text"
               ref={searchRef}
               onChange={handleSearch}
-              className="px-2 py-1 text-black rounded-md"
+              className="px-2 text-black rounded-md"
               placeholder="Search"
             />
           </div>
