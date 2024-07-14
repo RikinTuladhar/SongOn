@@ -106,15 +106,6 @@ const Navbar = () => {
         <div className="relative bg-black">
           <nav className="z-50 w-full ">
             <div className="flex flex-wrap items-center justify-between w-full max-w-screen-xl p-4 mx-auto text-lg ">
-              {/* <div className="text-white">
-          //   {userDetails?.username?.length > 0
-          //     ? `Welcome user : '${userDetails?.username
-          //         .charAt(0)
-          //         .toUpperCase()}${userDetails?.username.slice(
-          //         1
-          //       )}' to our service`
-          //     : "Welcome User"}
-          // </div> */}
               <ul className="flex items-center justify-between w-full gap-5">
                 <div className="flex gap-5">
                   <li>
@@ -126,14 +117,14 @@ const Navbar = () => {
                       Home
                     </Link>
                   </li>
-                  <li>
+                 { userDetails.role == "USER" && <li>
                     <Link
                       to={"/userlibrary"}
                       className="block px-3 py-2 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     >
                       Your Library
                     </Link>
-                  </li>
+                  </li>}
                 </div>
 
                 {/* sign in / sign out  */}

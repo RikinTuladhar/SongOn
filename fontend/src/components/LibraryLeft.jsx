@@ -1,27 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SongContext } from "../contextprovider/SongProvider";
 const LibraryLeft = () => {
-  const { clicked,songArray,songClickedId } = useContext(SongContext);
-  // console.log(songDetails);
-  // console.log(ArtistDetails);
-  const [artist,setArtist] = useState({
-    name:"",
-    bio:"",
-    imgArtist:""
-  });
-  console.log(artist)
-  const [songDetail, setSongDetail] = useState();
-  console.log(songDetail);
-
-  
-  useEffect(() => {
-      setSongDetail(songArray[songClickedId])
-      const id = songArray[songClickedId]?.id
-      console.log(id)
-  }, [songClickedId]);
-  console.log()
-  console.log(songClickedId)
-  console.log(songArray[songClickedId]);
+  const { clicked, songArray, songClickedId } = useContext(SongContext);
 
   return (
     <>
@@ -33,27 +13,27 @@ const LibraryLeft = () => {
           {/* top card  */}
           <div className="w-full py-5  md:px-5 md:py-10 rounded-lg  bg-[#111827] flex flex-col gap-5 justify-center items-center">
             <div class="w-[200px] md:min-w-[250px]">
-            <img
-                src={songDetail?.img_path}
-                // onError={(e) => (e.target.src = "/Artist/future.jpg")}
+              <img
+                src={(songArray && songArray[songClickedId]?.img_path)}
+                onError={(e) => (e.target.src = "/Artist/future.jpg")}
                 alt="image"
                 className="w-full h-full rounded"
               />
             </div>
-            <div className="text-2xl text-[#FFFFFF]">{songDetail?.name}</div>
+            <div className="text-2xl text-[#FFFFFF]">{ (songArray && songArray[songClickedId]?.name)}</div>
             <div className="text-lg text-[#E5E7EB]">Artist</div>
           </div>
           {/* bottom card  */}
 
           <div className="  md:w-full   pb-5  rounded-lg  bg-[#111827] flex flex-col gap-5">
             <div class="w-full">
-            <img
+              <img
                 src={
-                  songDetail?.artist[0]?.imgArtist === null ||
-                  songDetail?.artist[0]?.imgArtist === "" ||
-                  songDetail?.artist[0]?.imgArtist === undefined
+                 ( songArray && songArray[songClickedId]?.artist[0]?.imgArtist === null ||
+                  songArray[songClickedId]?.artist[0]?.imgArtist === "" ||
+                  songArray[songClickedId]?.artist[0]?.imgArtist === undefined
                     ? "/Artist/future.jpg"
-                    : songDetail?.artist[0]?.imgArtist
+                    : songArray[songClickedId]?.artist[0]?.imgArtist)
                 }
                 onError={(e) => (e.target.src = "/Artist/future.jpg")}
                 alt=""
@@ -62,12 +42,14 @@ const LibraryLeft = () => {
             </div>
             <div className="flex flex-col gap-2 px-5">
               {
-                <div className="text-xl text-[#FFFFFF]">{songDetail?.artist[0]?.name}</div>
+                <div className="text-xl text-[#FFFFFF]">
+                  {(songArray && songArray[songClickedId]?.artist[0]?.name)}
+                </div>
               }
 
               <div className="text-lg text-[#E5E7EB]">Artist</div>
               <div className="text-base text-[#E5E7EB]">
-               {/* {artistDetail?.bio} */}
+                {/* {artistDetail?.bio} */}
               </div>
             </div>
           </div>
