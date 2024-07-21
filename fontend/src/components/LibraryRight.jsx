@@ -55,8 +55,34 @@ const LibraryRight = ({ songs, artistName }) => {
             <div className="flex flex-col w-full gap-2 md:px-2">
               {songs?.length === 0 ? (
                 <div className="text-xl tracking-wider">No Songs Available</div>
-              ) : searchFocus ?(
-                filteredSong?.map((song, i) => (
+              ) :
+              (
+                searchFocus == true ?
+                (searchFocus && filteredSong?.map((song, i) => (
+                  <div
+                  onClick={(e) => {
+                    handleSong(song.id,i);
+                  }}
+                  key={i}
+                  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
+                >
+                  {/* <div key={song.id} className="text-center md:w-full">
+                    {i+1}
+                  </div> */}
+                  <div key={song.id} className="text-center md:w-full">
+                    {song?.name}
+                  </div>
+                  {/* <div key={song.id} className="text-center md:w-full">
+                    {song?.artist?.slice(0, 3)?.map((artist, i) => (
+                      <span className="ml-3 mr-3" key={i}>
+                        {artist?.name}
+                      </span>
+                    ))}
+                  </div> */}
+                </div>
+                )))
+                
+                : (!searchFocus && songs?.map((song, i) => (
                   <div
                     onClick={(e) => {
                       handleSong(song.id,i);
@@ -64,11 +90,8 @@ const LibraryRight = ({ songs, artistName }) => {
                     key={i}
                     className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
                   >
-                    <div
-                      key={song.id}
-                      className="w-[20%] text-center md:text-left"
-                    >
-                      {i + 1}
+                    <div key={song.id} className="text-center md:w-full">
+                      {i+1}
                     </div>
                     <div key={song.id} className="text-center md:w-full">
                       {song?.name}
@@ -81,34 +104,7 @@ const LibraryRight = ({ songs, artistName }) => {
                       ))}
                     </div>
                   </div>
-                ))
-              ) :(
-                songs?.map((song, i) => (
-                  <div
-                    onClick={(e) => {
-                      handleSong(song.id,i);
-                    }}
-                    key={i}
-                    className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
-                  >
-                    <div
-                      key={song.id}
-                      className="w-[20%] text-center md:text-left"
-                    >
-                      {i + 1}
-                    </div>
-                    <div key={song.id} className="text-center md:w-full">
-                      {song?.name}
-                    </div>
-                    <div key={song.id} className="text-center md:w-full">
-                      {song?.artist?.slice(0, 3)?.map((artist, i) => (
-                        <span className="ml-3 mr-3" key={i}>
-                          {artist?.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))
+                )))
               )}
             </div>
           </div>

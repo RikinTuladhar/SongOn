@@ -4,7 +4,7 @@ import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
 
 const SongPlayer = () => {
-  const { songId, songClickedId, songArray,setClicked } = useContext(SongContext);
+  const {songClickedId, songArray } = useContext(SongContext);
   const { reload, setReload } = useContext(ReloadContext);
   const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
@@ -57,12 +57,6 @@ const SongPlayer = () => {
     }
   };
 
-  // useEffect(() => {
-  //   setReload(true);
-  //   return () => {
-  //     setReload(false);
-  //   };
-  // }, [reload, songId, songArray]);
 
   useEffect(() => {
     if (!songArray || songArray.length === 0) return;
@@ -94,6 +88,9 @@ const SongPlayer = () => {
               <div className="flex gap-2 text-base text-white md:px-10">
                 <span>Song:</span>
                 <span>{songArray && songArray[currentIndex]?.name ? songArray[currentIndex].name : ""}</span>
+              </div><div className="flex gap-2 text-base text-white md:px-10">
+                <span>Artist:</span>
+                <span>{songArray && songArray[currentIndex]?.artist[0].name ? songArray[currentIndex]?.artist[0].name  : ""}</span>
               </div>
               {lyricsClicked ? (
                 <div

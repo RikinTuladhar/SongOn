@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { SongContext } from "../contextprovider/SongProvider";
 const LibraryLeft = () => {
   const { clicked, songArray, songClickedId } = useContext(SongContext);
-
+  
   return (
     <>
       {/* left  */}
