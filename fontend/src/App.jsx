@@ -55,7 +55,7 @@ function App() {
     { path: "/signIn", element: <SignIn /> },
     { path: "/signUp", element: <SignUp /> },
     { path: "/*", element: <NotFound /> },
-    { path: "userlibrary", element: <UserLibrary /> },
+    { path: "/userlibrary/:username", element: <UserLibrary /> },
     
      //admin components 
     {

@@ -19,7 +19,7 @@ public interface ArtistRepo extends JpaRepository<ArtistModel, Integer>{
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM person_song WHERE song_id = :id", nativeQuery = true)
+    @Query(value = "DELETE FROM artist_song WHERE song_id = :id", nativeQuery = true)
     void deleteSongById(@Param("id") int id);
 
 }

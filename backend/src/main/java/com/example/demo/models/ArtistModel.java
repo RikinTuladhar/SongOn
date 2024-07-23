@@ -39,18 +39,11 @@ public class ArtistModel {
         this.songs = songs;
     }
 
-    public String getImgArtist() {
-        return imgArtist;
-    }
-
-    public void setImgArtist(String imgArtist) {
-        this.imgArtist = imgArtist;
-    }
     @JsonIgnore
     @ManyToMany
     @JoinTable(
             name ="artist_song",
-            joinColumns = @JoinColumn(name = "person_id"),
+            joinColumns = @JoinColumn(name = "artist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id")
     )
     private Set<SongModel> songs= new HashSet<>();
@@ -61,6 +54,10 @@ public class ArtistModel {
         return songs;
     }
 
+    public void songs(SongModel songModel) {
+        songs.add(songModel);
+    }
+    
     @Override
     public String toString() {
         return "ArtistModel [id=" + id + ", name=" + name + ", bio=" + bio + ", gender=" + gender + ", songs=" + songs
@@ -69,9 +66,7 @@ public class ArtistModel {
 
 
 
-    public void songs(SongModel songModel) {
-        songs.add(songModel);
-    }
+
 
 
 

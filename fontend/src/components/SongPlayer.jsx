@@ -4,11 +4,13 @@ import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
 
 const SongPlayer = () => {
-  const {songClickedId, songArray } = useContext(SongContext);
+  const { songClickedId, songArray } = useContext(SongContext);
   const { reload, setReload } = useContext(ReloadContext);
   const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
   const [lyricsClicked, setLyricsClicked] = useState(false);
+  console.log(songArray[currentIndex]);
+  console.log(currentIndex);
 
   const playAudio = () => {
     const playPromise = audioRef.current.play();
@@ -28,7 +30,7 @@ const SongPlayer = () => {
       setCurrentIndex((prevIndex) => prevIndex - 1);
     }
     audioRef.current.load();
-    audioRef.current.play()
+    audioRef.current.play();
     playAudio();
   };
 
@@ -41,7 +43,7 @@ const SongPlayer = () => {
       setCurrentIndex(0);
     }
     audioRef.current.load();
-    audioRef.current.play()
+    audioRef.current.play();
     playAudio();
   };
 
@@ -57,14 +59,11 @@ const SongPlayer = () => {
     }
   };
 
-
   useEffect(() => {
     if (!songArray || songArray.length === 0) return;
     setCurrentIndex(songClickedId);
     audioRef.current.load();
     playAudio();
- 
-    
   }, [songClickedId]);
 
   return (
@@ -75,7 +74,9 @@ const SongPlayer = () => {
             <div className="relative flex flex-col items-center justify-center w-full h-full gap-10">
               <span className="text-4xl font-bold">Lyrics</span>
               <span className="w-full h-auto text-sm font-bold text-center whitespace-pre-wrap md:text-xl md:tracking-widest">
-                {songArray && songArray[currentIndex]?.lyrics ? songArray[currentIndex].lyrics : "No lyrics available"}
+                {songArray && songArray[currentIndex]?.lyrics
+                  ? songArray[currentIndex].lyrics
+                  : "No lyrics available"}
               </span>
             </div>
           </div>
@@ -83,14 +84,27 @@ const SongPlayer = () => {
       )}
       <div className={`fixed border rounded-lg bottom-4`}>
         <footer className="bg-[#000000] py2 rounded-lg shadow">
-          <div className="flex flex-wrap w-full max-w-screen-xl gap-6 mx-auto md:gap-5 md:p-5 md:justify-center md:items-center">
-            <div className="text-[#E5E7EB] pt-1 justify-center items-center mx-auto md:px-0 gap-10 flex flex-wrap md:flex-col md:gap-5">
+          <div className="flex flex-col w-full max-w-screen-xl gap-6 mx-auto md:gap-5 md:p-5 md:justify-center md:items-center">
+            <div className="text-[#E5E7EB] pt-1 justify-center items-center mx-auto md:px-0 gap-10 flex md:flex-col md:gap-5">
+              {/* song:  */}
               <div className="flex gap-2 text-base text-white md:px-10">
                 <span>Song:</span>
-                <span>{songArray && songArray[currentIndex]?.name ? songArray[currentIndex].name : ""}</span>
-              </div><div className="flex gap-2 text-base text-white md:px-10">
-                <span>Artist:</span>
-                <span>{songArray && songArray[currentIndex]?.artist[0].name ? songArray[currentIndex]?.artist[0].name  : ""}</span>
+                <span>
+                  {songArray && songArray[currentIndex]?.name
+                    ? songArray[currentIndex].name
+                    : ""}
+                </span>
+              </div>
+              {/* artist */}
+              <div className="flex gap-2 text-base text-white md:px-10">
+                <div>
+                  <span>Artist:</span>
+                  <span>
+                    {songArray && songArray[currentIndex]?.artist
+                      ? songArray[currentIndex]?.artist[0]?.name
+                      : ""}
+                  </span>
+                </div>
               </div>
               {lyricsClicked ? (
                 <div

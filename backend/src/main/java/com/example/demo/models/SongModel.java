@@ -47,5 +47,14 @@ public class SongModel {
     @ManyToMany(mappedBy = "songs")
     private Set<GenreModel> genre = new HashSet<>();
 
+    
+    @ManyToMany(mappedBy = "songModels")
+    @JsonIgnore
+    private Set<PlayListModel> playListModels = new HashSet<>();
+
+    public void playListModels(PlayListModel playListModel){
+        playListModels.add(playListModel);
+    }
+
 
 }

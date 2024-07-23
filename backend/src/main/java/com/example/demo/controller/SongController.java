@@ -139,9 +139,15 @@ public class SongController {
     @DeleteMapping("/delete")
     ResponseEntity<Object> deleteAllSong(){
         try{
-            songRepo.deleteAll();
-            Message message = new Message("Deleted all songs");
-            return ResponseEntity.ok(message);
+            long count = songRepo.count();
+            if(count == 0){
+                ErrorMessage errorMessage = new ErrorMessage("Nothing to delete");
+                return ResponseEntity.badRequest().body(errorMessage);
+            }else{
+                songRepo.deleteAll();
+                Message message = new Message("Deleted all songs");
+                return ResponseEntity.ok(count);
+            }
         }catch (Exception ex){
             ErrorMessage errorMessage = new ErrorMessage("Something went wrong");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);

@@ -18,9 +18,6 @@ const Navbar = () => {
   }, []);
 
   const [hiden, setHiden] = useState(true);
-  const { reload, setReload } = useContext(ReloadContext);
-  // const { userDetails, token } = useContext(User);
-  // console.log(userDetails.username);
   const handeNav = () => {
     setHiden(!hiden);
   };
@@ -28,13 +25,13 @@ const Navbar = () => {
   const [mobileView, setMobileView] = useState(false);
 
   useEffect(() => {
-    toast(
-      userDetails?.username?.length > 0
-        ? `Welcome user : '${userDetails?.username
-            .charAt(0)
-            .toUpperCase()}${userDetails?.username.slice(1)}' to our service`
-        : "Welcome User"
-    );
+    // toast(
+    //   userDetails?.username?.length > 0
+    //     ? `Welcome user : '${userDetails?.username
+    //         .charAt(0)
+    //         .toUpperCase()}${userDetails?.username.slice(1)}' to our service`
+    //     : "Welcome User"
+    // );
   }, [userDetails]);
   useEffect(() => {
     const updateView = () => {
@@ -63,7 +60,8 @@ const Navbar = () => {
         pauseOnHover
         theme="dark"
       />
-      {mobileView === true ? (
+      {mobileView === true ? 
+      (
         <nav className="flex items-center justify-around w-full h-auto gap-10 min-h-12 bg-[#090909]">
           <div></div>
           <div></div>
@@ -103,6 +101,7 @@ const Navbar = () => {
           )}
         </nav>
       ) : (
+        //desktop view
         <div className="relative bg-black">
           <nav className="z-50 w-full ">
             <div className="flex flex-wrap items-center justify-between w-full max-w-screen-xl p-4 mx-auto text-lg ">
@@ -119,7 +118,7 @@ const Navbar = () => {
                   </li>
                  { userDetails.role == "USER" && <li>
                     <Link
-                      to={"/userlibrary"}
+                      to={`/userlibrary/${userDetails.username}`}
                       className="block px-3 py-2 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     >
                       Your Library

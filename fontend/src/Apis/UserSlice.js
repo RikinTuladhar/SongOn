@@ -3,7 +3,12 @@ import axios from "axios";
 
 const base = "http://localhost:8080";
 const initialState = {
-  userDetails: {},
+  userDetails: {
+    firstName:"",
+    lastname:"",
+    role:"",
+    username:"" 
+  },
   status: "idle",
   error: null,
   role: "",
@@ -38,6 +43,7 @@ export const signIn = createAsyncThunk("signin", async (value) => {
     const data = await response.data;
     console.log(data);
     localStorage.setItem("user", JSON.stringify(data));
+    console.log(data)
     return data;
   } catch (error) {
     throw new Error("Error when login: " + error);

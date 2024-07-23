@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.example.demo.models.ArtistModel;
 import com.example.demo.models.SongModel;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/artist")
-//@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173")
 @CrossOrigin(origins = "*")
 public class ArtistController {
 
@@ -29,8 +29,8 @@ public class ArtistController {
     SongRepo songRepo;
 
     @GetMapping
-    List<ArtistModel> getArtist(){
-        List<ArtistModel> artists  = artistRepo.findAll();
+    List<ArtistModel> getArtist() {
+        List<ArtistModel> artists = artistRepo.findAll();
         return artists;
     }
 
@@ -42,7 +42,7 @@ public class ArtistController {
 
     @GetMapping("/name/{name}")
     ArtistModel getArtistByName(@PathVariable String name) {
-        return  artistRepo.findByName(name);
+        return artistRepo.findByName(name);
     }
 
     @GetMapping("/By-songid/{song_id}")
@@ -50,28 +50,33 @@ public class ArtistController {
         return artistRepo.findArtistBySongId(song_id);
     }
 
-
     @PostMapping
-    ArtistModel createArtist(@RequestBody ArtistModel artistModel ) {
+    ArtistModel createArtist(@RequestBody ArtistModel artistModel) {
         return artistRepo.save(artistModel);
     }
 
     @DeleteMapping("/{id}")
     @ResponseBody
-   ResponseEntity<Object> deleteArtist(@PathVariable int id) {
-       try{
-           artistRepo.deleteById(id);
-           String Message = "Deleted id" + id + "success";
-           return ResponseEntity.ok().body(Map.of("message", Message));
+    ResponseEntity<Object> deleteArtist(@PathVariable int id) {
+        try {
+            Optional<ArtistModel> isPresentArtist = artistRepo.findById(id);
+            if (isPresentArtist.isPresent()) {
+                artistRepo.deleteById(id);
+                String Message = "Deleted id " + id + " success";
+                return ResponseEntity.ok().body(Map.of("message", Message));
+            }else{
+                ErrorMessage errorMessage = new ErrorMessage("Did not found artist");
+                return ResponseEntity.badRequest().body(errorMessage);
+            }
 
-       }
-       catch (EmptyResultDataAccessException ex){
-           ErrorMessage errorMessage = new ErrorMessage("Something went wrong cannot delete");
-           return ResponseEntity.badRequest().body(errorMessage);
-       }
+        } catch (EmptyResultDataAccessException ex) {
+            ErrorMessage errorMessage = new ErrorMessage("Something went wrong cannot delete");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
     }
+
     @DeleteMapping
-    ResponseEntity<Object> deleteAllArtist(){
+    ResponseEntity<Object> deleteAllArtist() {
         try {
             artistRepo.deleteAll();
             Message message = new Message("Deleted All Data");
@@ -85,19 +90,16 @@ public class ArtistController {
     @PutMapping("/{artistId}/song/{songId}")
     ArtistModel addArtistToSong(
             @PathVariable int artistId,
-            @PathVariable int songId
-    ) {
+            @PathVariable int songId) {
         ArtistModel artistModel = artistRepo.findById(artistId).get();
         SongModel songModel = songRepo.findById(songId).get();
 
         artistModel.songs(songModel);
         return artistRepo.save(artistModel);
-        //1) took the id from param -> that returns -> entity (both)
-        //2) we saved entity of song -> artist ma vayeko euta method ma we put it.
-        //3)since tyo song saved vaisakyo artist ko model ma
-        //4) we save it
+        // 1) took the id from param -> that returns -> entity (both)
+        // 2) we saved entity of song -> artist ma vayeko euta method ma we put it.
+        // 3)since tyo song saved vaisakyo artist ko model ma
+        // 4) we save it
     }
-
-
 
 }
