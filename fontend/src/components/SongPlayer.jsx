@@ -85,7 +85,7 @@ const SongPlayer = () => {
       <div className={`fixed border rounded-lg bottom-4`}>
         <footer className="bg-[#000000] py2 rounded-lg shadow">
           <div className="flex flex-col w-full max-w-screen-xl gap-6 mx-auto md:gap-5 md:p-5 md:justify-center md:items-center">
-            <div className="text-[#E5E7EB] pt-1 justify-center items-center mx-auto md:px-0 gap-10 flex md:flex-col md:gap-5">
+            <div className="text-[#E5E7EB] pt-1  justify-center items-center mx-auto md:px-0 gap-10 flex  md:gap-5">
               {/* song:  */}
               <div className="flex gap-2 text-base text-white md:px-10">
                 <span>Song:</span>

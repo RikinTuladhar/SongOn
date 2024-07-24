@@ -19,6 +19,8 @@ const SignIn = () => {
     password: "",
   });
 
+  console.log(data)
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });

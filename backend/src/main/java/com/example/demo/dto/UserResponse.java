@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
+    int id;
     String firstName;
     String lastname;
     String username;

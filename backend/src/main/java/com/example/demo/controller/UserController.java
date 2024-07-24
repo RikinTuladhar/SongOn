@@ -19,7 +19,6 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 public class UserController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -81,10 +80,14 @@ public class UserController {
         }
         String Db_username = userDB.getUsername();
         String Db_password = userDB.getPassword();
-        String Input_username = userDB.getUsername();
-        String Input_password = userDB.getPassword();
+        String Input_username = user.getUsername();
+        String Input_password = user.getPassword();
 
-        if(Input_username == Db_username && Input_password == Db_password){
+        System.out.println(Db_username + "  " + Db_password);
+        System.out.println(Input_username + "  " + Input_password);
+
+        if((Input_username.equals(Db_username)) && (Input_password.equals(Db_password) )){
+            userResponse.setId(userDB.getId());
             userResponse.setFirstName(userDB.getFirstname());
             userResponse.setLastname(userDB.getLastname());
             userResponse.setUsername(userDB.getUsername());
