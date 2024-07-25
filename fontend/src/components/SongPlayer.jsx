@@ -96,7 +96,7 @@ const SongPlayer = () => {
                 </span>
               </div>
               {/* artist */}
-              <div className="flex gap-2 text-base text-white md:px-10">
+              {/* <div className="flex gap-2 text-base text-white md:px-10">
                 <div>
                   <span>Artist:</span>
                   <span>
@@ -105,7 +105,7 @@ const SongPlayer = () => {
                       : ""}
                   </span>
                 </div>
-              </div>
+              </div> */}
               {lyricsClicked ? (
                 <div
                   className="md:px-10 text-sm text-[#E5E7EB] cursor-pointer bg-gradient-to-bl from-red-600 to-purple-800 bg-clip-text text-transparent"

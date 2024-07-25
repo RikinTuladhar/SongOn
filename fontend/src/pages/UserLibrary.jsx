@@ -8,13 +8,14 @@ import SongPlayer from "../components/SongPlayer";
 import axios from "axios";
 import UserLibraryApi from "../Apis/UserLibraryApi";
 import { SongContext } from "../contextprovider/SongProvider";
+import {ReloadContext} from "../contextprovider/ReloadProvider"
 const UserLibrary = () => {
   //for user details extract from slice 
   const userDetails = useSelector((state) => state.userDetails);
   const { id,firstName, lastname, role, username } = userDetails;
   //api call
   const { addPlayList, addSongToPlayList,displayPlayListByPlaylistId,displayPlayListByUserId } = UserLibraryApi();
-
+  const {reload,setReload} = useContext(ReloadContext)
   const {songArray,setSongArray} = useContext(SongContext)
   //show pop up
   const [showAddPlayList,setShowAddPlayList] = useState(false); 
@@ -45,9 +46,13 @@ const UserLibrary = () => {
     //passing playlist name and userid
     addPlayList(playlist,id)
     .then((response)=>{
-      console.log(response)
+      setShowAddPlayList(false)
+      alert(response.message)
+      setReload(!reload)
+      // console.log(response)
     }).catch((err)=>console.log(err +" when creating playlists"));
-    alert("Clicked");
+
+  
   };
 
   useEffect(()=>{
@@ -57,7 +62,7 @@ const UserLibrary = () => {
       setUserPlayLists(response)
     }).catch((err)=> console.log(err +" when displaying user's playlists"));
 
-  },[])
+  },[id,reload])
   console.log(playlist)
 
 
@@ -67,7 +72,7 @@ const UserLibrary = () => {
       {
         showAddPlayList &&
         <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center bg-transparent backdrop-blur-sm">
-        <div className="w-[50rem] h-[20rem] top-1/4 rounded-3xl bg-[#080808] left-[25%]">
+        <div className="w-[50rem]  h-[20rem] top-1/4 rounded-3xl bg-[#080808] left-[25%]">
           <form
             onSubmit={handleSubmit}
             className="flex flex-col items-center justify-center w-full h-full gap-8 "
@@ -76,7 +81,7 @@ const UserLibrary = () => {
             <input
               onChange={(e) => setPlaylist({...playlist,name:e.target.value})}
               type="text"
-              className="w-[90%] text-black px-3 py-2 text-xl border rounded-2xl"
+              className="w-[90%] text-black px-3 py-2 text-xl border rounded-2xl "
               placeholder="Enter playlist name"
             />
             <div className="flex justify-around w-full">
@@ -96,7 +101,7 @@ const UserLibrary = () => {
       <div className="flex h-full px-20 mt-5 rounded-3xl gap-x-10">
         {/* left  */}
         <div className="w-[30%] rounded-3xl px-5 py-10 bg-[#161616] h-full">
-          <div className="w-full px-5 h-[90vh] overflow-y-auto bg-[#0F0F0F] ">
+          <div className="w-full px-5 h-[90vh] overflow-y-auto pb-32 bg-[#0F0F0F] ">
             <div className="flex justify-between w-full ">
               <h2 className="px-5 py-5 text-2xl font-bold">Playlists</h2>
               <button className="mr-5">
