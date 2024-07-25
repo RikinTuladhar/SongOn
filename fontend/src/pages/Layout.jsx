@@ -13,9 +13,7 @@ const Layout = () => {
     <div className="relative w-full">
       <Navbar />
       <Outlet context={{ genreId, setGenreId, artistId, setArtistId }} />
-      <div className="flex justify-center">
         <SongPlayer />
-      </div>
       {/* <Footer /> */}
     </div>
   );

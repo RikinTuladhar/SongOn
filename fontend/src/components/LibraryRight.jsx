@@ -9,14 +9,12 @@ import { GiCheckMark } from "react-icons/gi";
 const LibraryRight = ({ songs, artistName }) => {
   const userDetails = useSelector((state) => state.userDetails);
   const { addSongToPlayList, displayPlayListByUserId } = UserLibraryApi();
-  const { setSongId, songClickedId, setSongClickedId } =
-    useContext(SongContext);
+  const { setSongId, songClickedId, setSongClickedId } =useContext(SongContext);
   const [filteredSong, setFilteredSong] = useState([]);
   const [searchFocus, setSearchFocus] = useState(false);
   const [playlist, setPlaylist] = useState([{ name: "" }]);
   const [activeFormIndex, setActiveFormIndex] = useState(null);
-  const [selectedIdPlayListFromSelect, setSelectedIdPlayListFromSelect] =
-    useState("");
+  const [selectedIdPlayListFromSelect, setSelectedIdPlayListFromSelect] =useState(0);
 
   console.log(selectedIdPlayListFromSelect);
 
@@ -39,6 +37,7 @@ const LibraryRight = ({ songs, artistName }) => {
     displayPlayListByUserId(userDetails.id)
       .then((res) => {
         setPlaylist(res);
+        setSelectedIdPlayListFromSelect(res[0].id);
       })
       .catch((err) =>
         console.log("Error when fetching playlist by userid", err)
@@ -97,7 +96,7 @@ const LibraryRight = ({ songs, artistName }) => {
                       </span>
                     ))}
                   </div>
-                  <div className="relative">
+                  {userDetails.role == "USER" && <div className="relative">
                     <button
                       onClick={() =>
                         setActiveFormIndex(activeFormIndex === i ? null : i)
@@ -140,7 +139,7 @@ const LibraryRight = ({ songs, artistName }) => {
                       )}
                     </div>
                    
-                  </div>
+                  </div>}
                 </div>
               ))
             )}

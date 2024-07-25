@@ -2,7 +2,8 @@ import { data } from "autoprefixer";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
-
+import { CiRead } from "react-icons/ci";
+import { CiUnread } from "react-icons/ci";
 const SongPlayer = () => {
   const { songClickedId, songArray } = useContext(SongContext);
   const { reload, setReload } = useContext(ReloadContext);
@@ -82,14 +83,16 @@ const SongPlayer = () => {
           </div>
         </div>
       )}
-      <div className={`fixed border rounded-lg bottom-4`}>
+      <div
+        className={`fixed w-[80%] left-[50%] -translate-x-[50%] border rounded-lg bottom-4`}
+      >
         <footer className="bg-[#000000] py2 rounded-lg shadow">
           <div className="flex flex-col w-full max-w-screen-xl gap-6 mx-auto md:gap-5 md:p-5 md:justify-center md:items-center">
             <div className="text-[#E5E7EB] pt-1  justify-center items-center mx-auto md:px-0 gap-10 flex  md:gap-5">
               {/* song:  */}
-              <div className="flex gap-2 text-base text-white md:px-10">
-                <span>Song:</span>
-                <span>
+              <div className="flex gap-2 text-xl font-semibold text-white md:px-10">
+                <span className="bg-gradient-to-l from-[#5c747e] to-[#c9d4d8] bg-clip-text text-transparent">Song :</span>
+                <span className="text-transparent bg-gradient-to-br from-[#b1b8c8] to-[#afb1ca] bg-clip-text">
                   {songArray && songArray[currentIndex]?.name
                     ? songArray[currentIndex].name
                     : ""}
@@ -108,17 +111,29 @@ const SongPlayer = () => {
               </div> */}
               {lyricsClicked ? (
                 <div
-                  className="md:px-10 text-sm text-[#E5E7EB] cursor-pointer bg-gradient-to-bl from-red-600 to-purple-800 bg-clip-text text-transparent"
+                  className="text-xl font-semibold md:px-10  text-[#E5E7EB] cursor-pointer bg-gradient-to-l from-[#797dd3] to-[#cbafaf] bg-clip-text text-transparent"
                   onClick={() => setLyricsClicked(!lyricsClicked)}
                 >
-                  Hide Lyrics
+                 <div className="flex items-center justify-center gap-5">
+                    Hide Lyrics{" "}
+                    <div>
+                      {" "}
+                      <CiUnread size={25} className="text-white" />
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div
-                  className="md:px-10 text-sm text-[#E5E7EB] cursor-pointer bg-gradient-to-bl from-red-600 to-purple-800 bg-clip-text text-transparent"
+                  className="text-xl   font-semibold md:px-10  text-[#E5E7EB] cursor-pointer bg-gradient-to-l from-[#797dd3] to-[#cbafaf] bg-clip-text text-transparent"
                   onClick={() => setLyricsClicked(!lyricsClicked)}
                 >
-                  Show Lyrics
+                  <div className="flex items-center justify-center gap-5">
+                    Show Lyrics{" "}
+                    <div>
+                      {" "}
+                      <CiRead size={25}  className="text-white" />
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
