@@ -17,10 +17,10 @@ const UserLibraryApi = () => {
     }
   }
 
-  async function addSongToPlayList(value, playlist_id,song_id) {
+  async function addSongToPlayList(playlist_id,song_id) {
     try {
       const URL = `${baseUrl}/playlist_id/${playlist_id}/song_id/${song_id}`;
-      const response = await axios.post(URL, value);
+      const response = await axios.post(URL);
       const data = await response.data;
       console.log(data);
       return data;
