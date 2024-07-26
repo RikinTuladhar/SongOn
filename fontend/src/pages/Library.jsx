@@ -6,22 +6,23 @@ import { useOutletContext, useParams } from "react-router-dom";
 import { SongContext } from "../contextprovider/SongProvider";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import GenreApi from "../Apis/GenreApi";
+import { useDispatch, useSelector } from "react-redux";
+import {handleSongArray} from "../Apis/SongSlice"
 
 const Library = () => {
-  const { setSongArray } = useContext(SongContext);
+  const dispatch = useDispatch();
+  const songs = useSelector((state)=> state.song.songs);
+  console.log(songs)
   const { reload, setReload } = useContext(ReloadContext);
   const { getGenreById } = GenreApi();
   const { id } = useParams();
-  const [songs, setSongs] = useState([]);
   const { setGenreId } = useOutletContext();
 
   useEffect(() => {
     setGenreId(id);
     getGenreById(id).then((res) => {
-      // setAPI(`${API}/by-genre/${id}`)
       console.log(res)
-      setSongs(res);
-      setSongArray(res);
+      dispatch(handleSongArray(res));
       setReload(true);
       return () => {
         setReload(false);

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 const SideBar = () => {
   const [hide, setHide] = useState(false);
   const dispatch = useDispatch();
-  const userDetails = useSelector((state) => state.userDetails);
+  const userDetails = useSelector((state) => state.user.userDetails);
   console.log(userDetails);
   useEffect(() => {
     dispatch(getUser());

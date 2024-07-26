@@ -1,12 +1,15 @@
-import React, { useContext } from "react";
-import { SongContext } from "../contextprovider/SongProvider";
-
+import React, { useContext, useEffect } from "react";
+import { useSelector } from "react-redux";
 const LibraryLeft = () => {
-  const { songArray, songClickedId } = useContext(SongContext);
+  // const { songArray, songClickedId } = useContext(SongContext);
+  const songClickedId = useSelector((state)=>state.song?.songIndex)
+  const songs = useSelector((state)=>state?.song?.songs)
+  console.log(songClickedId)
+  console.log(songs)
+  // console.log(songClickedId)
+  // Check if songs and songClickedId are defined and valid
 
-  // Check if songArray and songClickedId are defined and valid
-  const song = songArray && songArray[songClickedId];
-  const artist = song && song.artist && song.artist[0];
+
 
   return (
     <>
@@ -19,13 +22,13 @@ const LibraryLeft = () => {
           <div className="w-full py-5 md:px-5 md:py-10 rounded-lg bg-[#111827] flex flex-col gap-5 justify-center items-center">
             <div className="w-[200px] md:min-w-[250px]">
               <img
-                src={song ? song.img_path : "/Artist/future.jpg"}
+                src={songs[songClickedId] ? songs[songClickedId].img_path : "/Artist/future.jpg"}
                 onError={(e) => (e.target.src = "/Artist/future.jpg")}
                 alt="image"
                 className="w-full h-full rounded"
               />
             </div>
-            <div className="text-2xl text-[#FFFFFF]">{song ? song.name : ""}</div>
+            <div className="text-2xl text-[#FFFFFF]">{songs[songClickedId] ? songs[songClickedId]?.name : ""}</div>
             <div className="text-lg text-[#E5E7EB]">Artist</div>
           </div>
           {/* bottom card */}
@@ -33,8 +36,9 @@ const LibraryLeft = () => {
             <div className="w-full">
               <img
                 src={
-                  artist && artist.imgArtist
-                    ? artist.imgArtist
+                  
+                  songs[songClickedId]?.artist[0] && songs[songClickedId]?.artist[0].imgArtist != undefined
+                    ? songs[songClickedId]?.artist[0].imgArtist
                     : "/Artist/future.jpg"
                 }
                 onError={(e) => (e.target.src = "/Artist/future.jpg")}
@@ -44,7 +48,7 @@ const LibraryLeft = () => {
             </div>
             <div className="flex flex-col gap-2 px-5">
               <div className="text-xl text-[#FFFFFF]">
-                {artist ? artist.name : ""}
+                {songs[songClickedId]?.artist[0] ? songs[songClickedId]?.artist[0].name : ""}
               </div>
               <div className="text-lg text-[#E5E7EB]">Artist</div>
               <div className="text-base text-[#E5E7EB]">

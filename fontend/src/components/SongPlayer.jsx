@@ -1,17 +1,15 @@
-import { data } from "autoprefixer";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
-import { ReloadContext } from "../contextprovider/ReloadProvider";
-import { SongContext } from "../contextprovider/SongProvider";
 import { CiRead } from "react-icons/ci";
 import { CiUnread } from "react-icons/ci";
+import { useSelector } from "react-redux";
+// import {songClickedId} from "../Apis/SongSlice"
 const SongPlayer = () => {
-  const { songClickedId, songArray } = useContext(SongContext);
-  const { reload, setReload } = useContext(ReloadContext);
+  const songClickedId = useSelector((state)=>state.song?.songIndex)
+  const songs = useSelector((state)=>state.song.songs)
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
   const [lyricsClicked, setLyricsClicked] = useState(false);
-  console.log(songArray[currentIndex]);
-  console.log(currentIndex);
 
   const playAudio = () => {
     const playPromise = audioRef.current.play();
@@ -23,10 +21,10 @@ const SongPlayer = () => {
   };
 
   const previousSong = () => {
-    if (!songArray || songArray.length === 0) return;
+    if (!songs || songs.length === 0) return;
 
     if (currentIndex <= 0) {
-      setCurrentIndex(songArray.length - 1);
+      setCurrentIndex(songs.length - 1);
     } else {
       setCurrentIndex((prevIndex) => prevIndex - 1);
     }
@@ -36,9 +34,9 @@ const SongPlayer = () => {
   };
 
   const nextSong = () => {
-    if (!songArray || songArray.length === 0) return;
+    if (!songs || songs.length === 0) return;
 
-    if (currentIndex < songArray.length - 1) {
+    if (currentIndex < songs.length - 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
     } else {
       setCurrentIndex(0);
@@ -61,7 +59,7 @@ const SongPlayer = () => {
   };
 
   useEffect(() => {
-    if (!songArray || songArray.length === 0) return;
+    if (!songs || songs.length === 0) return;
     setCurrentIndex(songClickedId);
     audioRef.current.load();
     playAudio();
@@ -70,13 +68,13 @@ const SongPlayer = () => {
   return (
     <>
       {lyricsClicked && (
-        <div className="absolute pb-40 md:px-52 w-full h-full px-5 top-10 py-5 rounded-lg mt-10 overflow-auto text-white bg-[#000000]">
+        <div className="absolute  md:px-52 w-full h-full px-5 top-10 pt-5 pb-52 overflow-auto rounded-lg mt-10  text-white bg-[#000000]">
           <div className="py-10 bg-black md:w-full rounded-2xl">
             <div className="relative flex flex-col items-center justify-center w-full h-full gap-10">
               <span className="text-4xl font-bold">Lyrics</span>
-              <span className="w-full h-auto text-sm font-bold text-center whitespace-pre-wrap md:text-xl md:tracking-widest">
-                {songArray && songArray[currentIndex]?.lyrics
-                  ? songArray[currentIndex].lyrics
+              <span className="w-full h-auto text-sm font-semibold text-center whitespace-pre-wrap md:text-xl md:tracking-widest">
+                {songs && songs[currentIndex]?.lyrics
+                  ? songs[currentIndex].lyrics
                   : "No lyrics available"}
               </span>
             </div>
@@ -93,8 +91,8 @@ const SongPlayer = () => {
               <div className="flex gap-2 text-xl font-semibold text-white md:px-10">
                 <span className="bg-gradient-to-l from-[#5c747e] to-[#c9d4d8] bg-clip-text text-transparent">Song :</span>
                 <span className="text-transparent bg-gradient-to-br from-[#b1b8c8] to-[#afb1ca] bg-clip-text">
-                  {songArray && songArray[currentIndex]?.name
-                    ? songArray[currentIndex].name
+                  {songs && songs[currentIndex]?.name
+                    ? songs[currentIndex].name
                     : ""}
                 </span>
               </div>
@@ -103,8 +101,8 @@ const SongPlayer = () => {
                 <div>
                   <span>Artist:</span>
                   <span>
-                    {songArray && songArray[currentIndex]?.artist
-                      ? songArray[currentIndex]?.artist[0]?.name
+                    {songs && songs[currentIndex]?.artist
+                      ? songs[currentIndex]?.artist[0]?.name
                       : ""}
                   </span>
                 </div>
@@ -161,9 +159,9 @@ const SongPlayer = () => {
                   controls
                   width="600px"
                 >
-                  {songArray && songArray[currentIndex] && (
+                  {songs && songs[currentIndex] && (
                     <source
-                      src={songArray[currentIndex]?.autoPath}
+                      src={songs[currentIndex]?.autoPath}
                       type="audio/mpeg"
                     />
                   )}

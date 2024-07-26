@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser, logOut } from "../Apis/UserSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
-  const userDetails = useSelector((state) => state.userDetails);
+  const userDetails = useSelector((state) => state.user.userDetails);
 
   // console.log(userDetails);
 

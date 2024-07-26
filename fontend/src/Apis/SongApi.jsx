@@ -4,11 +4,7 @@ import React from "react";
 const SongApi = () => {
   const baseUrl = "http://localhost:8080";
   const token= localStorage.getItem("token");
-  const config  = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-  }
+
 
   async function getSong() {
     const URL = baseUrl + "/song";
@@ -40,7 +36,7 @@ const SongApi = () => {
     const URL = baseUrl + `/song/uploadSong/${gId}/${aId}`;
     console.log(URL);
     try {
-      const response = await axios.post(URL, song,config);
+      const response = await axios.post(URL, song);
       const data = await response.data;
       console.log(data);
       return data;
@@ -55,7 +51,7 @@ const SongApi = () => {
     const URL = baseUrl + `/song/delete/${id}`;
     console.log(URL);
     try {
-      const response = await axios.delete(URL,config);
+      const response = await axios.delete(URL);
       const data = await response.data;
       console.log(data);
       return data;

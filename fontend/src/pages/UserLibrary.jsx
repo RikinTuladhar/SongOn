@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CardLib from "../components/CardLib";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
@@ -9,9 +9,12 @@ import axios from "axios";
 import UserLibraryApi from "../Apis/UserLibraryApi";
 import { SongContext } from "../contextprovider/SongProvider";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
+import {handleSongArray,handleSetSongIndex} from "../Apis/SongSlice"
 const UserLibrary = () => {
+  const dispatch = useDispatch();
+  const songs = useSelector((state)=>state.song.songs)
   //for user details extract from slice
-  const userDetails = useSelector((state) => state.userDetails);
+  const userDetails = useSelector((state) => state.user.userDetails);
   const { id, firstName, lastname, role, username } = userDetails;
   //api call
   const {
@@ -33,7 +36,7 @@ const UserLibrary = () => {
       .then((response) => {
         console.log(response);
         setNowPlayingList(response.name);
-        setSongArray(response.songModels);
+        dispatch(handleSongArray(response.songModels))
       })
       .catch((err) => console.log(err + " when displaying playlist's songs"));
   }
@@ -60,7 +63,8 @@ const UserLibrary = () => {
   };
 
   useEffect(() => {
-    setSongArray([]);
+    
+    dispatch(handleSongArray([]))
     displayPlayListByUserId(userDetails.id)
       .then((response) => {
         console.log(response);
@@ -69,6 +73,11 @@ const UserLibrary = () => {
       .catch((err) => console.log(err + " when displaying user's playlists"));
   }, [id, reload]);
   console.log(playlist);
+
+
+  function playSongByClick(songIndex){
+    dispatch(handleSetSongIndex(songIndex))
+  }
 
   return (
     <div className="w-full h-[auto] text-white pb-10 bg-black">
@@ -150,10 +159,11 @@ const UserLibrary = () => {
             <div className="w-[95%] mx-2 h-[5px] bg-black"></div>
             <div className="w-full px-10 py-10 h-[78vh]  gap-10 overflow-y-auto bg-[#0F0F0F]">
               {/* cards */}
-              {songArray.map((songs, i) => (
+              {songs.map((songs, i) => (
                 <div
+                onClick={(e)=>playSongByClick(i)}
                   key={i}
-                  className="w-[100%] flex justify-around items-center   h-[5rem] bg-[#090909]"
+                  className="hover:bg-[#161616] cursor-pointer w-[100%] flex justify-around items-center   h-[5rem] bg-[#090909]"
                 >
                   <span>{songs.name}</span>
                   <button>

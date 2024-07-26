@@ -1,15 +1,16 @@
 import React, { memo, useContext, useEffect, useState } from "react";
 import { SongContext } from "../contextprovider/SongProvider";
 import UserLibraryApi from "../Apis/UserLibraryApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { CiCircleRemove } from "react-icons/ci";
 import { GiCheckMark } from "react-icons/gi";
-
+import {handleSetSongIndex} from "../Apis/SongSlice"
 const LibraryRight = ({ songs, artistName }) => {
-  const userDetails = useSelector((state) => state.userDetails);
+  const dispatch = useDispatch();
+  const userDetails = useSelector((state) => state.user.userDetails);
   const { addSongToPlayList, displayPlayListByUserId } = UserLibraryApi();
-  const { setSongId, songClickedId, setSongClickedId } =useContext(SongContext);
+  const { setSongId,} =useContext(SongContext);
   const [filteredSong, setFilteredSong] = useState([]);
   const [searchFocus, setSearchFocus] = useState(false);
   const [playlist, setPlaylist] = useState([{ name: "" }]);
@@ -20,12 +21,13 @@ const LibraryRight = ({ songs, artistName }) => {
 
   const handleSong = async (songId, songIndex) => {
     setSongId(songId);
-    setSongClickedId(songIndex);
+    // setSongClickedId(songIndex);
+    dispatch(handleSetSongIndex(songIndex))
   };
 
   const handleSearch = (e) => {
     const searching = e.target.value.toLowerCase().trim();
-    const filtered = songs.filter((item) =>
+    const filtered = songs?.filter((item) =>
       item.name.toLowerCase().includes(searching)
     );
     setFilteredSong(filtered);
@@ -50,7 +52,9 @@ const LibraryRight = ({ songs, artistName }) => {
     console.log(selectedIdPlayListFromSelect + " " + songId);
     addSongToPlayList(selectedIdPlayListFromSelect, songId)
       .then((res) => {
-        console.log(res);
+        alert(res.message)
+        // console.log(res);
+        setActiveFormIndex(null)
       })
       .catch((err) =>
         console.log(
@@ -58,6 +62,8 @@ const LibraryRight = ({ songs, artistName }) => {
         )
       );
   }
+
+
 
   return (
     <div className="w-full md:w-[70%] h-[100vh] overflow-y-auto mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
@@ -81,9 +87,9 @@ const LibraryRight = ({ songs, artistName }) => {
             {songs?.length === 0 ? (
               <div className="text-xl tracking-wider">No Songs Available</div>
             ) : (
-              (searchFocus ? filteredSong : songs).map((song, i) => (
+              (searchFocus ? filteredSong : songs)?.map((song, i) => (
                 <div
-                  onClick={() => handleSong(song.id, i)}
+                  onClick={() => handleSong(song?.id, i)}
                   key={i}
                   className="text-[#E5E7EB] hover:cursor-pointer md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
                 >
