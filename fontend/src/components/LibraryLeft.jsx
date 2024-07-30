@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { Suspense, useContext, useEffect } from "react";
 import { useSelector } from "react-redux";
 const LibraryLeft = () => {
   // const { songArray, songClickedId } = useContext(SongContext);
@@ -12,7 +12,7 @@ const LibraryLeft = () => {
 
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       {/* left */}
       <div className="md:w-[25%] md:h-[100vh] pb-10 mt-3 overflow-y-auto px-5 py-10 p-5 text-2xl bg-[#11111182] rounded-xl">
         <h1 className="text-2xl text-[#E5E7EB]">Brief</h1>
@@ -58,7 +58,7 @@ const LibraryLeft = () => {
           </div>
         </div>
       </div>
-    </>
+    </Suspense>
   );
 };
 
