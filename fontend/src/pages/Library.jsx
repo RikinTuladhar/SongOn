@@ -12,7 +12,7 @@ import {handleSongArray} from "../Apis/SongSlice"
 const Library = () => {
   const dispatch = useDispatch();
   const songs = useSelector((state)=> state.song.songs);
-  console.log(songs)
+  // console.log(songs)
   const { reload, setReload } = useContext(ReloadContext);
   const { getGenreById } = GenreApi();
   const { id } = useParams();
@@ -21,7 +21,7 @@ const Library = () => {
   useEffect(() => {
     setGenreId(id);
     getGenreById(id).then((res) => {
-      console.log(res)
+      // console.log(res)
       dispatch(handleSongArray(res));
       setReload(true);
       return () => {

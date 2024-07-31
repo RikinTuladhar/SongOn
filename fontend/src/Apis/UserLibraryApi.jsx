@@ -10,7 +10,7 @@ const UserLibraryApi = () => {
       const URL = `${baseUrl}/user_id/${id}`;
       const response = await axios.post(URL, value);
       const data = await response.data;
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (e) {
       console.log(e);
@@ -22,7 +22,7 @@ const UserLibraryApi = () => {
       const URL = `${baseUrl}/playlist_id/${playlist_id}/song_id/${song_id}`;
       const response = await axios.post(URL);
       const data = await response.data;
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (e) {
       console.log(e);
@@ -33,7 +33,7 @@ const UserLibraryApi = () => {
     try{
       const response = await axios.get(`${baseUrl}/${id}`);
       const data = await response.data;
-      console.log(data)
+      // console.log(data)
       return data;
     }catch(e){
       console.log("error when fetching playlist by playlist id"+ e)
@@ -44,10 +44,35 @@ const UserLibraryApi = () => {
     try{
       const response = await axios.get(`${baseUrl}/by-user/${id}`);
       const data = await response.data;
-      console.log(data)
+      // console.log(data)
       return data;
     }catch(e){
       console.log("error when fetching playlist by user id"+ e)
+    }
+  }
+
+  async function deletePlayList (id){
+    const URL = `${baseUrl}/${id}` 
+    // console.log(URL)
+    try{
+      const response = await axios.delete(URL);
+      const data = await response.data;
+      // console.log(data)
+      return data;
+    }catch(e){
+      console.log(e + " Error when trying to delete playlist")
+    }
+  }
+
+  async function deleteSongFromPlayList( id){
+      const URL = `${baseUrl}/by-user/song_id/${id}`
+    try{
+      const response = await axios.delete(URL);
+      const data = await response.data.message;
+      console.log(data)
+      return data;
+    }catch(e){
+      console.log(e + " Error when trying to delete song from playlist")
     }
   }
 
@@ -57,7 +82,9 @@ const UserLibraryApi = () => {
     addPlayList,
     addSongToPlayList,
     displayPlayListByPlaylistId,
-    displayPlayListByUserId
+    displayPlayListByUserId,
+    deletePlayList,
+    deleteSongFromPlayList
   };
 };
 

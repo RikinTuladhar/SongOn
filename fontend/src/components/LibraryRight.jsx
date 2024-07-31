@@ -123,7 +123,8 @@ const LibraryRight = ({ songs, artistName }) => {
                          
                         >
                          <div><h1 className="text-xl text-center">Select Playlist</h1></div>
-                         <div className="flex gap-5 "> <select
+                         <div className="flex gap-5 "> 
+                          <select
                             onChange={(e) =>
                               setSelectedIdPlayListFromSelect(e.target.value)
                             }

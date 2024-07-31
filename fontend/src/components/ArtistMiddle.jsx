@@ -1,41 +1,76 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { handleSetSongIndex } from "../Apis/SongSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { IoIosAddCircleOutline } from "react-icons/io";
+import { CiCircleRemove } from "react-icons/ci";
+import { GiCheckMark } from "react-icons/gi";
+import UserLibraryApi from "../Apis/UserLibraryApi";
+
 const ArtistMiddle = ({ songs, artistName }) => {
   const dispatch = useDispatch();
+  const userDetails = useSelector((state) => state.user.userDetails);
   console.log(songs);
-
+  const [activeFormIndex, setActiveFormIndex] = useState(null);
+  const [playlist, setPlaylist] = useState([{ name: "" }]);
+  const [selectedIdPlayListFromSelect, setSelectedIdPlayListFromSelect] =
+    useState(0);
   // click play song
+  const { addSongToPlayList, displayPlayListByUserId } = UserLibraryApi();
+
+  useEffect(() => {
+    displayPlayListByUserId(userDetails?.id)
+      .then((res) => {
+        setPlaylist(res);
+        console.log(res);
+        setSelectedIdPlayListFromSelect(res[0].id);
+      })
+      .catch((err) =>
+        console.log("Error when fetching playlist by userid", err)
+      );
+  }, [userDetails?.id]);
+
   const handleSong = (songId, clickedSongId) => {
     dispatch(handleSetSongIndex(clickedSongId));
-    console.log(songId);
-    console.log(clickedSongId);
+    // console.log(songId);
+    // console.log(clickedSongId);
   };
 
-  return (
-    
-      <div className="w-full md:w-[70%] h-[100vh] overflow-y-auto  mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
-        <h1 className="text-lg  md:text-2xl text-[#E5E7EB] ">
-          Songs List {artistName ? `: ${artistName} ` : ""}
-        </h1>
-        <div className="w-full mt-10 md:mt-3 h-[2px] bg-black "></div>
-        {/* bottom  */}
-        <div className="w-full h-auto mt-5">
-          {/* songs list  */}
-          <div className="w-full h-auto px-2 flex justify-center items-center flex-col gap-2 py-4 md:py-10 bg-[#0f0f0f]">
-            {/* headings */}
-            {/* <div className="text-[#E5E7EB] mb-5 md:px-10 w-full h-5 items-center  flex justify-around md:justify-between">
-          <div className=" md:w-[20%] text-base md:text-lg text-left  font-bold"> #</div>
-          <div className="text-base font-bold text-center md:w-full md:text-lg">Song - Name</div> */}
-            {/* <div className="w-full text-base font-bold text-center md:text-lg">Artists</div> */}
-            {/* </div> */}
+  function handleAddUserSongToPlayList(e, songId) {
+    e.preventDefault();
+    // console.log(e);
+    // console.log(selectedIdPlayListFromSelect + " " + songId);
+    addSongToPlayList(selectedIdPlayListFromSelect, songId)
+      .then((res) => {
+        alert(res.message);
+        // console.log(res);
+        setActiveFormIndex(null);
+      })
+      .catch((err) =>
+        console.log(
+          err + " Error when posting playlist by song id and playlist id"
+        )
+      );
+  }
 
-            <div className="text-[#E5E7EB] mt-5 mb-5 md:px-10 w-full  items-center flex-wrap flex justify-around md:justify-between">
-              {songs?.length === 0 ? (
-                <div className="text-xl tracking-wider">No Songs Available</div>
-              ) : (
-                songs?.map((song, i) => (
+  return (
+    <div className="w-full md:w-[70%] h-[100vh] overflow-y-auto  mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
+      <h1 className="text-lg  md:text-2xl text-[#E5E7EB] ">
+        Songs List {artistName ? `: ${artistName} ` : ""}
+      </h1>
+      <div className="w-full mt-10 md:mt-3 h-[2px] bg-black "></div>
+      {/* bottom  */}
+      <div className="w-full h-auto mt-5">
+        {/* songs list  */}
+        <div className="w-full h-auto px-2 flex justify-center items-center flex-col gap-2 py-4 md:py-10 bg-[#0f0f0f]">
+          {/* headings */}
+          <div className="text-[#E5E7EB] mt-5 mb-5 md:px-10 w-full  items-center flex-wrap flex justify-around md:justify-between">
+            {songs?.length === 0 ? (
+              <div className="text-xl tracking-wider">No Songs Available</div>
+            ) : (
+              songs?.map((song, i) => (
+                
                   <div
                     onClick={(e) => handleSong(song.id, i)}
                     key={i}
@@ -56,19 +91,69 @@ const ArtistMiddle = ({ songs, artistName }) => {
                         ? song?.name
                         : song?.name.slice(0, 60) + "..."}
                     </div>
-                    {/* <div key={song.id} className="text-center md:w-full">{song?.artist?.slice(0,3).map((artist)=>(
-        <span className='ml-3' key={artist?.id}>
-        {artist?.name}
-        </span>
-        ))} <span>..</span> </div> */}
+                    {userDetails.role == "USER" && (
+                    <div className="relative">
+                      <button
+                        onClick={() =>
+                          setActiveFormIndex(activeFormIndex === i ? null : i)
+                        }
+                      >
+                        {activeFormIndex === i ? (
+                          <CiCircleRemove size={25} />
+                        ) : (
+                          <IoIosAddCircleOutline size={25} />
+                        )}
+                      </button>
+                      <div className="absolute right-0 z-50 top-10">
+                        {activeFormIndex === i && (
+                          <form
+                            onSubmit={(e) =>
+                              handleAddUserSongToPlayList(e, song.id)
+                            }
+                            className="px-5 space-y-3  bg-[#000000] py-2 rounded-2xl"
+                          >
+                            <div>
+                              <h1 className="text-xl text-center">
+                                Select Playlist
+                              </h1>
+                            </div>
+                            <div className="flex gap-5 ">
+                              <select
+                                onChange={(e) =>
+                                  setSelectedIdPlayListFromSelect(
+                                    e.target.value
+                                  )
+                                }
+                                className="flex items-center justify-between h-8 text-black hover:cursor-pointer md:px-10"
+                              >
+                                <option value="" disabled>
+                                  Select
+                                </option>
+                                {playlist?.map((item) => (
+                                  <option key={item?.id} value={item?.id}>
+                                    {item.name}
+                                  </option>
+                                ))}
+                              </select>
+
+                              <button type="submit">
+                                <GiCheckMark />
+                              </button>
+                            </div>
+                          </form>
+                        )}
+                      </div>
+                    </div>
+                  )}
                   </div>
-                ))
-              )}
-            </div>
+                  
+                
+              ))
+            )}
           </div>
         </div>
       </div>
-    
+    </div>
   );
 };
 

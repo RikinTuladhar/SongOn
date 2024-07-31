@@ -15,13 +15,14 @@ const UserLibrary = () => {
   const songs = useSelector((state)=>state.song.songs)
   //for user details extract from slice
   const userDetails = useSelector((state) => state.user.userDetails);
-  const { id, firstName, lastname, role, username } = userDetails;
   //api call
   const {
     addPlayList,
     addSongToPlayList,
     displayPlayListByPlaylistId,
     displayPlayListByUserId,
+    deletePlayList,
+    deleteSongFromPlayList
   } = UserLibraryApi();
   const { reload, setReload } = useContext(ReloadContext);
   const { songArray, setSongArray } = useContext(SongContext);
@@ -52,7 +53,7 @@ const UserLibrary = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     //passing playlist name and userid
-    addPlayList(playlist, id)
+    addPlayList(playlist, userDetails?.id)
       .then((response) => {
         setShowAddPlayList(false);
         alert(response.message);
@@ -63,20 +64,46 @@ const UserLibrary = () => {
   };
 
   useEffect(() => {
-    
     dispatch(handleSongArray([]))
-    displayPlayListByUserId(userDetails.id)
+    displayPlayListByUserId(userDetails?.id)
       .then((response) => {
         console.log(response);
         setUserPlayLists(response);
       })
       .catch((err) => console.log(err + " when displaying user's playlists"));
-  }, [id, reload]);
-  console.log(playlist);
+  }, [userDetails?.id, reload]);
+  // console.log(playlist);
 
 
   function playSongByClick(songIndex){
     dispatch(handleSetSongIndex(songIndex))
+  }
+
+  function handleDeletePlayList(id){
+   const isDelete = confirm("Are you sure you want to delete?");
+   if(isDelete){
+     // console.log(id)
+     deletePlayList(id)
+     .then((res)=>{
+       alert(res)
+       setReload(!reload);
+     }).catch((err)=> console.log(err + " Error when trying to delete playlist"))
+   }else{
+    return
+   }
+  }
+
+  function handleDeleteSongFromPlayList(songId){
+   const isDelete = confirm("Are you sure you want to delete?");
+   if(isDelete){
+    deleteSongFromPlayList(songId)
+    .then((res)=>{
+      alert(res);
+      setReload(!reload);
+    }).catch((err)=>console.log(err + " Error when trying to delete playlist"))
+   }else{
+    return;
+   }
   }
 
   return (
@@ -84,6 +111,7 @@ const UserLibrary = () => {
       <Navbar />
       {showAddPlayList && (
         <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center bg-transparent backdrop-blur-sm">
+          {/* creating playlist form  */}
           <div className="w-[50rem]  h-[20rem] top-1/4 rounded-3xl bg-[#080808] left-[25%]">
             <form
               onSubmit={handleSubmit}
@@ -118,7 +146,7 @@ const UserLibrary = () => {
         </div>
       )}
       <h1 className="text-3xl text-center text-white ">
-        {username.toUpperCase()}'s Library
+        {userDetails?.username.toUpperCase()}'s Library
       </h1>
       <div className="flex h-full px-20 mt-5 rounded-3xl gap-x-10">
         {/* left  */}
@@ -142,7 +170,7 @@ const UserLibrary = () => {
                 className="w-full  justify-between px-5 mt-10  items-center  flex my-2  h-[4.2rem] rounded-2xl bg-[rgb(45,43,43)]"
               >
                 <h2>{userPlayList.name}</h2>
-                <button>
+                <button onClick={e=>handleDeletePlayList(userPlayList.id)}>
                   <MdDeleteOutline size={25} />
                 </button>
               </div>
@@ -159,14 +187,14 @@ const UserLibrary = () => {
             <div className="w-[95%] mx-2 h-[5px] bg-black"></div>
             <div className="w-full px-10 py-10 h-[78vh]  gap-10 overflow-y-auto bg-[#0F0F0F]">
               {/* cards */}
-              {songs.map((songs, i) => (
+              {songs.map((song, i) => (
                 <div
                 onClick={(e)=>playSongByClick(i)}
                   key={i}
                   className="hover:bg-[#161616] cursor-pointer w-[100%] flex justify-around items-center   h-[5rem] bg-[#090909]"
                 >
-                  <span>{songs.name}</span>
-                  <button>
+                  <span>{song.name}</span>
+                  <button onClick={(e)=>handleDeleteSongFromPlayList(song.id)}>
                     <MdDeleteOutline size={25} />
                   </button>
                 </div>

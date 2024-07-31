@@ -58,7 +58,7 @@ public class PlayListController {
        return ResponseEntity.ok(playlists);
     }
 
-    @PostMapping("user_id/{id}")
+    @PostMapping("/user_id/{id}")
     public ResponseEntity<?> addToPlayListToUser(@RequestBody PlayListModel playListModel,@PathVariable int id) {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){   
@@ -74,7 +74,7 @@ public class PlayListController {
     }
 
 
-    @PostMapping("playlist_id/{p_id}/song_id/{s_id}")
+    @PostMapping("/playlist_id/{p_id}/song_id/{s_id}")
     public ResponseEntity<?> addSongToPlayList(@PathVariable("p_id") int p_id,@PathVariable("s_id") int s_id) {
         Optional<PlayListModel> playlist = playListRepo.findById(p_id);
         Optional<SongModel> song = songRepo.findById(s_id);
@@ -104,5 +104,19 @@ public class PlayListController {
             return ResponseEntity.badRequest().body(errorMessage);
         }
     }    
+
+    @DeleteMapping("/by-user/song_id/{id}")
+    public ResponseEntity<?> deleteSongFromPlayList(@PathVariable("id") int id){
+        Integer count = playListRepo.countSongIdInPlayListBridgeTable(id);
+        if(count > 0){
+            playListRepo.deleteSongIdInPlayListBridgeTable(id);
+                Message message = new Message("Deleted song from playlist");
+                return ResponseEntity.ok(message);
+        }
+        else{
+            ErrorMessage errorMessage = new ErrorMessage("Did not found any song in playlist");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+    }
     
 }
