@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,25 +29,13 @@ public class SongModel {
     @Column(name = "lyrics", length =5000)
     private String lyrics;
 
-    @Override
-    public String toString() {
-        return "SongModel{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", autoPath='" + autoPath + '\'' +
-                ", imgPath='" + imgPath + '\'' +
-                ", artists=" + artists +
-                ", genre=" + genre +
-                '}';
-    }
 
     @JsonIgnore
     @ManyToMany(mappedBy = "songs")
-    private Set<ArtistModel> artists = new HashSet<>();
-
+    private List<ArtistModel> artists = new ArrayList<>();
     @JsonIgnore
     @ManyToMany(mappedBy = "songs")
-    private Set<GenreModel> genre = new HashSet<>();
+    private List<GenreModel> genre = new ArrayList<>();
 
     
     @ManyToMany(mappedBy = "songModels")

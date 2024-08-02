@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,11 +32,10 @@ public class GenreModel {
             joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name ="song_id")
     )
-    private Set<SongModel> songs = new HashSet<>();
+    private List<SongModel> songs = new ArrayList<>();
     //important to do so that song data  it will be saved
     public void songs(SongModel songModel) {
         songs.add(songModel);
-
     }
 
 

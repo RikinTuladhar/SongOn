@@ -16,11 +16,10 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -83,20 +82,11 @@ public class SongController {
         return songWithArtistsDTOs;
     }
 
-
-    // Method to handle file upload
-//    @PostMapping("/uploadSong")
-//    @ResponseBody
-//    public SongModel uploadSong(@RequestBody SongModel songModel) {
-//    	songRepo.save(songModel);
-//    	return songModel;
-//    }
-
-    @PostMapping("/uploadSong/{generic_id}/{artist_id}")
+    @PostMapping("/uploadSong")
     public SongModel uploadSong(
             @RequestBody SongModel songModel,
-            @PathVariable int generic_id,
-            @PathVariable int artist_id
+            @RequestParam("generic_id") int generic_id,
+            @RequestParam("artist_id") int artist_id
     ) {
 
         ArtistModel artistModel = artistRepo.findById(artist_id).get();
@@ -154,6 +144,56 @@ public class SongController {
         }
     }
 
+    @PutMapping("/updateSong")
+    public ResponseEntity<?> updateSong(
+        @RequestBody SongModel songModel,
+        @RequestParam("generic_id") int generic_id,
+        @RequestParam("artist_id") int artist_id,
+        @RequestParam("song_id") int song_id
+    ) {
+        Optional<SongModel> songOptional = songRepo.findById(song_id);
+        Optional<ArtistModel> artistOptional = artistRepo.findById(artist_id);
+        Optional<GenreModel> genreOptional = genreRepo.findById(generic_id);
+    
+        Integer songIdArtistDelete = songRepo.findSongIdFromArtistSong(song_id);
+        Integer songIdGenreDelete = songRepo.findSongFromGenereSongModel(song_id);
+        System.out.println("Id of artist "+ songIdArtistDelete);
+        System.out.println("Id of genre "+ songIdGenreDelete);
+
+        if(songIdArtistDelete == null){
+            ErrorMessage errorMessage = new ErrorMessage("Cannot edit as it contains same rtist id");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+        if( songIdGenreDelete == null ){
+            ErrorMessage errorMessage = new ErrorMessage("Cannot edit as it contains same generic id");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+        if (songOptional.isPresent() && artistOptional.isPresent() && genreOptional.isPresent()) {
+            SongModel song = songOptional.get();
+            ArtistModel artist = artistOptional.get();
+            GenreModel genre = genreOptional.get();
+    
+            song.setName(songModel.getName());
+            song.setAutoPath(songModel.getAutoPath());
+            song.setImgPath(songModel.getImgPath());
+            song.setLyrics(songModel.getLyrics());
+            songRepo.deleteSongInArtistSongModel(songIdArtistDelete);
+            songRepo.deleteSongInGenreSongModel(songIdGenreDelete);
+
+            artist.songs(song);
+            genre.songs(song);
+            
+            genreRepo.save(genre);
+            artistRepo.save(artist);
+            songRepo.save(song);
+    
+            Message message = new Message("Updated song");
+            return ResponseEntity.ok(message);
+        } else {
+            ErrorMessage errorMessage = new ErrorMessage("Cannot find song");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        }
+    }
 
 
 }

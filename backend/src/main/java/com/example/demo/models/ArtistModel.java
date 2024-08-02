@@ -30,15 +30,6 @@ public class ArtistModel {
     private	String gender;
     private String imgArtist;
 
-    public ArtistModel(String name, int id, String bio, String gender, String imgArtist, Set<SongModel> songs) {
-        this.name = name;
-        this.id = id;
-        this.bio = bio;
-        this.gender = gender;
-        this.imgArtist = imgArtist;
-        this.songs = songs;
-    }
-
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -46,28 +37,10 @@ public class ArtistModel {
             joinColumns = @JoinColumn(name = "artist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id")
     )
-    private Set<SongModel> songs= new HashSet<>();
-
-
-
-    public Set<SongModel> getSongs() {
-        return songs;
-    }
+    private List<SongModel> songs= new ArrayList();
 
     public void songs(SongModel songModel) {
         songs.add(songModel);
     }
     
-    @Override
-    public String toString() {
-        return "ArtistModel [id=" + id + ", name=" + name + ", bio=" + bio + ", gender=" + gender + ", songs=" + songs
-                + "]";
-    }
-
-
-
-
-
-
-
 }

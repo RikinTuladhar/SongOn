@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.example.demo.models.GenreModel;
 import com.example.demo.models.SongModel;
@@ -25,54 +25,67 @@ public class GenreController {
     SongRepo songRepo;
 
     @GetMapping
-    public List<GenreModel> getGenre(){
+    public List<GenreModel> getGenre() {
         return genreRepo.findAll();
     }
 
     @PostMapping
     public ResponseEntity<?> addGenre(@RequestBody GenreModel genreModel) {
-       if(containAllFields(genreModel)){
-           genreRepo.save(genreModel);
-           Message message = new Message("Added Genre");
-           return ResponseEntity.ok(message);
-       }else {
-           ErrorMessage errorMessage = new ErrorMessage("Enter all fields");
-           return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
-       }
+        if (containAllFields(genreModel)) {
+            genreRepo.save(genreModel);
+            Message message = new Message("Added Genre");
+            return ResponseEntity.ok(message);
+        } else {
+            ErrorMessage errorMessage = new ErrorMessage("Enter all fields");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
     }
 
     private boolean containAllFields(GenreModel genreModel) {
-        return
-                !genreModel.getName().isEmpty() &&
+        return !genreModel.getName().isEmpty() &&
                 !genreModel.getImgGenre().isEmpty() &&
                 !genreModel.getBio().isEmpty();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<Object> deleteGenre(@PathVariable int id) {
+        try {
+            genreRepo.deleteById(id);
+            String message = "Delete genre by " + id + "!!!";
+            return ResponseEntity.ok().body(Map.of("Message", message));
+        } catch (Exception ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/upateGenre")
+    ResponseEntity<?> updateGenre(
+            @RequestParam("id") int id,
+            @RequestBody GenreModel genreModel) {
+        Optional<GenreModel> genre = genreRepo.findById(id);
+        if (genre.isPresent()) {
+            genre.get().setName(genreModel.getName());
+            genre.get().setImgGenre(genreModel.getImgGenre());
+            genre.get().setBio(genreModel.getBio());
+            Message message = new Message("Updated genre");
+            genreRepo.save(genre.get());
+            return ResponseEntity.ok(message);
+        } else {
+            ErrorMessage errorMessage = new ErrorMessage("Did not found genre");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+
     }
 
     @PutMapping("/{genre_id}/song/{song_id}")
     public GenreModel addGenreToSong(
             @PathVariable int genre_id,
-            @PathVariable int song_id
-    )
-    {
+            @PathVariable int song_id) {
         GenreModel genreModel = genreRepo.findById(genre_id).get();
         SongModel songModel = songRepo.findById(song_id).get();
 
         genreModel.songs(songModel);
         return genreRepo.save(genreModel);
     }
-
-    @DeleteMapping("/delete/{id}")
-    ResponseEntity<Object> deleteGenre(@PathVariable int id){
-   try {
-       genreRepo.deleteById(id);
-       String message = "Delete genre by " + id + "!!!";
-       return  ResponseEntity.ok().body(Map.of("Message",message));
-   }catch (Exception ex){
-       return ResponseEntity.notFound().build();
-   }
-    }
-
-
-
 
 }

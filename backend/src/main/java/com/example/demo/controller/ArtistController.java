@@ -102,4 +102,25 @@ public class ArtistController {
         // 4) we save it
     }
 
+    @PutMapping("/updateArtist")
+    ResponseEntity<?> updateArtist(
+        @RequestParam("id") int id,
+        @RequestBody ArtistModel artistModel
+    ){
+        Optional<ArtistModel> artist = artistRepo.findById(id);
+        if(artist.isPresent()){
+            artist.get().setName(artistModel.getName());
+            artist.get().setBio(artistModel.getBio());
+            artist.get().setImgArtist(artistModel.getImgArtist());
+            artist.get().setGender(artistModel.getGender());
+            Message message = new Message("Updated artist");
+            artistRepo.save(artist.get());
+            return ResponseEntity.ok(message);
+        }else{
+            ErrorMessage errorMessage = new ErrorMessage("Did not found artist");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+
+    }
+
 }
