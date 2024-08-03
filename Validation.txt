@@ -1,0 +1,18 @@
+Backend validation 
+    # User
+        -> Register
+            - Username : 5 >  
+            - Password : 5 >  &&  < 20 
+            - first_name : 0 !=
+            - last_name : 0 !=
+            - email : regex  
+        -> Login 
+            - Required all fields
+==================================================================
+Frontend vallidation 
+    # User
+        -> Register 
+            - Username : backend handle 
+            - Password : backend handle 
+            - email : regex  
+

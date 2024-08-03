@@ -8,16 +8,25 @@ import { CiCircleRemove } from "react-icons/ci";
 import { GiCheckMark } from "react-icons/gi";
 import UserLibraryApi from "../Apis/UserLibraryApi";
 
-const ArtistMiddle = ({ songs, artistName }) => {
+const ArtistMiddle = ({ songsArray, artist, showArtistFunc }) => {
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.userDetails);
-  console.log(songs);
+  // console.log(songs);
   const [activeFormIndex, setActiveFormIndex] = useState(null);
   const [playlist, setPlaylist] = useState([{ name: "" }]);
   const [selectedIdPlayListFromSelect, setSelectedIdPlayListFromSelect] =
     useState(0);
   // click play song
   const { addSongToPlayList, displayPlayListByUserId } = UserLibraryApi();
+  const [songs, setSongs] = useState([]);
+
+  console.log(songs);
+  // console.log(songsArray)
+  useEffect(() => {
+    if (songsArray) {
+      setSongs(songsArray);
+    }
+  }, [songsArray]);
 
   useEffect(() => {
     displayPlayListByUserId(userDetails?.id)
@@ -54,11 +63,37 @@ const ArtistMiddle = ({ songs, artistName }) => {
       );
   }
 
+  function handleSearch(e) {
+    const searching = e.target.value;
+    if (searching.length > 0) {
+      const filtered = songs.filter(
+        (item) => item.name.toLowerCase() == searching.toLowerCase()
+      );
+      setSongs(filtered);
+    } else {
+      setSongs(songsArray);
+    }
+
+    console.log(searching);
+  }
+  console.log(artist);
+
   return (
-    <div className="w-full md:w-[70%] h-[100vh] overflow-y-auto  mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
-      <h1 className="text-lg  md:text-2xl text-[#E5E7EB] ">
-        Songs List {artistName ? `: ${artistName} ` : ""}
-      </h1>
+    <div className="w-full md:w-[80%] h-[100vh] overflow-y-auto  mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
+      <div className="flex items-center justify-between px-5 text-lg text-white md:text-2xl ">
+        <span>Songs List</span>
+        <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r animate-pulse from-slate-100 to-gray-300 ">
+          <button onClick={(e) => showArtistFunc(true)}>{artist?.name} </button>
+        </span>
+        <span>
+          <input
+            type="search"
+            onChange={handleSearch}
+            placeholder="search"
+            className="px-2 text-black "
+          />
+        </span>
+      </div>
       <div className="w-full mt-10 md:mt-3 h-[2px] bg-black "></div>
       {/* bottom  */}
       <div className="w-full h-auto mt-5">
@@ -70,28 +105,27 @@ const ArtistMiddle = ({ songs, artistName }) => {
               <div className="text-xl tracking-wider">No Songs Available</div>
             ) : (
               songs?.map((song, i) => (
-                
+                <div
+                  onClick={(e) => handleSong(song.id, i)}
+                  key={i}
+                  className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] gap-2 flex justify-around md:justify-between"
+                >
                   <div
-                    onClick={(e) => handleSong(song.id, i)}
-                    key={i}
-                    className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] gap-2 flex justify-around md:justify-between"
+                    key={song.id}
+                    className="md:w-[20%] text-base md:text-lg text-left  font-bold"
                   >
-                    <div
-                      key={song.id}
-                      className="md:w-[20%] text-base md:text-lg text-left  font-bold"
-                    >
-                      {" "}
-                      {i + 1}
-                    </div>
-                    <div
-                      key={song.id}
-                      className="text-base font-bold text-center md:w-full md:text-lg"
-                    >
-                      {song?.name?.length < 25
-                        ? song?.name
-                        : song?.name.slice(0, 60) + "..."}
-                    </div>
-                    {userDetails.role == "USER" && (
+                    {" "}
+                    {i + 1}
+                  </div>
+                  <div
+                    key={song.id}
+                    className="text-base font-bold text-center md:w-full md:text-lg"
+                  >
+                    {song?.name?.length < 25
+                      ? song?.name
+                      : song?.name.slice(0, 60) + "..."}
+                  </div>
+                  {userDetails.role == "USER" && (
                     <div className="relative">
                       <button
                         onClick={() =>
@@ -145,9 +179,7 @@ const ArtistMiddle = ({ songs, artistName }) => {
                       </div>
                     </div>
                   )}
-                  </div>
-                  
-                
+                </div>
               ))
             )}
           </div>

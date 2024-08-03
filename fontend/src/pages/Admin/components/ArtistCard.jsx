@@ -1,6 +1,7 @@
 import React from "react";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
+import { Link } from "react-router-dom";
 const ArtistCard = ({ artist, handleDelete }) => {
   const { id, name, gender, bio, imgArtist } = artist;
   return (
@@ -29,7 +30,9 @@ const ArtistCard = ({ artist, handleDelete }) => {
       <div class="p-6 pt-0">
         <div className="flex justify-around w-[50%]">
           <button className="text-2xl">
-            <CiEdit />
+            <Link to={`/admin/editArtist/${artist.id}`}>
+              <CiEdit />
+            </Link>
           </button>{" "}
           <button className="text-2xl" onClick={(e) => handleDelete(id)}>
             <MdDeleteOutline />

@@ -64,9 +64,11 @@ const EditGenre = () => {
                   <td className="px-4 py-2 text-center border">{g.bio}</td>
                   <td className="flex justify-around px-4 py-2 border">
                     {" "}
-                    <button className="text-xl transition-all ease-in hover:scale-125">
-                      <CiEdit />
-                    </button>
+                    <Link to={`/admin/editGenre/${g.id}`}>
+                      <button className="text-xl transition-all ease-in hover:scale-125">
+                        <CiEdit />
+                      </button>
+                    </Link>
                     <button
                       onClick={(e) => handleDelete(g.id)}
                       className="text-xl transition-all ease-in hover:scale-125"

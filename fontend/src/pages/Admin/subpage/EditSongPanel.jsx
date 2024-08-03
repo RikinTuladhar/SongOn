@@ -1,25 +1,27 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { storage } from "../firebase";
+import { storage } from "../../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
-import { ReloadContext } from "../contextprovider/ReloadProvider";
-import { SongContext } from "../contextprovider/SongProvider";
-import ArtistApi from "../Apis/ArtistApi"
-import GenreApi from "../Apis/GenreApi"
-import SongApi from "../Apis/SongApi";
+import { ReloadContext } from "../../../contextprovider/ReloadProvider";
+import { SongContext } from "../../../contextprovider/SongProvider";
+import ArtistApi from "../../../Apis/ArtistApi";
+import GenreApi from "../../../Apis/GenreApi";
+import SongApi from "../../../Apis/SongApi";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+const EditSongPanel = () => {
+  const { id } = useParams();
 
-const AddSongs = () => {
   const { reload, setReload } = useContext(ReloadContext);
-  const { API } = useContext(SongContext);
+
   // console.log(API)
   const stopPost = useRef();
   const [songUpload, setSongUpload] = useState(null);
   const [songImageUpload, setSongImageUpload] = useState(null);
-  const [songlist, setSongList] = useState(null);
-  const {getArtist} = ArtistApi();
-const {addSong} =SongApi()
-  const {getGenre} = GenreApi();
-  
+
+  const { getArtist } = ArtistApi();
+  const { getSongById, editSong } = SongApi();
+  const { getGenre } = GenreApi();
 
   const [genre, setGenre] = useState([]);
   const [artist, setArtist] = useState([]);
@@ -28,67 +30,65 @@ const {addSong} =SongApi()
     name: "",
     autoPath: "",
     imgPath: "",
-    lyrics:""
+    lyrics: "",
   });
   const [ids, setIds] = useState({
     generic_id: "",
     artist_id: "",
   });
 
-  console.log(values)
-
   const handleSubmit = (e) => {
     e.preventDefault();
     stopPost.current.disabled = true;
-  
+
     if (songUpload == null || songImageUpload == null) {
       stopPost.current.disabled = false;
-      alert("No song or image upload");
-      return;
+      alert("no song upload");
     }
-  
+
     const songRef = ref(storage, `songs/${songUpload.name + v4()}`);
     const songImgRef = ref(storage, `songimage/${songImageUpload.name + v4()}`);
-  
-    console.log("Uploading song and image...");
-    
+
     Promise.all([
       uploadBytes(songRef, songUpload),
       uploadBytes(songImgRef, songImageUpload),
     ])
       .then(([songSnapshot, imageSnapshot]) => {
-        console.log("Upload successful. Retrieving URLs...");
         return Promise.all([
           getDownloadURL(songSnapshot.ref),
           getDownloadURL(imageSnapshot.ref),
         ]);
       })
       .then(([songUrl, imageUrl]) => {
-        console.log("URLs retrieved:", songUrl, imageUrl);
         setValues((prevValues) => ({
           ...prevValues,
           autoPath: songUrl,
           imgPath: imageUrl,
         }));
-        console.log("Values updated:", values);
-        return addSong(ids.generic_id, ids.artist_id, { ...values, autoPath: songUrl, imgPath: imageUrl });
+        return editSong(ids.generic_id, ids.artist_id,id,{
+          ...values,
+          autoPath: songUrl,
+          imgPath: imageUrl,
+        });
       })
       .then((res) => {
-        console.log("Song added successfully:", res);
         setReload(true);
         alert("Success!");
         setReload(false);
-        window.location.reload();
-        stopPost.current.disabled = false;
       })
       .catch((error) => {
         console.error("Error:", error.message);
-        stopPost.current.disabled = false;
       });
   };
-  
 
-  // posting in database
+  useEffect(() => {
+    getSongById(id)
+      .then((res) => {
+        console.log(res[0]);
+        setValues(res[0]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   // fetching artist and  genere from database
   useEffect(() => {
@@ -101,7 +101,7 @@ const {addSong} =SongApi()
         console.error("Error:", err);
       });
 
-      getGenre()
+    getGenre()
       .then((res) => {
         // console.log(res);
         setGenre(res);
@@ -111,18 +111,17 @@ const {addSong} =SongApi()
       });
   }, []);
 
-  // console.log(ids)
-
   return (
-    <div class="bg-gray-900 flex items-center justify-center min-h-screen">
-      <div class="bg-gray-800 py-5 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold text-white mb-6">Add Song</h2>
+    <body class="bg-gray-900 flex items-center justify-center min-h-screen">
+      <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold text-white mb-6">Edit Song</h2>
         <form onSubmit={handleSubmit}>
           <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-gray-300">
               Name
             </label>
             <input
+            value={values.name}
               type="text"
               id="name"
               name="name"
@@ -177,11 +176,13 @@ const {addSong} =SongApi()
               }
             >
               <option selected disabled value="">
-                  Select The Artist
+                Select The Artist
+              </option>
+              {artist?.map((artist, i) => (
+                <option key={i} value={artist.id}>
+                  {artist.name}
                 </option>
-                {artist?.map((artist,i) => (
-                  <option key={i} value={artist.id}>{artist.name}</option>
-                ))}
+              ))}
             </select>
           </div>
           <div class="mb-4">
@@ -197,11 +198,11 @@ const {addSong} =SongApi()
               }
             >
               <option selected disabled value="">
-                    Select The Artist
-                  </option>
-                  {genre?.map((genre) => (
-                    <option value={genre.id}>{genre.name}</option>
-                  ))}
+                Select The Artist
+              </option>
+              {genre?.map((genre) => (
+                <option value={genre.id}>{genre.name}</option>
+              ))}
             </select>
           </div>
           <div class="mb-4">
@@ -209,6 +210,7 @@ const {addSong} =SongApi()
               Enter the Lyrics
             </label>
             <textarea
+            value={values.lyrics}
               id="lyrics"
               name="lyrics"
               rows="4"
@@ -226,8 +228,8 @@ const {addSong} =SongApi()
           </button>
         </form>
       </div>
-    </div>
+    </body>
   );
 };
 
-export default AddSongs;
+export default EditSongPanel;

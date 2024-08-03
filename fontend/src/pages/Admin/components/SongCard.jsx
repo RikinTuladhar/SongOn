@@ -1,6 +1,7 @@
 import React from "react";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
+import { Link } from "react-router-dom";
 const SongCard = ({ song, handleDelete }) => {
   const { id, name, autoPath, imgPath } = song;
   // console.log(song);
@@ -28,7 +29,9 @@ const SongCard = ({ song, handleDelete }) => {
       <div class="p-6">
         <div className="flex justify-around w-[50%]">
           <button className="text-2xl">
-            <CiEdit />
+            <Link to={`/admin/editSong/${song.id}`}>
+              <CiEdit />
+            </Link>
           </button>{" "}
           <button className="text-2xl" onClick={(e) => handleDelete(id)}>
             <MdDeleteOutline />

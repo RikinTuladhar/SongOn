@@ -19,7 +19,7 @@ const SignIn = () => {
     password: "",
   });
 
-  console.log(data)
+  // console.log(data)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,25 +30,33 @@ const SignIn = () => {
     e.preventDefault();
     setClicked(true);
 
-    try {
-      const resultAction = await dispatch(signIn(data)).unwrap();
-      // Handle success: resultAction contains the user details
-      // setUserDetails(resultAction);
-      // console.log(resultAction);
-      const { role } = resultAction;
-      // console.log(role);
-      if (role === "USER") {
-        navigate("/");
-      } else {
-        navigate("/admin");
+    setTimeout(async () => {
+      try {
+        const resultAction = await dispatch(signIn(data)).unwrap();
+        // Handle success: resultAction contains the user details
+        // setUserDetails(resultAction);
+        // console.log(resultAction);
+        const { username, role } = resultAction;
+        // console.log(role);
+        if (role === "USER") {
+          alert("Welcome To Music-On " + username);
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        } else {
+          alert("Welcome To Music-On Admin " + username);
+          setTimeout(() => {
+            navigate("/admin");
+          }, 2000);
+        }
+      } catch (error) {
+        // Handle error
+        alert(error.message);
+        console.log("Error when signing in: ", error);
+      } finally {
+        setClicked(false);
       }
-    } catch (error) {
-      // Handle error
-      alert("Incorrect Username or Password");
-      console.log("Error when signing in: ", error);
-    } finally {
-      setClicked(false);
-    }
+    }, 3000);
   };
 
   return (

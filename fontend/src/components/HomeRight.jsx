@@ -47,19 +47,18 @@ const HomeRight = () => {
           Librarys
         </h1>
         <div className="flex items-center justify-center gap-2 text-white">
-        <div>
-            <IoSearch  size={25} onClick={()=>searchRef.current.focus()} />
+          <div>
+            <IoSearch size={25} onClick={() => searchRef.current.focus()} />
           </div>
           <div className="text-xl">
             <input
-              type="text"
+              type="search"
               ref={searchRef}
               onChange={handleSearch}
               className="px-2 text-black rounded-md"
               placeholder="Search"
             />
           </div>
-          
         </div>
       </div>
       <div className="w-full mt-3 h-[2px] bg-black  "></div>

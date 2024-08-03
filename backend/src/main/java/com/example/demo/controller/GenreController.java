@@ -64,9 +64,20 @@ public class GenreController {
             @RequestBody GenreModel genreModel) {
         Optional<GenreModel> genre = genreRepo.findById(id);
         if (genre.isPresent()) {
-            genre.get().setName(genreModel.getName());
-            genre.get().setImgGenre(genreModel.getImgGenre());
-            genre.get().setBio(genreModel.getBio());
+            String receivedName = genreModel.getName();
+            String receivedImg =genreModel.getImgGenre();
+            String receivedBio = genreModel.getBio();
+            if(receivedName != null && !receivedName.isEmpty()){
+                genre.get().setName(receivedName);
+            }
+
+            if(receivedImg != null && !receivedImg.isEmpty()){
+                genre.get().setImgGenre(receivedImg);
+            }
+
+            if(receivedBio != null && !receivedBio.isEmpty()){
+                genre.get().setBio(receivedBio);
+            }          
             Message message = new Message("Updated genre");
             genreRepo.save(genre.get());
             return ResponseEntity.ok(message);

@@ -64,7 +64,7 @@ public class ArtistController {
                 artistRepo.deleteById(id);
                 String Message = "Deleted id " + id + " success";
                 return ResponseEntity.ok().body(Map.of("message", Message));
-            }else{
+            } else {
                 ErrorMessage errorMessage = new ErrorMessage("Did not found artist");
                 return ResponseEntity.badRequest().body(errorMessage);
             }
@@ -104,19 +104,35 @@ public class ArtistController {
 
     @PutMapping("/updateArtist")
     ResponseEntity<?> updateArtist(
-        @RequestParam("id") int id,
-        @RequestBody ArtistModel artistModel
-    ){
+            @RequestParam("id") int id,
+            @RequestBody ArtistModel artistModel) {
         Optional<ArtistModel> artist = artistRepo.findById(id);
-        if(artist.isPresent()){
-            artist.get().setName(artistModel.getName());
-            artist.get().setBio(artistModel.getBio());
-            artist.get().setImgArtist(artistModel.getImgArtist());
-            artist.get().setGender(artistModel.getGender());
+        if (artist.isPresent()) {
+            String rec_name = artistModel.getName();
+            String rec_bio = artistModel.getBio();
+            String rec_imgArtist = artistModel.getImgArtist();
+            String rec_Gender = artistModel.getGender();
+
+            if (rec_name != null && !rec_name.isEmpty()) {
+                artist.get().setName(rec_name);
+            }
+
+            if (rec_bio != null && !rec_bio.isEmpty()) {
+                artist.get().setBio(rec_bio);
+            }
+
+            if (rec_imgArtist != null && !rec_imgArtist.isEmpty()) {
+                artist.get().setImgArtist(rec_imgArtist);
+            }
+
+            if (rec_Gender != null && !rec_Gender.isEmpty()) {
+                artist.get().setGender(rec_Gender);
+            }
+
             Message message = new Message("Updated artist");
             artistRepo.save(artist.get());
             return ResponseEntity.ok(message);
-        }else{
+        } else {
             ErrorMessage errorMessage = new ErrorMessage("Did not found artist");
             return ResponseEntity.badRequest().body(errorMessage);
         }

@@ -73,7 +73,7 @@ const LibraryRight = ({ songs, artistName }) => {
         </h1>
         <div>
           <input
-            type="text"
+            type="search"
             onChange={handleSearch}
             className="px-2 py-1 text-black rounded-md"
             placeholder="Search"

@@ -26,6 +26,10 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserProvider from "./contextprovider/UserProvider";
 import UserLibrary from "./pages/UserLibrary";
+import EditArtistPanel from "./pages/Admin/subpage/EditArtistPanel";
+import EditSongPanel from "./pages/Admin/subpage/EditSongPanel";
+import EditGenrePanel from "./pages/Admin/subpage/EditGenrePanel";
+
 function App() {
   const router = createBrowserRouter([
     //user view components
@@ -56,12 +60,12 @@ function App() {
     { path: "/signUp", element: <SignUp /> },
     { path: "/*", element: <NotFound /> },
     { path: "/userlibrary/:username", element: <UserLibrary /> },
-    
-     //admin components 
+
+    //admin components
     {
       path: "/admin",
       element: <Admin />,
-     
+
       children: [
         {
           path: "/admin/addSongs",
@@ -89,6 +93,10 @@ function App() {
         },
         { path: "/admin/addSongInGenre", element: <AddSongInGenre /> },
         { path: "/admin/addSongInArtist", element: <AddSongInArtist /> },
+
+        { path: "/admin/editSong/:id", element: <EditSongPanel /> },
+        { path: "/admin/editArtist/:id", element: <EditArtistPanel /> },
+        { path: "/admin/editGenre/:id", element: <EditGenrePanel /> },
       ],
     },
   ]);

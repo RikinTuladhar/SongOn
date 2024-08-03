@@ -35,13 +35,19 @@ const UserApi = () => {
     const endpoint = `${baseUrl}/register`;
     try {
       const response = await axios.post(endpoint, value);
-      const data = await response.data.token;
+      const data = response.data;
       console.log(data);
-      return "Success";
+      return data.message;
     } catch (error) {
-      throw new Error("Error when register " + error);
+      console.log(error);
+      if (error.response) {
+        throw new Error(error.response.data.errorMessage); // Throwing an error with the error message
+      } else {
+        throw new Error("An unexpected error occurred"); // Handling unexpected errors
+      }
     }
   }
+  
 
   // async function getUser() {
   //   try {

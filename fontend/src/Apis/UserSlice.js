@@ -47,7 +47,8 @@ export const signIn = createAsyncThunk("signin", async (value) => {
     console.log(data)
     return data;
   } catch (error) {
-    throw new Error("Error when login: " + error);
+    console.log(error.response.data.errorMessage);
+    throw new Error(error.response.data.errorMessage);
   }
 });
 

@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -57,10 +59,74 @@ public class UserController {
             return ResponseEntity.badRequest().body(ErrorMessage);
         }
         else{
+            String userName = user.getUsername();
+            String firstname = user.getFirstname();
+            String lastname = user.getLastname();
+            String email = user.getEmail();
+            String password = user.getPassword();
+            
+            if(!isValidUserName(userName)){
+                ErrorMessage errorMessage = new ErrorMessage("Username must be between 5 and 20 characters");
+                return ResponseEntity.badRequest().body(errorMessage);
+            }
+            if (!isValidEmail(email)) {
+                ErrorMessage errorMessage = new ErrorMessage("Not valid email");
+                return ResponseEntity.badRequest().body(errorMessage);
+            }
+            if(!isValidFirstName(firstname)){
+                ErrorMessage errorMessage = new ErrorMessage("Enter first name");
+                return ResponseEntity.badRequest().body(errorMessage);
+            }
+            if(!isValidLastName(lastname)){
+                ErrorMessage errorMessage = new ErrorMessage("Enter last name");
+                return ResponseEntity.badRequest().body(errorMessage);
+            }
+            if(!isValidPassword(password)){
+                ErrorMessage errorMessage = new ErrorMessage("password must be between 5 and 20 characters");
+                return ResponseEntity.badRequest().body(errorMessage);
+            }
             userRepository.save(user);
             Message message = new Message("User Added");
             return ResponseEntity.ok(message);
         }
+    }
+    boolean isValidUserName(String userName){
+        if(userName.length() > 3 && userName.length() < 20){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    boolean isValidFirstName(String firstname){
+        if(firstname.length() != 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    boolean isValidLastName(String lastname){
+        if(lastname.length() != 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    boolean isValidEmail(String email){
+        String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    boolean isValidPassword(String password){
+        if(password.length() > 5 && password.length() < 20){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     @PostMapping("/login")

@@ -88,7 +88,6 @@ public class SongController {
             @RequestParam("generic_id") int generic_id,
             @RequestParam("artist_id") int artist_id
     ) {
-
         ArtistModel artistModel = artistRepo.findById(artist_id).get();
         GenreModel genreModel = genreRepo.findById(generic_id).get();
         artistModel.songs(songModel);
@@ -172,11 +171,21 @@ public class SongController {
             SongModel song = songOptional.get();
             ArtistModel artist = artistOptional.get();
             GenreModel genre = genreOptional.get();
-    
-            song.setName(songModel.getName());
-            song.setAutoPath(songModel.getAutoPath());
-            song.setImgPath(songModel.getImgPath());
-            song.setLyrics(songModel.getLyrics());
+            if(songModel.getName() !=null && !songModel.getName().isEmpty()){
+                song.setName(songModel.getName());
+            }
+            if(songModel.getAutoPath() !=null && !songModel.getAutoPath().isEmpty()){
+                song.setAutoPath(songModel.getAutoPath());
+            }
+            if(songModel.getLyrics() !=null && !songModel.getLyrics().isEmpty()){
+                song.setLyrics(songModel.getLyrics());
+            }
+
+            if(songModel.getImgPath() !=null && !songModel.getImgPath().isEmpty()){
+                song.setImgPath(songModel.getImgPath());
+            }
+            
+
             songRepo.deleteSongInArtistSongModel(songIdArtistDelete);
             songRepo.deleteSongInGenreSongModel(songIdGenreDelete);
 
