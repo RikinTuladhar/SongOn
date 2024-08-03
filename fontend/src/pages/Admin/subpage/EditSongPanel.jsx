@@ -37,48 +37,117 @@ const EditSongPanel = () => {
     artist_id: "",
   });
 
+  // console.log(ids);
+  // console.log(values)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     stopPost.current.disabled = true;
 
-    if (songUpload == null || songImageUpload == null) {
-      stopPost.current.disabled = false;
-      alert("no song upload");
+    const songRef = ref(storage, `songs/${songUpload?.name + v4()}`);
+    const songImgRef = ref(
+      storage,
+      `songimage/${songImageUpload?.name + v4()}`
+    );
+
+    //if both not present
+    if (songUpload == null && songImageUpload == null) {
+      editSong(ids.generic_id, ids.artist_id, id, values)
+        .then((res) => {
+          console.log(res);
+          return;
+        })
+        .catch((err) => console.log(err));
     }
 
-    const songRef = ref(storage, `songs/${songUpload.name + v4()}`);
-    const songImgRef = ref(storage, `songimage/${songImageUpload.name + v4()}`);
-
-    Promise.all([
-      uploadBytes(songRef, songUpload),
-      uploadBytes(songImgRef, songImageUpload),
-    ])
-      .then(([songSnapshot, imageSnapshot]) => {
-        return Promise.all([
-          getDownloadURL(songSnapshot.ref),
-          getDownloadURL(imageSnapshot.ref),
-        ]);
-      })
-      .then(([songUrl, imageUrl]) => {
-        setValues((prevValues) => ({
-          ...prevValues,
-          autoPath: songUrl,
-          imgPath: imageUrl,
-        }));
-        return editSong(ids.generic_id, ids.artist_id,id,{
-          ...values,
-          autoPath: songUrl,
-          imgPath: imageUrl,
+    //song path upload present
+    if (songUpload != null && songImageUpload == null) {
+      Promise.all([uploadBytes(songRef, songUpload)])
+        .then(([songSnapshot]) => {
+          return Promise.all([getDownloadURL(songSnapshot.ref)]);
+        })
+        .then(([songUrl]) => {
+          setValues((prevValues) => ({
+            ...prevValues,
+            autoPath: songUrl,
+          }));
+          return editSong(ids.generic_id, ids.artist_id, id, {
+            ...values,
+            autoPath: songUrl,
+          });
+        })
+        .then((res) => {
+          setReload(true);
+          alert("Success with only song path!");
+          setReload(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
         });
-      })
-      .then((res) => {
-        setReload(true);
-        alert("Success!");
-        setReload(false);
-      })
-      .catch((error) => {
-        console.error("Error:", error.message);
-      });
+
+      return;
+    }
+
+    //song image upload present
+    if (songUpload == null && songImageUpload != null) {
+      Promise.all([uploadBytes(songImgRef, songImageUpload)])
+        .then(([imageSnapshot]) => {
+          return Promise.all([getDownloadURL(imageSnapshot.ref)]);
+        })
+        .then(([imageUrl]) => {
+          setValues((prevValues) => ({
+            ...prevValues,
+            imgPath: imageUrl,
+          }));
+          return editSong(ids.generic_id, ids.artist_id, id, {
+            ...values,
+            imgPath: imageUrl,
+          });
+        })
+        .then((res) => {
+          setReload(true);
+          alert("Success with only song image!");
+          setReload(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+        });
+      return;
+    }
+
+    //if both present
+    if (songUpload != null && songImageUpload != null) {
+      Promise.all([
+        uploadBytes(songRef, songUpload),
+        uploadBytes(songImgRef, songImageUpload),
+      ])
+        .then(([songSnapshot, imageSnapshot]) => {
+          return Promise.all([
+            getDownloadURL(songSnapshot.ref),
+            getDownloadURL(imageSnapshot.ref),
+          ]);
+        })
+        .then(([songUrl, imageUrl]) => {
+          setValues((prevValues) => ({
+            ...prevValues,
+            autoPath: songUrl,
+            imgPath: imageUrl,
+          }));
+          return editSong(ids.generic_id, ids.artist_id, id, {
+            ...values,
+            autoPath: songUrl,
+            imgPath: imageUrl,
+          });
+        })
+        .then((res) => {
+          setReload(true);
+          alert("Success!");
+          setReload(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+        });
+    }
   };
 
   useEffect(() => {
@@ -95,7 +164,7 @@ const EditSongPanel = () => {
     getArtist()
       .then((res) => {
         setArtist(res);
-        // console.log(res);
+        console.log(res);
       })
       .catch((err) => {
         console.error("Error:", err);
@@ -103,7 +172,7 @@ const EditSongPanel = () => {
 
     getGenre()
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         setGenre(res);
       })
       .catch((err) => {
@@ -121,7 +190,7 @@ const EditSongPanel = () => {
               Name
             </label>
             <input
-            value={values.name}
+              value={values.name}
               type="text"
               id="name"
               name="name"
@@ -210,7 +279,7 @@ const EditSongPanel = () => {
               Enter the Lyrics
             </label>
             <textarea
-            value={values.lyrics}
+              value={values.lyrics}
               id="lyrics"
               name="lyrics"
               rows="4"

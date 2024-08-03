@@ -50,8 +50,9 @@ const SideBar = () => {
               <Link to={"/admin"} class="flex ms-2 md:me-24">
                 <img
                   src="./songon.png"
+                  onError={e=> e.target.src="/songon.png"}
                   class="h-8 me-3"
-                  alt="FlowBite Logo"
+                  alt="Music Logo"
                 />
                 <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                   Music On
