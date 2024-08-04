@@ -308,7 +308,7 @@ const EditSongPanel = () => {
               }
             >
               <option selected disabled value="">
-                Select The Artist
+                Select The Genre
               </option>
               {genre?.map((genre) => (
                 <option value={genre.id}>{genre.name}</option>
@@ -334,7 +334,7 @@ const EditSongPanel = () => {
             type="submit"
             class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-full"
           >
-            Add Song
+            Edit Song
           </button>
         </form>
       </div>

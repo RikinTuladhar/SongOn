@@ -197,7 +197,7 @@ const {addSong} =SongApi()
               }
             >
               <option selected disabled value="">
-                    Select The Artist
+                    Select The Genre
                   </option>
                   {genre?.map((genre) => (
                     <option value={genre.id}>{genre.name}</option>

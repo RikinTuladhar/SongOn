@@ -68,7 +68,7 @@ const SignIn = () => {
         >
           <div className="flex flex-col space-y-1.5 md:p-6">
             <h3 className="px-2 py-2 text-xl font-semibold tracking-tight text-center whitespace-nowrap md:py-0 md:px-0 md:text-left md:text-2xl">
-              Login
+              Sign In
             </h3>
             <p className="px-5 py-1 text-sm md:text-base text-muted-foreground md:py-0 md:px-0">
               Enter your email and password to access your account.
