@@ -29,6 +29,12 @@ public class GenreController {
         return genreRepo.findAll();
     }
 
+    @GetMapping("/By-songid/{songId}")
+    ResponseEntity<?> getGenreBySongId(@PathVariable("songId") int songId) {
+        List<GenreModel> genreList = genreRepo.findGenreBySongId(songId);
+        return ResponseEntity.ok().body(genreList);
+    }
+
     @PostMapping
     public ResponseEntity<?> addGenre(@RequestBody GenreModel genreModel) {
         if (containAllFields(genreModel)) {
@@ -65,19 +71,19 @@ public class GenreController {
         Optional<GenreModel> genre = genreRepo.findById(id);
         if (genre.isPresent()) {
             String receivedName = genreModel.getName();
-            String receivedImg =genreModel.getImgGenre();
+            String receivedImg = genreModel.getImgGenre();
             String receivedBio = genreModel.getBio();
-            if(receivedName != null && !receivedName.isEmpty()){
+            if (receivedName != null && !receivedName.isEmpty()) {
                 genre.get().setName(receivedName);
             }
 
-            if(receivedImg != null && !receivedImg.isEmpty()){
+            if (receivedImg != null && !receivedImg.isEmpty()) {
                 genre.get().setImgGenre(receivedImg);
             }
 
-            if(receivedBio != null && !receivedBio.isEmpty()){
+            if (receivedBio != null && !receivedBio.isEmpty()) {
                 genre.get().setBio(receivedBio);
-            }          
+            }
             Message message = new Message("Updated genre");
             genreRepo.save(genre.get());
             return ResponseEntity.ok(message);

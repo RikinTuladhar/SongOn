@@ -19,12 +19,16 @@ const EditSongPanel = () => {
   const [songUpload, setSongUpload] = useState(null);
   const [songImageUpload, setSongImageUpload] = useState(null);
 
-  const { getArtist } = ArtistApi();
+  const { getArtist, getArtistBySongId } = ArtistApi();
   const { getSongById, editSong } = SongApi();
-  const { getGenre } = GenreApi();
+  const { getGenre, getGenreBySongId } = GenreApi();
 
   const [genre, setGenre] = useState([]);
   const [artist, setArtist] = useState([]);
+
+  // const [artistIdFromSongId,setArtistIdFromSongId] = useState({
+  //   id:""
+  // });
 
   const [values, setValues] = useState({
     name: "",
@@ -55,6 +59,8 @@ const EditSongPanel = () => {
       editSong(ids.generic_id, ids.artist_id, id, values)
         .then((res) => {
           console.log(res);
+          alert("Success with out no image and audio!");
+          window.location.reload();
           return;
         })
         .catch((err) => console.log(err));
@@ -79,6 +85,7 @@ const EditSongPanel = () => {
         .then((res) => {
           setReload(true);
           alert("Success with only song path!");
+          window.location.reload();
           setReload(false);
         })
         .catch((error) => {
@@ -107,6 +114,7 @@ const EditSongPanel = () => {
         .then((res) => {
           setReload(true);
           alert("Success with only song image!");
+          window.location.reload();
           setReload(false);
         })
         .catch((error) => {
@@ -143,6 +151,7 @@ const EditSongPanel = () => {
           setReload(true);
           alert("Success!");
           setReload(false);
+          window.location.reload();
         })
         .catch((error) => {
           console.error("Error:", error.message);
@@ -150,6 +159,7 @@ const EditSongPanel = () => {
     }
   };
 
+  // fetching song from db
   useEffect(() => {
     getSongById(id)
       .then((res) => {
@@ -159,7 +169,7 @@ const EditSongPanel = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  // fetching artist and  genere from database
+  // fetching artist and  genere from database whole
   useEffect(() => {
     getArtist()
       .then((res) => {
@@ -179,6 +189,37 @@ const EditSongPanel = () => {
         console.error("Error:", err);
       });
   }, []);
+
+  //fetching artist by song id from db
+  useEffect(() => {
+    getArtistBySongId(id)
+      .then((res) => {
+        console.log(res[0]);
+        // setArtistIdFromSongId(res[0])
+        setIds({ ...ids, generic_id: res[0]?.id });
+      })
+      .catch((err) => console.log(err));
+
+    getGenreBySongId(id)
+      .then((res) => {
+        console.log(res[0]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    Promise.all([getArtistBySongId(id), getGenreBySongId(id)]).then(
+      ([artistRes, genreRes]) => {
+        // console.log(artistRes, genreRes);
+        setIds({
+          artist_id: artistRes[0]?.id,
+          generic_id: genreRes[0]?.id,
+        });
+      }
+    );
+  }, []);
+
+  console.log(ids);
 
   return (
     <body class="bg-gray-900 flex items-center justify-center min-h-screen">
