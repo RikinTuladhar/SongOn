@@ -42,7 +42,7 @@ const EditSong = () => {
       <div className="mt-16 ">
         <div className="grid w-full gap-10 justify-items-center md:grid-cols-3">
           {data?.map((song) => (
-            <SongCard key={song.id} song={song} handleDelete={handleDelete} />
+            <SongCard key={song?.id} song={song} handleDelete={handleDelete} />
           ))}
         </div>
       </div>

@@ -38,9 +38,10 @@ const SongCard = ({ song, handleDelete }) => {
           </button>{" "}
         </div>
       </div>
-      <audio className=" w-auto h-[10%] text-white " controls width="600px">
+      <audio className="absolute right-[2px] bottom-0 w-full z-50   h-[10%] text-white " controls width="600px">
         {/* <source src={audioSources[currentIndex]} type="video/mp4" /> */}
         <source src={autoPath} type="audio/mpeg" />
+        {autoPath}
       </audio>
     </div>
   );
