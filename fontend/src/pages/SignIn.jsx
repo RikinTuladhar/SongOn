@@ -5,7 +5,9 @@ import UserApi from "../Apis/UserApi";
 import OvalLoader from "../components/OvalLoader";
 import { useDispatch } from "react-redux";
 import { signIn } from "../Apis/UserSlice";
-import { toast } from "react-toastify";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -39,29 +41,43 @@ const SignIn = () => {
         const { username, role } = resultAction;
         // console.log(role);
         if (role === "USER") {
-          alert("Welcome To Music-On " + username);
+          toast.success("Welcome To Music-On " + username);
           setTimeout(() => {
             navigate("/");
           }, 2000);
         } else {
-          alert("Welcome To Music-On Admin " + username);
+          toast.success("Welcome To Music-On Admin " + username);
           setTimeout(() => {
             navigate("/admin");
           }, 2000);
         }
       } catch (error) {
         // Handle error
-        alert(error.message);
+        toast.error(error.message);
         console.log("Error when signing in: ", error);
       } finally {
         setClicked(false);
       }
-    }, 3000);
+    }, 2000);
   };
 
   return (
     <main className="flex h-auto min-h-[100vh]   md:py-10 md:px-10 text-white items-center bg-[#000000] justify-center  ">
+       <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      
       <form className="px-5 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
+
         <div
           className="rounded-lg bg-[#0f0f0f] border bg-card text-card-foreground shadow-sm w-full max-w-md"
           data-v0-t="card"

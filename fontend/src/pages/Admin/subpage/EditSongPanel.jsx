@@ -9,6 +9,8 @@ import GenreApi from "../../../Apis/GenreApi";
 import SongApi from "../../../Apis/SongApi";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const EditSongPanel = () => {
   const { id } = useParams();
 
@@ -46,6 +48,7 @@ const EditSongPanel = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    toast.info("Uploading");
     stopPost.current.disabled = true;
 
     const songRef = ref(storage, `songs/${songUpload?.name + v4()}`);
@@ -59,8 +62,10 @@ const EditSongPanel = () => {
       editSong(ids.generic_id, ids.artist_id, id, values)
         .then((res) => {
           console.log(res);
-          alert("Success with out no image and audio!");
-          window.location.reload();
+          toast.success("Uploaded with out no image and audio!");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
           return;
         })
         .catch((err) => console.log(err));
@@ -84,8 +89,10 @@ const EditSongPanel = () => {
         })
         .then((res) => {
           setReload(true);
-          alert("Success with only song path!");
-          window.location.reload();
+          toast.success("Uploaded with only song path!");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
           setReload(false);
         })
         .catch((error) => {
@@ -113,8 +120,10 @@ const EditSongPanel = () => {
         })
         .then((res) => {
           setReload(true);
-          alert("Success with only song image!");
-          window.location.reload();
+          toast.success("Uploaded with only song image!");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
           setReload(false);
         })
         .catch((error) => {
@@ -149,9 +158,11 @@ const EditSongPanel = () => {
         })
         .then((res) => {
           setReload(true);
-          alert("Success!");
+          toast.success("Uploaded Success!");
           setReload(false);
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
         })
         .catch((error) => {
           console.error("Error:", error.message);
@@ -174,7 +185,7 @@ const EditSongPanel = () => {
     getArtist()
       .then((res) => {
         setArtist(res);
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         console.error("Error:", err);
@@ -182,7 +193,7 @@ const EditSongPanel = () => {
 
     getGenre()
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setGenre(res);
       })
       .catch((err) => {
@@ -194,7 +205,7 @@ const EditSongPanel = () => {
   useEffect(() => {
     getArtistBySongId(id)
       .then((res) => {
-        console.log(res[0]);
+        // console.log(res[0]);
         // setArtistIdFromSongId(res[0])
         setIds({ ...ids, generic_id: res[0]?.id });
       })
@@ -202,7 +213,7 @@ const EditSongPanel = () => {
 
     getGenreBySongId(id)
       .then((res) => {
-        console.log(res[0]);
+        // console.log(res[0]);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -210,7 +221,7 @@ const EditSongPanel = () => {
   useEffect(() => {
     Promise.all([getArtistBySongId(id), getGenreBySongId(id)]).then(
       ([artistRes, genreRes]) => {
-        // console.log(artistRes, genreRes);
+        console.log(artistRes, genreRes);
         setIds({
           artist_id: artistRes[0]?.id,
           generic_id: genreRes[0]?.id,
@@ -219,10 +230,22 @@ const EditSongPanel = () => {
     );
   }, []);
 
-  console.log(ids);
+  // console.log(ids);
 
   return (
-    <body class="bg-gray-900 flex items-center justify-center min-h-screen">
+    <div class="bg-gray-900 flex items-center justify-center min-h-screen">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 class="text-2xl font-bold text-white mb-6">Edit Song</h2>
         <form onSubmit={handleSubmit}>
@@ -253,8 +276,25 @@ const EditSongPanel = () => {
               name="picture"
               class="mt-1 p-2 bg-gray-700 text-gray-400 rounded-lg w-full"
               onChange={(event) => {
-                setSongImageUpload(event.target.files[0]);
-                alert("img halyo");
+                const fileExtentionAllowed = [
+                  "jpg",
+                  "png",
+                  "jpeg",
+                  "webp",
+                  "gif",
+                  "jfif",
+                ];
+                const fileExtention = event.target.files[0].name
+                  .split(".")
+                  .pop();
+                console.log(fileExtention);
+                if (fileExtentionAllowed.includes(fileExtention)) {
+                  toast.success("valid image extention");
+                  setSongImageUpload(event.target.files[0]);
+                } else {
+                  toast.error("invalid image extention");
+                  setSongImageUpload(null);
+                }
               }}
             />
           </div>
@@ -268,8 +308,27 @@ const EditSongPanel = () => {
               name="audio"
               class="mt-1 p-2 bg-gray-700 text-gray-400 rounded-lg w-full"
               onChange={(event) => {
-                setSongUpload(event.target.files[0]);
-                alert("halyo hai");
+                const fileExtentionAllowed = [
+                  "mp3",
+                  "mp4",
+                  "flac",
+                  "mp4",
+                  "wav",
+                  "wma",
+                  "aac",
+                ];
+
+                const fileExtention = event.target.files[0].name
+                  .split(".")
+                  .pop();
+                console.log(fileExtention);
+                if (fileExtentionAllowed.includes(fileExtention)) {
+                  setSongUpload(event.target.files[0]);
+                  toast.success("valid audio extention");
+                } else {
+                  toast.error("invalid audio extention");
+                  setSongImageUpload(null);
+                }
               }}
             />
           </div>
@@ -338,7 +397,7 @@ const EditSongPanel = () => {
           </button>
         </form>
       </div>
-    </body>
+    </div>
   );
 };
 

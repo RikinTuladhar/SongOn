@@ -154,7 +154,7 @@ const SideBar = () => {
             </li>
 
             {/* add song in artist  */}
-            <li>
+            {/* <li>
               <Link
                 to={"/admin/addSongInArtist"}
                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -164,9 +164,9 @@ const SideBar = () => {
                   Song in Artist
                 </span>
               </Link>
-            </li>
+            </li> */}
             {/* add song in gerne  */}
-            <li>
+            {/* <li>
               <Link
                 to={"/admin/addSongInGenre"}
                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -174,7 +174,7 @@ const SideBar = () => {
              <CgInsertAfterO size={25}/>
                 <span class="flex-1 ms-3 whitespace-nowrap">Song in Genre</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <a
                 href="#"

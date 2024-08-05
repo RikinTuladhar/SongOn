@@ -5,7 +5,8 @@ import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import ArtistApi from "../Apis/ArtistApi";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AddArtist = () => {
   const [artist, setArtist] = useState({
     name: "",
@@ -16,7 +17,7 @@ const AddArtist = () => {
 
   const { reload, setReload } = useContext(ReloadContext);
 
-const {addArtist} =ArtistApi();
+  const { addArtist } = ArtistApi();
   const [artistImage, setArtistImage] = useState(null);
   const stopPost = useRef();
 
@@ -24,7 +25,7 @@ const {addArtist} =ArtistApi();
     const { name, value } = event.target;
     setArtist({ ...artist, [name]: value });
   };
-// console.log(artist);
+  // console.log(artist);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -33,18 +34,19 @@ const {addArtist} =ArtistApi();
     if (name && bio && gender) {
       if (artistImage == null) {
         stopPost.current.disabled = false;
-        alert("Please upload image");
+        toast.info("Please upload image");
       }
       const artistRef = ref(storage, `artistImage/${artistImage.name + v4()}`);
       uploadBytes(artistRef, artistImage)
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
-          .then((url) => {
-              return addArtist({ ...artist, imgArtist: url ? url :""});
-            }).then((res)=>{
-              alert("Uploaded");
+            .then((url) => {
+              toast.success("Uploaded image");
+              return addArtist({ ...artist, imgArtist: url ? url : "" });
+            })
+            .then((res) => {
               setReload(true);
-              alert("Artist Added Successfully");
+              toast.success("Artist Added Successfully");
               setReload(false);
               setArtist({
                 name: "",
@@ -52,57 +54,82 @@ const {addArtist} =ArtistApi();
                 gender: "",
                 imgArtist: "",
               });
+              setArtistImage(null);
               stopPost.current.disabled = false;
-            })
+            });
         })
         .catch((err) => {
           console.error(err);
         });
     } else {
-      alert("Please fill all the fields");
+      toast.info("Please fill all the fields");
       stopPost.current.disabled = false;
     }
   };
 
   return (
-    <div className="w-full h-[100vh] bg-slate-500 flex justify-center items-center">
+    <div className="w-full h-[100vh] bg-gray-900  flex justify-center items-center">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div>
         <form onSubmit={handleSubmit}>
-          <div className="grid w-full max-w-sm items-center gap-1.5 p-6 rounded-lg border width center dark:border-gray-800">
-            <label className="text-lg font-bold" htmlFor="form-2-name ">
+          <div className="grid bg-gray-800 border w-full max-w-sm items-center gap-1.5 p-6 rounded-lg  width center ">
+            <h2 class="text-2xl font-bold text-white mb-6">Add Artist</h2>
+            <label
+              className="block text-sm font-medium text-gray-300"
+              htmlFor="form-2-name "
+            >
               Name
             </label>
             <input
-              className="flex w-full h-10 px-3 py-2 text-sm border rounded-md border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              class="mt-1 p-2 bg-gray-700 text-white rounded-lg w-full"
               id="form-2-name"
-              placeholder="Enter your name"
+              placeholder="Enter artist name"
               name="name"
               onChange={getValues}
               type="text"
               value={artist.name}
             />
 
-            <label className="text-lg font-bold" htmlFor="form-2-name ">
+            <label
+              className="block text-sm font-medium text-gray-300"
+              htmlFor="form-2-name "
+            >
               Bio
             </label>
             <input
-              className="flex w-full h-10 px-3 py-2 text-sm border rounded-md border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              class="mt-1 p-2 bg-gray-700 text-white rounded-lg w-full"
               id="form-2-name"
-              placeholder="Enter your name"
+              placeholder="Enter bio "
               name="bio"
               type="text"
               onChange={getValues}
               value={artist.bio}
             />
 
-            <label className="text-lg font-bold" htmlFor="form-2-name ">
+            <label
+              className="block text-sm font-medium text-gray-300"
+              htmlFor="form-2-name "
+            >
               Gender
             </label>
             <div className="flex justify-around">
               <div>
-                <span>Male:</span>
+                <span className="block text-sm font-medium text-gray-300">
+                  Male:
+                </span>
                 <input
-                  className="flex w-full h-10 px-3 py-2 text-sm border rounded-md border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-10 h-5"
                   id="form-2-name"
                   placeholder="Enter your name"
                   name="gender"
@@ -112,9 +139,11 @@ const {addArtist} =ArtistApi();
                 />
               </div>
               <div>
-                <span>Femal:</span>
+                <span className="block text-sm font-medium text-gray-300">
+                  Femal:
+                </span>
                 <input
-                  className="flex w-full h-10 px-3 py-2 text-sm border rounded-md border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-10 h-5"
                   id="form-2-name"
                   placeholder="Enter your name"
                   value="Female"
@@ -124,20 +153,45 @@ const {addArtist} =ArtistApi();
                 />
               </div>
             </div>
-            <label className="text-lg font-bold" htmlFor="form-2-picture">
+            <label
+              className="block text-sm font-medium text-gray-300"
+              htmlFor="form-2-picture"
+            >
               Image
             </label>
             <div key={"audio upload"} className="relative w-full">
               <input
                 type="file"
                 name="autoPath"
+                class="mt-1 p-2 bg-gray-700 text-gray-400 rounded-lg "
                 onChange={(event) => {
-                  setArtistImage(event.target.files[0]);
-                  alert("img hai");
+                  const fileExtentionAllowed = [
+                    "jpg",
+                    "png",
+                    "jpeg",
+                    "webp",
+                    "gif",
+                    "jfif",
+                  ];
+                  const fileExtention = event.target.files[0].name
+                    .split(".")
+                    .pop();
+                  console.log(fileExtention);
+                  if (fileExtentionAllowed.includes(fileExtention)) {
+                    setArtistImage(event.target.files[0]);
+                    toast.success("valid image extention");
+                  } else {
+                    toast.error("Invalid Image extention");
+                    setArtistImage(null);
+                  }
                 }}
               />
             </div>
-            <button type="submit" ref={stopPost}>
+            <button
+              type="submit"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-full"
+              ref={stopPost}
+            >
               Add Artist
             </button>
           </div>

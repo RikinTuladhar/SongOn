@@ -27,12 +27,17 @@ const GenreApi = () => {
   }
 
   async function postGenre(value) {
-    const URL = baseUrl + "/genre";
-    // console.log(URL);
-    const response = await axios.post(URL, value);
-    const data = await response.data;
-    // console.log(data)
-    return data;
+    try {
+      const URL = baseUrl + "/genre";
+      // console.log(URL);
+      const response = await axios.post(URL, value);
+      const data = await response.data;
+      // console.log(data)
+      return data;
+    } catch (err) {
+      console.log(err);
+      throw new Error(err.response.data.errorMessage);
+    }
   }
 
   async function deleteGenre(endpoint) {
@@ -69,6 +74,18 @@ const GenreApi = () => {
     }
   }
 
+  async function editGenre(genreId, value) {
+    const URL = `${baseUrl}/genre/upateGenre?id=${genreId}`;
+    try {
+      const res = await axios.put(URL, value);
+      const data = await res.data;
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return {
     getGenre,
     getGenreBySongId,
@@ -76,6 +93,7 @@ const GenreApi = () => {
     getGenreById,
     postGenre,
     putSongOnGenre,
+    editGenre
   };
 };
 

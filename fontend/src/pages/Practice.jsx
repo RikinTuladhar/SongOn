@@ -16,8 +16,6 @@ const Practice = () => {
     setCount(count + 1) ;
   },[count])
 
-
-
   return (
    <> 
    <div>{fakeCount}</div>

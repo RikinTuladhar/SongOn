@@ -4,9 +4,11 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import { ReloadContext } from "../contextprovider/ReloadProvider";
 import { SongContext } from "../contextprovider/SongProvider";
-import ArtistApi from "../Apis/ArtistApi"
-import GenreApi from "../Apis/GenreApi"
+import ArtistApi from "../Apis/ArtistApi";
+import GenreApi from "../Apis/GenreApi";
 import SongApi from "../Apis/SongApi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddSongs = () => {
   const { reload, setReload } = useContext(ReloadContext);
@@ -16,10 +18,9 @@ const AddSongs = () => {
   const [songUpload, setSongUpload] = useState(null);
   const [songImageUpload, setSongImageUpload] = useState(null);
   const [songlist, setSongList] = useState(null);
-  const {getArtist} = ArtistApi();
-const {addSong} =SongApi()
-  const {getGenre} = GenreApi();
-  
+  const { getArtist } = ArtistApi();
+  const { addSong } = SongApi();
+  const { getGenre } = GenreApi();
 
   const [genre, setGenre] = useState([]);
   const [artist, setArtist] = useState([]);
@@ -28,57 +29,83 @@ const {addSong} =SongApi()
     name: "",
     autoPath: "",
     imgPath: "",
-    lyrics:""
+    lyrics: "",
   });
   const [ids, setIds] = useState({
     generic_id: "",
     artist_id: "",
   });
 
-  console.log(values)
+  // console.log(values);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    toast.info("Uploading...");
     stopPost.current.disabled = true;
-  
-    if (songUpload == null || songImageUpload == null) {
+    
+    if (values?.name.length <= 0) {
       stopPost.current.disabled = false;
-      alert("No song or image upload");
+      toast.info("Name cannot be empty");
       return;
     }
-  
+
+    if (songUpload == null || songImageUpload == null) {
+      stopPost.current.disabled = false;
+      toast.error("No song or image upload");
+      return;
+    }
+
     const songRef = ref(storage, `songs/${songUpload.name + v4()}`);
     const songImgRef = ref(storage, `songimage/${songImageUpload.name + v4()}`);
-  
-    console.log("Uploading song and image...");
-    
+
+    // console.log("Uploading song and image...");
+    // console.log(ids)
+
+    if (ids.generic_id == "" || ids.generic_id == null) {
+      stopPost.current.disabled = false;
+      toast.error("No Genre Selected");
+      return;
+    }
+
+    if (ids.artist_id == "" || ids.artist_id == null) {
+      stopPost.current.disabled = false;
+      toast.error("No Artist Selected");
+      return;
+    }
+
     Promise.all([
       uploadBytes(songRef, songUpload),
       uploadBytes(songImgRef, songImageUpload),
     ])
       .then(([songSnapshot, imageSnapshot]) => {
-        console.log("Upload successful. Retrieving URLs...");
+        // console.log("Upload successful. Retrieving URLs...");
         return Promise.all([
           getDownloadURL(songSnapshot.ref),
           getDownloadURL(imageSnapshot.ref),
         ]);
       })
       .then(([songUrl, imageUrl]) => {
-        console.log("URLs retrieved:", songUrl, imageUrl);
+        // console.log("URLs retrieved:", songUrl, imageUrl);
         setValues((prevValues) => ({
           ...prevValues,
           autoPath: songUrl,
           imgPath: imageUrl,
         }));
-        console.log("Values updated:", values);
-        return addSong(ids.generic_id, ids.artist_id, { ...values, autoPath: songUrl, imgPath: imageUrl });
+        // console.log("Values updated:", values);
+        return addSong(ids.generic_id, ids.artist_id, {
+          ...values,
+          autoPath: songUrl,
+          imgPath: imageUrl,
+        });
       })
       .then((res) => {
-        console.log("Song added successfully:", res);
+        // console.log("Song added successfully:", res);
         setReload(true);
-        alert("Success!");
+        toast.success("Song added successfully");
         setReload(false);
+       setTimeout(()=>{
         window.location.reload();
+       },3000)
         stopPost.current.disabled = false;
       })
       .catch((error) => {
@@ -86,7 +113,6 @@ const {addSong} =SongApi()
         stopPost.current.disabled = false;
       });
   };
-  
 
   // posting in database
 
@@ -101,7 +127,7 @@ const {addSong} =SongApi()
         console.error("Error:", err);
       });
 
-      getGenre()
+    getGenre()
       .then((res) => {
         // console.log(res);
         setGenre(res);
@@ -115,7 +141,19 @@ const {addSong} =SongApi()
 
   return (
     <div class="bg-gray-900 flex items-center justify-center min-h-screen">
-      <div class="bg-gray-800 py-5 p-8 rounded-lg shadow-lg w-full max-w-md">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <div class="bg-gray-800  border py-5 p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 class="text-2xl font-bold text-white mb-6">Add Song</h2>
         <form onSubmit={handleSubmit}>
           <div class="mb-4">
@@ -144,8 +182,25 @@ const {addSong} =SongApi()
               name="picture"
               class="mt-1 p-2 bg-gray-700 text-gray-400 rounded-lg w-full"
               onChange={(event) => {
-                setSongImageUpload(event.target.files[0]);
-                alert("img halyo");
+                const fileExtentionAllowed = [
+                  "jpg",
+                  "png",
+                  "jpeg",
+                  "webp",
+                  "gif",
+                  "jfif",
+                ];
+                const fileExtention = event.target.files[0].name
+                  .split(".")
+                  .pop();
+                console.log(fileExtention);
+                if (fileExtentionAllowed.includes(fileExtention)) {
+                  setSongImageUpload(event.target.files[0]);
+                  toast.success("valid image extention");
+                } else {
+                  toast.error("invalid image extention");
+                  setSongImageUpload(null);
+                }
               }}
             />
           </div>
@@ -159,8 +214,28 @@ const {addSong} =SongApi()
               name="audio"
               class="mt-1 p-2 bg-gray-700 text-gray-400 rounded-lg w-full"
               onChange={(event) => {
-                setSongUpload(event.target.files[0]);
-                alert("halyo hai");
+                const fileExtentionAllowed = [
+                  "mp3",
+                  "mp4",
+                  "flac",
+                  "mp4",
+                  "wav",
+                  "wma",
+                  "aac",
+                ];
+
+                const fileExtention = event.target.files[0].name
+                  .split(".")
+                  .pop();
+                console.log(fileExtention);
+                console.log(fileExtentionAllowed.includes(fileExtention));
+                if (fileExtentionAllowed.includes(fileExtention)) {
+                  setSongUpload(event.target.files[0]);
+                  toast.success("valid audio extention");
+                } else {
+                  toast.error("invalid image extention");
+                  setSongImageUpload(null);
+                }
               }}
             />
           </div>
@@ -176,12 +251,14 @@ const {addSong} =SongApi()
                 setIds((prev) => ({ ...prev, artist_id: e.target.value }))
               }
             >
-              <option selected disabled value="">
-                  Select The Artist
+              <option key={"default artist"} selected disabled value="">
+                Select The Artist
+              </option>
+              {artist?.map((artist, i) => (
+                <option key={i} value={artist.id}>
+                  {artist.name}
                 </option>
-                {artist?.map((artist,i) => (
-                  <option key={i} value={artist.id}>{artist.name}</option>
-                ))}
+              ))}
             </select>
           </div>
           <div class="mb-4">
@@ -196,12 +273,12 @@ const {addSong} =SongApi()
                 setIds((prev) => ({ ...prev, generic_id: e.target.value }))
               }
             >
-              <option selected disabled value="">
-                    Select The Genre
-                  </option>
-                  {genre?.map((genre) => (
-                    <option value={genre.id}>{genre.name}</option>
-                  ))}
+              <option key={"default genre"} selected disabled value="">
+                Select The Genre
+              </option>
+              {genre?.map((genre) => (
+                <option value={genre.id}>{genre.name}</option>
+              ))}
             </select>
           </div>
           <div class="mb-4">
