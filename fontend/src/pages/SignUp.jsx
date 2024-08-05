@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserApi from "../Apis/UserApi";
 import OvalLoader from "../components/OvalLoader";
+import { handleEmptySongArray } from "../Apis/SongSlice";
+import { useDispatch } from "react-redux";
 const SignUp = () => {
+  useEffect(() => {
+    dispatch(handleEmptySongArray());
+  }, []);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     username: "",
     firstname: "",
@@ -12,6 +18,7 @@ const SignUp = () => {
     email: "",
     role: "USER",
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });

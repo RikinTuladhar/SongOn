@@ -3,14 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { User } from "../contextprovider/UserProvider";
 import UserApi from "../Apis/UserApi";
 import OvalLoader from "../components/OvalLoader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../Apis/UserSlice";
-
+import { handleEmptySongArray } from "../Apis/SongSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = () => {
   const dispatch = useDispatch();
+  // const songs = useSelector((state) => state.song.songs);
+  useState(() => {
+    dispatch(handleEmptySongArray());
+  }, []);
   // const { setToken, setUserDetails } = useContext(User);
   const navigate = useNavigate();
   const buttonRef = useRef();
@@ -63,7 +67,7 @@ const SignIn = () => {
 
   return (
     <main className="flex h-auto min-h-[100vh]   md:py-10 md:px-10 text-white items-center bg-[#000000] justify-center  ">
-       <ToastContainer
+      <ToastContainer
         position="top-center"
         autoClose={2000}
         hideProgressBar={false}
@@ -75,9 +79,8 @@ const SignIn = () => {
         pauseOnHover
         theme="dark"
       />
-      
-      <form className="px-5 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
 
+      <form className="px-5 py-10 md:px-0 md:py-0" onSubmit={handleSubmit}>
         <div
           className="rounded-lg bg-[#0f0f0f] border bg-card text-card-foreground shadow-sm w-full max-w-md"
           data-v0-t="card"

@@ -4,8 +4,8 @@ import { CiUnread } from "react-icons/ci";
 import { useSelector } from "react-redux";
 // import {songClickedId} from "../Apis/SongSlice"
 const SongPlayer = () => {
-  const songClickedId = useSelector((state)=>state.song?.songIndex)
-  const songs = useSelector((state)=>state.song.songs)
+  const songClickedId = useSelector((state) => state.song?.songIndex);
+  const songs = useSelector((state) => state.song.songs);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
@@ -89,7 +89,9 @@ const SongPlayer = () => {
             <div className="text-[#E5E7EB] pt-1  justify-center items-center mx-auto md:px-0 gap-10 flex  md:gap-5">
               {/* song:  */}
               <div className="flex gap-2 text-xl font-semibold text-white md:px-10">
-                <span className="bg-gradient-to-l from-[#5c747e] to-[#c9d4d8] bg-clip-text text-transparent">Song :</span>
+                <span className="bg-gradient-to-l from-[#5c747e] to-[#c9d4d8] bg-clip-text text-transparent">
+                  Song :
+                </span>
                 <span className="text-transparent bg-gradient-to-br from-[#b1b8c8] to-[#afb1ca] bg-clip-text">
                   {songs && songs[currentIndex]?.name
                     ? songs[currentIndex].name
@@ -112,7 +114,7 @@ const SongPlayer = () => {
                   className="text-xl font-semibold md:px-10  text-[#E5E7EB] cursor-pointer bg-gradient-to-l from-[#797dd3] to-[#cbafaf] bg-clip-text text-transparent"
                   onClick={() => setLyricsClicked(!lyricsClicked)}
                 >
-                 <div className="flex items-center justify-center gap-5">
+                  <div className="flex items-center justify-center gap-5">
                     Hide Lyrics{" "}
                     <div>
                       {" "}
@@ -129,7 +131,7 @@ const SongPlayer = () => {
                     Show Lyrics{" "}
                     <div>
                       {" "}
-                      <CiRead size={25}  className="text-white" />
+                      <CiRead size={25} className="text-white" />
                     </div>
                   </div>
                 </div>
