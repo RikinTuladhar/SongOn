@@ -10,7 +10,7 @@ const SideBar = () => {
   const [hide, setHide] = useState(false);
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.userDetails);
-  console.log(userDetails);
+  // console.log(userDetails);
   useEffect(() => {
     dispatch(getUser());
   }, []);
@@ -20,21 +20,21 @@ const SideBar = () => {
 
   return (
     <>
-      <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-        <div class="px-3 py-3 lg:px-5 lg:pl-3">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center justify-start rtl:justify-end">
+      <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <div className="px-3 py-3 lg:px-5 lg:pl-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center justify-start rtl:justify-end">
               <button
                 onClick={handleClick}
                 data-drawer-target="logo-sidebar"
                 data-drawer-toggle="logo-sidebar"
                 aria-controls="logo-sidebar"
                 type="button"
-                class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               >
-                <span class="sr-only">Open sidebar</span>
+                <span className="sr-only">Open sidebar</span>
                 <svg
-                  class="w-6 h-6"
+                  className="w-6 h-6"
                   aria-hidden="true"
                   fill="currentColor"
                   viewBox="0 0 20 20"
@@ -47,14 +47,14 @@ const SideBar = () => {
                   ></path>
                 </svg>
               </button>
-              <Link to={"/admin"} class="flex ms-2 md:me-24">
+              <Link to={"/admin"} className="flex ms-2 md:me-24">
                 <img
                   src="./songon.png"
                   onError={e=> e.target.src="/songon.png"}
-                  class="h-8 me-3"
+                  className="h-8 me-3"
                   alt="Music Logo"
                 />
-                <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+                <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                   Music On
                 </span>
               </Link>
@@ -64,21 +64,21 @@ const SideBar = () => {
       </nav>
       <aside
         id="logo-sidebar"
-        class={`${
+        className={`${
           hide === false ? "block" : "hidden"
         }   sm:translate-x-0 fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform  bg-white border-r border-gray-200  dark:bg-gray-800 dark:border-gray-700`}
         aria-label="Sidebar"
       >
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-          <ul class="space-y-2 font-medium">
+        <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+          <ul className="space-y-2 font-medium">
             <li>
               <Link
                 to={"/admin"}
                 href="#"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
-                  class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -87,17 +87,17 @@ const SideBar = () => {
                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
                   <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                 </svg>
-                <span class="ms-3">Dashboard</span>
+                <span className="ms-3">Dashboard</span>
               </Link>
             </li>
             <li>
               {/* addsong  */}
               <Link
                 to={"/admin/addSongs"}
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <MdAddCircle size={25}/>
-                <span class="flex-1 ms-3 whitespace-nowrap">Add Song</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Add Song</span>
               </Link>
             </li>
             {/* add artist  */}
@@ -105,10 +105,10 @@ const SideBar = () => {
               <Link
                 to={"/admin/addArtist"}
                 href="#"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <MdAddCircle size={25}/>
-                <span class="flex-1 ms-3 whitespace-nowrap">AddArtist</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">AddArtist</span>
               </Link>
             </li>
             {/* add genre  */}
@@ -116,40 +116,40 @@ const SideBar = () => {
               <Link
                 to={"/admin/addGenre"}
                 href="#"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <MdAddCircle size={25}/>
-                <span class="flex-1 ms-3 whitespace-nowrap">AddGenre</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">AddGenre</span>
               </Link>
             </li>
             {/* edit artist  */}
             <li>
               <Link
                 to={"/admin/edit/artist"}
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                  <FaEdit size={25}/>
-                <span class="flex-1 ms-3 whitespace-nowrap">Edit Artist</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Edit Artist</span>
               </Link>
             </li>
             {/* edit genre  */}
             <li>
               <Link
                 to={"/admin/edit/genre"}
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                <FaEdit size={25}/>
-                <span class="flex-1 ms-3 whitespace-nowrap">Edit Genre</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Edit Genre</span>
               </Link>
             </li>
             {/* edit song  */}
             <li>
               <Link
                 to={"/admin/edit/song"}
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                <FaEdit size={25}/>
-                <span class="flex-1 ms-3 whitespace-nowrap">Edit Song</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Edit Song</span>
               </Link>
             </li>
 
@@ -157,10 +157,10 @@ const SideBar = () => {
             {/* <li>
               <Link
                 to={"/admin/addSongInArtist"}
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <CgInsertAfterO size={25}/>
-                <span class="flex-1 ms-3 whitespace-nowrap">
+                <span className="flex-1 ms-3 whitespace-nowrap">
                   Song in Artist
                 </span>
               </Link>
@@ -169,21 +169,21 @@ const SideBar = () => {
             {/* <li>
               <Link
                 to={"/admin/addSongInGenre"}
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
              <CgInsertAfterO size={25}/>
-                <span class="flex-1 ms-3 whitespace-nowrap">Song in Genre</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Song in Genre</span>
               </Link>
             </li> */}
             <li>
               <a
                 href="#"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <RiLogoutBoxFill  size={25}/>
                 <Link
                   to={"/signin"}
-                  class="flex-1 ms-3 whitespace-nowrap"
+                  className="flex-1 ms-3 whitespace-nowrap"
                   onClick={(e) => {
                     //there is case for logout that hanbdles the user state.
                     dispatch(logOut());

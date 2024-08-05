@@ -13,6 +13,18 @@ const GenreApi = () => {
     return data;
   }
 
+  async function getGenreById(id) {
+    const URL = baseUrl + `/genre/${id}`;
+    try {
+      const res = await axios.get(URL);
+      const data = await res.data;
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function getGenreBySongId(songId) {
     const URL = `${baseUrl}/genre/By-songid/${songId}`;
     // console.log(URL);
@@ -24,6 +36,15 @@ const GenreApi = () => {
     } catch (e) {
       throw new Error("Server Error");
     }
+  }
+
+  async function getSongByGenreId(id) {
+    const URL = baseUrl + `/song/by-genre/${id}`;
+    // console.log(URL)
+    const response = await axios.get(URL);
+    const data = await response.data;
+    // console.log(data);
+    return data;
   }
 
   async function postGenre(value) {
@@ -45,15 +66,6 @@ const GenreApi = () => {
     // console.log(URL)
     const response = await axios.delete(URL);
     const data = await response.data;
-    return data;
-  }
-
-  async function getGenreById(id) {
-    const URL = baseUrl + `/song/by-genre/${id}`;
-    // console.log(URL)
-    const response = await axios.get(URL);
-    const data = await response.data;
-    // console.log(data);
     return data;
   }
 
@@ -88,12 +100,13 @@ const GenreApi = () => {
 
   return {
     getGenre,
-    getGenreBySongId,
-    deleteGenre,
     getGenreById,
+    getGenreBySongId,
+    getSongByGenreId,
     postGenre,
+    deleteGenre,
     putSongOnGenre,
-    editGenre
+    editGenre,
   };
 };
 

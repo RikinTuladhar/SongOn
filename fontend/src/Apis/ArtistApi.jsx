@@ -18,11 +18,11 @@ const ArtistApi = () => {
 
   async function getArtistById(id) {
     const URL = baseUrl + `/artist/${id}`;
-    
+
     try {
       const response = await axios.get(URL);
       const data = await response.data;
-   
+
       return data;
     } catch (error) {
       console.error(error);
@@ -31,7 +31,7 @@ const ArtistApi = () => {
 
   async function getSongByArtistId(id) {
     const URL = baseUrl + "/song/by-artist/" + id;
- 
+
     try {
       const res = await axios.get(URL);
       const data = await res.data;
@@ -43,15 +43,15 @@ const ArtistApi = () => {
   }
 
   async function getArtistBySongId(songid) {
-    const URL = `${baseUrl}/artist/By-songid/${songid}`
-    try{
+    const URL = `${baseUrl}/artist/By-songid/${songid}`;
+    try {
       const res = await axios.get(URL);
       const data = await res.data;
-      console.log(data)
-      return data
-    }catch(err){
-      console.log(err)
-      throw new Error(err)
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
     }
   }
 
@@ -68,12 +68,24 @@ const ArtistApi = () => {
     }
   }
 
+  async function editArtist(artistId, value) {
+    const URL = `${baseUrl}/artist/updateArtist?id=${artistId}`;
+    try {
+      const res = await axios.put(URL, value);
+      const data = await res.data;
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function putSongOnArtist(artistId, songId) {
     const URL = baseUrl + `/artist/${artistId}/song/${songId}`;
     try {
       const response = await axios.put(URL, {});
       const data = await response.data;
-   
+
       return data;
     } catch (error) {
       console.log(
@@ -99,6 +111,7 @@ const ArtistApi = () => {
     getSongByArtistId,
     getArtistById,
     addArtist,
+    editArtist,
     putSongOnArtist,
     deleteArtist,
   };

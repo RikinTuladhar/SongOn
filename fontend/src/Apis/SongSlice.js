@@ -48,7 +48,7 @@ const songSlice = createSlice({
   initialState,
   reducers: {
     handleSetSongIndex: (state, action) => {
-      console.log(action.payload);
+    //   console.log(action.payload);
       state.songIndex = action.payload;
     },
     handleSongArray: (state, action) => {

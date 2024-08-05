@@ -15,12 +15,13 @@ const EditGenrePanel = () => {
     bio: "",
     imgGenre: "",
   });
+
   const [genreId, setGenreId] = useState("");
   const [genreImage, setGenreImage] = useState(null);
   // console.log(genreImage);
   const stopPost = useRef();
 
-  const { getGenreBySongId, editGenre } = GenreApi();
+  const { getGenreById, editGenre } = GenreApi();
 
   const getValues = (event) => {
     const { name, value } = event.target;
@@ -28,10 +29,11 @@ const EditGenrePanel = () => {
   };
   // console.log(genre)
   useEffect(() => {
-    getGenreBySongId(id)
+    getGenreById(id)
       .then((res) => {
-        console.log(res[0]?.id);
-        setGenreId(res[0]?.id);
+        console.log(res);
+        setGenreId(res.id);
+        setGenre(res);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -42,15 +44,8 @@ const EditGenrePanel = () => {
     event.preventDefault();
     toast.info("Uploading...");
     stopPost.current.disabled = true;
-    const { name, bio } = genre;
-
-    if (genreImage == null) {
-      stopPost.current.disabled = false;
-      toast.info("Please upload image");
-      return;
-    }
     // console.log(name , bio)
-    if (name && bio) {
+    if (genreImage != null) {
       const genreRef = ref(storage, `genreImage/${genreImage?.name + v4()}`);
       uploadBytes(genreRef, genreImage).then((snapshot) => {
         getDownloadURL(snapshot.ref)
@@ -60,11 +55,15 @@ const EditGenrePanel = () => {
           })
           .then((res) => {
             if (res) {
-              toast.success("Genre Added Successfully");
+              toast.success("Genre edited Successfully with new poster ");
               setGenre({
                 name: "",
                 bio: "",
+                imgGenre: "",
               });
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000);
               stopPost.current.disabled = false;
             }
           })
@@ -75,8 +74,20 @@ const EditGenrePanel = () => {
           });
       });
     } else {
-      stopPost.current.disabled = false;
-      toast.info("Please fill all the fields");
+      editGenre(genreId,genre)
+        .then((res) => {
+          setGenre({
+            name: "",
+            bio: "",
+            imgGenre: "",
+          });
+          stopPost.current.disabled = false;
+          toast.success("Genre edited successfully without poster");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        })
+        .catch((err) => console.log(err));
     }
   };
   return (
@@ -111,7 +122,7 @@ const EditGenrePanel = () => {
                 name="name"
                 onChange={getValues}
                 type="text"
-                value={genre.name}
+                value={genre?.name}
               />
 
               <label
@@ -126,7 +137,7 @@ const EditGenrePanel = () => {
                 name="bio"
                 type="text"
                 onChange={getValues}
-                value={genre.bio}
+                value={genre?.bio}
               />
               <label
                 htmlFor=""

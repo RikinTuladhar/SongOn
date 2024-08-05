@@ -25,8 +25,19 @@ public class GenreController {
     SongRepo songRepo;
 
     @GetMapping
-    public List<GenreModel> getGenre() {
+    public List<GenreModel> getAllGenres() {
         return genreRepo.findAll();
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<?> getSongByGenreId(@PathVariable("id") int id) {
+        Optional<GenreModel> genre = genreRepo.findById(id);
+        if (genre.isPresent()) {
+            return ResponseEntity.ok().body(genre);
+        } else {
+            ErrorMessage errorMessage = new ErrorMessage("Did not found genre");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        }
     }
 
     @GetMapping("/By-songid/{songId}")

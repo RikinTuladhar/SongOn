@@ -14,13 +14,13 @@ const Library = () => {
   const songs = useSelector((state)=> state.song.songs);
   // console.log(songs)
   const { reload, setReload } = useContext(ReloadContext);
-  const { getGenreById } = GenreApi();
+  const { getSongByGenreId } = GenreApi();
   const { id } = useParams();
   const { setGenreId } = useOutletContext();
 
   useEffect(() => {
     setGenreId(id);
-    getGenreById(id).then((res) => {
+    getSongByGenreId(id).then((res) => {
       // console.log(res)
       dispatch(handleSongArray(res));
       setReload(true);
