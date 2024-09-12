@@ -39,7 +39,7 @@ const Artist = () => {
         getSongByArtistId(id).then((res) => {
           // console.log(res);
           // setSongArray(res);
-          console.log(res);
+          // console.log(res);
           dispatch(handleSongArray(res));
         });
         return () => {

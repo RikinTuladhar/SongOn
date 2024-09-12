@@ -67,7 +67,7 @@ const LibraryRight = ({ songs, artistName }) => {
 
   return (
     <div className="w-full md:w-[70%] h-[100vh] overflow-y-auto mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
-      <div className="flex flex-wrap justify-between px-10">
+      <div className="flex flex-wrap space-y-5 justify-between px-10">
         <h1 className="text-lg md:text-2xl text-[#E5E7EB]">
           Songs List {artistName ? `: ${artistName}` : ""}
         </h1>
@@ -80,18 +80,18 @@ const LibraryRight = ({ songs, artistName }) => {
           />
         </div>
       </div>
-      <div className="w-full mt-10 md:mt-3 h-[2px] bg-black"></div>
+      <div className="w-full mt-5 md:mt-3 h-[2px] bg-black"></div>
       <div className="w-full h-auto mt-5">
         <div className="w-full h-auto px-2 flex justify-center items-center flex-col gap-2 py-4 md:py-10 bg-[#0f0f0f]">
           <div className="flex flex-col w-full gap-2 md:px-2">
             {songs?.length === 0 ? (
-              <div className="text-xl tracking-wider">No Songs Available</div>
+              <div className="text-sm md:text-xl tracking-wider">No Songs Available</div>
             ) : (
               (searchFocus ? filteredSong : songs)?.map((song, i) => (
                 <div
                   onClick={() => handleSong(song?.id, i)}
                   key={i}
-                  className="text-[#E5E7EB] hover:cursor-pointer md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
+                  className="text-[#E5E7EB] text-sm md:text-xl  px-5 hover:cursor-pointer md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
                 >
                   <div className="text-center md:w-full">{i + 1}</div>
                   <div className="text-center md:w-full">{song?.name}</div>
