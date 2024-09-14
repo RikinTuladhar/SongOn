@@ -29,6 +29,7 @@ import UserLibrary from "./pages/UserLibrary";
 import EditArtistPanel from "./pages/Admin/subpage/EditArtistPanel";
 import EditSongPanel from "./pages/Admin/subpage/EditSongPanel";
 import EditGenrePanel from "./pages/Admin/subpage/EditGenrePanel";
+import GroupChat from "./pages/GroupChat";
 
 function App() {
   const router = createBrowserRouter([
@@ -60,6 +61,7 @@ function App() {
     { path: "/signUp", element: <SignUp /> },
     { path: "/*", element: <NotFound /> },
     { path: "/userlibrary/:username", element: <UserLibrary /> },
+    { path: "/groupchat", element: <GroupChat /> },
 
     //admin components
     {
