@@ -23,6 +23,7 @@ export const getUser = createAsyncThunk(
       const userName = userDetails.username;
       const endpoint = `${base}/getUser/${userName}`;
       const res = await axios.get(endpoint);
+      console.log(res.data)
       return res.data;
     } catch (error) {
       return rejectWithValue(
