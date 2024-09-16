@@ -30,6 +30,7 @@ import EditArtistPanel from "./pages/Admin/subpage/EditArtistPanel";
 import EditSongPanel from "./pages/Admin/subpage/EditSongPanel";
 import EditGenrePanel from "./pages/Admin/subpage/EditGenrePanel";
 import GroupChat from "./pages/GroupChat";
+import Recommendation from "./pages/Recommendation";
 
 function App() {
   const router = createBrowserRouter([
@@ -50,6 +51,7 @@ function App() {
         ,
         { path: "/library/:id", element: <Library /> },
         { path: "/artist/:id", element: <Artist /> },
+        {path:"/algorithm", element:<Recommendation/>}
       ],
     },
     //solo components
