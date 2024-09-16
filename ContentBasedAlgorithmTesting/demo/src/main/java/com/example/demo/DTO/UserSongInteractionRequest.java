@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserSongInteractionRequest {
+
     private Long userId;
     private Long songId;
     private boolean liked;

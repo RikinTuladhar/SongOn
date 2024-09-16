@@ -9,7 +9,6 @@ import com.example.demo.repository.UserSongInteractionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
 @Service
 public class RecommendationService {
 
@@ -33,10 +32,16 @@ public class RecommendationService {
             int score = interaction.getTimesListened() + (interaction.isLiked() ? 5 : 0); // Liked songs have higher weight
 
             // Update user preference for genre
-            profileVector.put(song.getGenre(), profileVector.getOrDefault(song.getGenre(), 0) + score);
+            if (!song.getGenres().isEmpty()) {
+                profileVector.put(song.getGenres().get(0).getName(),
+                        profileVector.getOrDefault(song.getGenres().get(0).getName(), 0) + score);
+            }
 
             // Update user preference for artist
-            profileVector.put(song.getArtist(), profileVector.getOrDefault(song.getArtist(), 0) + score);
+            if (!song.getArtists().isEmpty()) {
+                profileVector.put(song.getArtists().get(0).getName(),
+                        profileVector.getOrDefault(song.getArtists().get(0).getName(), 0) + score);
+            }
         }
 
         return profileVector;
@@ -45,8 +50,17 @@ public class RecommendationService {
     // Create a feature vector for a song based on genre and artist
     public Map<String, Integer> getSongFeatureVector(Song song) {
         Map<String, Integer> featureVector = new HashMap<>();
-        featureVector.put(song.getGenre(), 1);
-        featureVector.put(song.getArtist(), 1);
+
+        // Add genre to feature vector if available
+        if (!song.getGenres().isEmpty()) {
+            featureVector.put(song.getGenres().get(0).getName(), 1);
+        }
+
+        // Add artist to feature vector if available
+        if (!song.getArtists().isEmpty()) {
+            featureVector.put(song.getArtists().get(0).getName(), 1);
+        }
+
         return featureVector;
     }
 
@@ -94,3 +108,4 @@ public class RecommendationService {
                 .toList();
     }
 }
+

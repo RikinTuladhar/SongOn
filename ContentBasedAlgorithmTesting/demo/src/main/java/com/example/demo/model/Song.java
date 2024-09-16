@@ -1,12 +1,13 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,8 +21,29 @@ public class Song {
 
     private String title;
 
-    private String artist;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "song_artist",
+            joinColumns = @JoinColumn(name = "song_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id")
+    )
+    private List<Artist> artists = new ArrayList<>();  // Initialize the list
 
-    private String genre;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "song_genre",
+            joinColumns = @JoinColumn(name = "song_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres = new ArrayList<>();  // Initialize the list
 
+    public void addGenre(Genre g) {
+        this.genres.add(g);
+    }
+
+    public void addArtist(Artist a) {
+        this.artists.add(a);
+    }
 }

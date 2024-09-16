@@ -14,17 +14,5 @@ public class SongService {
     public SongService(SongRepository songRepository) {
         this.songRepository = songRepository;
     }
-
-    public List<Song> recommendByGenre(String genre) {
-        return songRepository.findByGenre(genre);
-    }
-
-    public List<Song> recommendByArtist(String artist) {
-        return songRepository.findByArtist(artist);
-    }
-
-    public List<Song> recommendByGenreAndArtist(String genre, String artist) {
-        return songRepository.findByGenreAndArtist(genre, artist);
-    }
 }
 
