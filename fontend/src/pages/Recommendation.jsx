@@ -35,7 +35,7 @@ const Recommendation = () => {
   };
 
   return (
-    <div className="bg-[#0f0f0f] h-[100vh] overflow-y-auto text-white w-full p-4">
+    <div className="bg-[#080808] h-[100vh] overflow-y-auto text-white w-full p-4">
       <h1 className="mt-5 mb-10 text-3xl font-bold text-center">
         Recommended Songs
       </h1>
