@@ -34,7 +34,7 @@ const GroupChat = () => {
     name: "",
     autoPath: "",
   });
-  console.log(audioToSend);
+  // console.log(audioToSend);
   useEffect(() => {
     const q = query(collection(db, chatGenre), orderBy("timestamp"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -45,6 +45,7 @@ const GroupChat = () => {
         }))
       );
     });
+
     return unsubscribe;
   }, [chatGenre]);
 
@@ -57,18 +58,25 @@ const GroupChat = () => {
         setGenres(res);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [chatGenre]);
+
   useEffect(() => {
+    setPlayList("");
     getSongByGenreId(chatGenreId)
       .then((res) => {
+        setPlayList("");
         console.log(res);
         setPlayList(res);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setPlayList("");
+        console.log(err);
+      });
   }, [chatGenre]);
 
   // console.log(message);
-  const sendMessage = async () => {
+  const sendMessage = async (e) => {
+    e.preventDefault();
     var data = {
       //from google auth
       uid: user.id,
@@ -85,7 +93,8 @@ const GroupChat = () => {
   };
 
   //sending with audio
-  const sendAudio = async () => {
+  const sendAudio = async (e) => {
+    e.preventDefault();
     var data = {
       //from google auth
       uid: user.id,
@@ -99,14 +108,15 @@ const GroupChat = () => {
     };
     //to store in database
     //database name , data to send
+
     await addDoc(collection(db, chatGenre), data);
+    setShowPlayList(false);
     setNewMessage("");
-    showPlayList(false);
   };
 
   const changeChatGroup = (id, chatName) => {
     setChatGenre(chatName);
-    console.log(id);
+    // console.log(id);
     setChatGenreId(id);
   };
 
@@ -126,7 +136,10 @@ const GroupChat = () => {
               <div className="w-full h-[0.1rem] bg-slate-50"></div>
               <div
                 className="text-base font-bold cursor-pointer "
-                onClick={(e) => setChatGenre("message")}
+                onClick={(e) => {
+                  setChatGenre("message");
+                  changeChatGroup(0, "message");
+                }}
               >
                 All Chat
               </div>
@@ -200,9 +213,9 @@ const GroupChat = () => {
             <div className="flex w-full pb-2 mt-1 space-x-3 justify-evenly ">
               <button
                 onClick={(e) => setShowPlayList(!showPlayList)}
-                className="px-2 py-2 mx-1 border rounded-full"
+                className="px-2 py-2 mx-1 border rounded-full m-[10px]"
               >
-                <GiLoveSong size={25}/>
+                <GiLoveSong size={25} />
               </button>
               {showPlayList && (
                 <select
@@ -212,9 +225,11 @@ const GroupChat = () => {
                       autoPath: e.target.value,
                     })
                   }
-                  className="px-2 text-black rounded-full"
+                  className="px-2 m-[10px] text-black rounded-full"
                 >
-                  <option disabled selected>Select Song</option>
+                  <option disabled selected>
+                    Select Song
+                  </option>
                   {playList &&
                     playList.map((playlist) => (
                       <option
@@ -227,19 +242,24 @@ const GroupChat = () => {
                     ))}
                 </select>
               )}
-              <input
-                type="text"
-                placeholder="Enter Message"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                className="text-black w-[90%] px-2 py-2 rounded-lg border"
-              />{" "}
-              <button
-                onClick={showPlayList === true ? sendAudio : sendMessage}
-                className="px-3 py-3 rounded-2xl bg-slate-600"
+              <form
+                className="flex w-full py-2 space-x-2"
+                onSubmit={showPlayList === true ? sendAudio : sendMessage}
               >
-                <IoIosSend size={20} />
-              </button>
+                <input
+                  type="text"
+                  placeholder="Enter Message"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  className="text-black w-[90%] px-2 py-2 rounded-lg border"
+                />{" "}
+                <button
+                  type="submit"
+                  className="px-3 py-3 rounded-2xl bg-slate-600"
+                >
+                  <IoIosSend size={20} />
+                </button>
+              </form>
             </div>
           </div>
         </div>
