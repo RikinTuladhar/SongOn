@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 
 const GenreApi = () => {
-  const baseUrl = "http://localhost:8080";
+  const baseUrl = "https://songon.onrender.com";
 
   async function getGenre() {
     const URL = baseUrl + "/genre";

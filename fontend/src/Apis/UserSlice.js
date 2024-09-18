@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const base = "http://localhost:8080";
+const base = "https://songon.onrender.com";
 const initialState = {
   userDetails: {
     id:"",

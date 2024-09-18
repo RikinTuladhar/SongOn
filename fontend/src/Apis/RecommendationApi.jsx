@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 const RecommendationApi = () => {
-  const BASE = "http://localhost:8080";
+  const BASE = "https://songon.onrender.com";
 
   async function getRecommendation(username) {
     try {
