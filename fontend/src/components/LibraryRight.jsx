@@ -5,24 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { CiCircleRemove } from "react-icons/ci";
 import { GiCheckMark } from "react-icons/gi";
-import {handleSetSongIndex} from "../Apis/SongSlice"
+import { handleSetSongIndex } from "../Apis/SongSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const LibraryRight = ({ songs, artistName }) => {
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.userDetails);
   const { addSongToPlayList, displayPlayListByUserId } = UserLibraryApi();
-  const { setSongId,} =useContext(SongContext);
+  const { setSongId } = useContext(SongContext);
   const [filteredSong, setFilteredSong] = useState([]);
   const [searchFocus, setSearchFocus] = useState(false);
   const [playlist, setPlaylist] = useState([{ name: "" }]);
   const [activeFormIndex, setActiveFormIndex] = useState(null);
-  const [selectedIdPlayListFromSelect, setSelectedIdPlayListFromSelect] =useState(0);
+  const [selectedIdPlayListFromSelect, setSelectedIdPlayListFromSelect] =
+    useState(0);
 
   console.log(selectedIdPlayListFromSelect);
 
   const handleSong = async (songId, songIndex) => {
     setSongId(songId);
     // setSongClickedId(songIndex);
-    dispatch(handleSetSongIndex(songIndex))
+    dispatch(handleSetSongIndex(songIndex));
   };
 
   const handleSearch = (e) => {
@@ -52,22 +56,33 @@ const LibraryRight = ({ songs, artistName }) => {
     console.log(selectedIdPlayListFromSelect + " " + songId);
     addSongToPlayList(selectedIdPlayListFromSelect, songId)
       .then((res) => {
-        alert(res.message)
+        toast.success(res.message);
         // console.log(res);
-        setActiveFormIndex(null)
+        setActiveFormIndex(null);
       })
       .catch((err) =>
-        console.log(
+        toast.error(
           err + " Error when posting playlist by song id and playlist id"
         )
       );
   }
 
-
-
   return (
     <div className="w-full md:w-[70%] h-[100vh] overflow-y-auto mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
-      <div className="flex flex-wrap justify-between px-10">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+
+      <div className="flex flex-wrap justify-between px-10 space-y-5">
         <h1 className="text-lg md:text-2xl text-[#E5E7EB]">
           Songs List {artistName ? `: ${artistName}` : ""}
         </h1>
@@ -80,18 +95,20 @@ const LibraryRight = ({ songs, artistName }) => {
           />
         </div>
       </div>
-      <div className="w-full mt-10 md:mt-3 h-[2px] bg-black"></div>
+      <div className="w-full mt-5 md:mt-3 h-[2px] bg-black"></div>
       <div className="w-full h-auto mt-5">
         <div className="w-full h-auto px-2 flex justify-center items-center flex-col gap-2 py-4 md:py-10 bg-[#0f0f0f]">
           <div className="flex flex-col w-full gap-2 md:px-2">
             {songs?.length === 0 ? (
-              <div className="text-xl tracking-wider">No Songs Available</div>
+              <div className="text-sm tracking-wider md:text-xl">
+                No Songs Available
+              </div>
             ) : (
               (searchFocus ? filteredSong : songs)?.map((song, i) => (
                 <div
                   onClick={() => handleSong(song?.id, i)}
                   key={i}
-                  className="text-[#E5E7EB] hover:cursor-pointer md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
+                  className="text-[#E5E7EB] text-sm md:text-xl  px-5 hover:cursor-pointer md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
                 >
                   <div className="text-center md:w-full">{i + 1}</div>
                   <div className="text-center md:w-full">{song?.name}</div>
@@ -102,51 +119,60 @@ const LibraryRight = ({ songs, artistName }) => {
                       </span>
                     ))}
                   </div>
-                  {userDetails.role == "USER" && <div className="relative">
-                    <button
-                      onClick={() =>
-                        setActiveFormIndex(activeFormIndex === i ? null : i)
-                      }
-                    >
-                      {activeFormIndex === i ? <CiCircleRemove size={25}/> : <IoIosAddCircleOutline size={25} />}
-                    </button>
-                    <div className="absolute right-0 z-50 top-10">
-                      
-                      {activeFormIndex === i && (
-                        
-                        <form
-                          onSubmit={(e) =>
-                            handleAddUserSongToPlayList(e, song.id)
-                          }
-                          className="px-5 space-y-3  bg-[#000000] py-2 rounded-2xl"
-
-                         
-                        >
-                         <div><h1 className="text-xl text-center">Select Playlist</h1></div>
-                         <div className="flex gap-5 "> 
-                          <select
-                            onChange={(e) =>
-                              setSelectedIdPlayListFromSelect(e.target.value)
+                  {userDetails.role == "USER" && (
+                    <div className="relative">
+                      <button
+                        onClick={() =>
+                          setActiveFormIndex(activeFormIndex === i ? null : i)
+                        }
+                      >
+                        {activeFormIndex === i ? (
+                          <CiCircleRemove size={25} />
+                        ) : (
+                          <IoIosAddCircleOutline size={25} />
+                        )}
+                      </button>
+                      <div className="absolute right-0 z-50 top-10">
+                        {activeFormIndex === i && (
+                          <form
+                            onSubmit={(e) =>
+                              handleAddUserSongToPlayList(e, song.id)
                             }
-                            
-                            className="flex items-center justify-between h-8 text-black hover:cursor-pointer md:px-10"
+                            className="px-5 space-y-3  bg-[#000000] py-2 rounded-2xl"
                           >
-                            <option value="" disabled>
-                              Select
-                            </option>
-                            {playlist?.map((item) => (
-                              <option key={item?.id} value={item?.id}>
-                                {item.name}
-                              </option>
-                            ))}
-                          </select>
+                            <div>
+                              <h1 className="text-xl text-center">
+                                Select Playlist
+                              </h1>
+                            </div>
+                            <div className="flex gap-5 ">
+                              <select
+                                onChange={(e) =>
+                                  setSelectedIdPlayListFromSelect(
+                                    e.target.value
+                                  )
+                                }
+                                className="flex items-center justify-between h-8 text-black hover:cursor-pointer md:px-10"
+                              >
+                                <option value="" disabled>
+                                  Select
+                                </option>
+                                {playlist?.map((item) => (
+                                  <option key={item?.id} value={item?.id}>
+                                    {item.name}
+                                  </option>
+                                ))}
+                              </select>
 
-                          <button type="submit"><GiCheckMark /></button></div>
-                        </form>
-                      )}
+                              <button type="submit">
+                                <GiCheckMark />
+                              </button>
+                            </div>
+                          </form>
+                        )}
+                      </div>
                     </div>
-                   
-                  </div>}
+                  )}
                 </div>
               ))
             )}

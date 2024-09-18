@@ -42,11 +42,11 @@ const HomeRight = () => {
 
   return (
     <div className=" w-[100%] mb-32 md:mb-0 mx-5 mt-10 md:mx-0  md:w-[80%] h-auto  md:mt-3  py-10 bg-[#11111182] rounded-xl ">
-      <div className="flex flex-wrap justify-between w-full px-10">
+      <div className="flex space-y-5 flex-wrap justify-between w-full px-10">
         <h1 className="text-center md:ml-10 md:text-left text-2xl text-[#E5E7EB] ">
           Librarys
         </h1>
-        <div className="flex items-center justify-center gap-2 text-white">
+        <div className="flex  items-center justify-center gap-2 text-white">
           <div>
             <IoSearch size={25} onClick={() => searchRef.current.focus()} />
           </div>
@@ -55,13 +55,13 @@ const HomeRight = () => {
               type="search"
               ref={searchRef}
               onChange={handleSearch}
-              className="px-2 text-black rounded-md"
+              className={`w-full px-2 text-black rounded-md`}
               placeholder="Search"
             />
           </div>
         </div>
       </div>
-      <div className="w-full mt-3 h-[2px] bg-black  "></div>
+      <div className="w-full mt-3 h-[2px] bg-black  mb-10 "></div>
       <div className="grid items-center justify-center gap-5 overflow-y-auto md:gap-10 md:grid-cols-3 md:m-16">
         {library?.length === 0 || library === undefined ? (
           <>

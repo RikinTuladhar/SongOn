@@ -61,8 +61,7 @@ const Navbar = () => {
         pauseOnHover
         theme="dark"
       />
-      {mobileView === true ? 
-      (
+      {mobileView === true ? (
         <nav className="flex items-center justify-around w-full h-auto gap-10 min-h-12 bg-[#090909]">
           <div></div>
           <div></div>
@@ -83,12 +82,12 @@ const Navbar = () => {
                 <Link
                   to={"/signin"}
                   onClick={(e) => {
-                     //there is case for logout that hanbdles the user state.
+                    //there is case for logout that hanbdles the user state.
                     dispatch(logOut());
                   }}
                   className="block px-3 py-2 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
-                 <IoLogOutOutline/>
+                  <IoLogOutOutline />
                 </Link>
               ) : (
                 <Link
@@ -117,14 +116,34 @@ const Navbar = () => {
                       Home
                     </Link>
                   </li>
-                 { userDetails.role == "USER" && <li>
-                    <Link
-                      to={`/userlibrary/${userDetails.username}`}
-                      className="block px-3 py-2 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                    >
-                      Your Library
-                    </Link>
-                  </li>}
+                  {userDetails.role == "USER" && (
+                    <>
+                      <li>
+                        <Link
+                          to={`/userlibrary/${userDetails.username}`}
+                          className="block px-3 py-2 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                        >
+                          Your Library
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to={`/groupchat`}
+                          className="block px-3 py-2 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                        >
+                          Group Chat
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to={`/algorithm`}
+                          className="block px-3 py-2 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                        >
+                          Recommendations
+                        </Link>
+                      </li>
+                    </>
+                  )}
                 </div>
 
                 {/* sign in / sign out  */}
@@ -138,7 +157,7 @@ const Navbar = () => {
                       }}
                       className="block px-3 py-2 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     >
-                     <IoLogOutOutline size={30}/>
+                      <IoLogOutOutline size={30} />
                     </Link>
                   ) : (
                     <Link
