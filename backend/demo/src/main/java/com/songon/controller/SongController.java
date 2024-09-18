@@ -38,7 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin
 public class SongController {
 
     @Autowired
