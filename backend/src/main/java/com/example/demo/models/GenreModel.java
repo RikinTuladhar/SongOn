@@ -32,7 +32,7 @@ public class GenreModel {
             joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name ="song_id")
     )
-    private List<SongModel> songs = new ArrayList<>();
+    private Set<SongModel> songs = new HashSet<>();
     //important to do so that song data  it will be saved
     public void songs(SongModel songModel) {
         songs.add(songModel);

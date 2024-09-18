@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.dto.SongWithArtistsDTO;
 import com.example.demo.models.ArtistModel;
 import com.example.demo.models.GenreModel;
@@ -36,20 +35,19 @@ public class SongController {
     @Autowired
     GenreRepo genreRepo;
 
-
     @GetMapping
     public List<SongModel> getSongs() {
         List<SongModel> songs = songRepo.findAll();
 
         return songs;
     }
+
     @GetMapping("/{id}")
-    public List<SongModel> getSongById(@PathVariable int id){
+    public List<SongModel> getSongById(@PathVariable int id) {
         Optional<SongModel> optionalSong = songRepo.findById(id);
-        if(optionalSong.isPresent()) {
+        if (optionalSong.isPresent()) {
             return Collections.singletonList(optionalSong.get());
-        }
-        else {
+        } else {
             return Collections.emptyList();
         }
     }
@@ -60,7 +58,7 @@ public class SongController {
     }
 
     @GetMapping("/by-artist/{artistId}")
-    public List<SongModel> getSongsByArtistId(@PathVariable int artistId){
+    public List<SongModel> getSongsByArtistId(@PathVariable int artistId) {
         return songRepo.findSongsByArtistId(artistId);
     }
 
@@ -69,7 +67,7 @@ public class SongController {
         List<SongModel> songs = songRepo.findSongsByGenreId(genre_id);
 
         List<SongWithArtistsDTO> songWithArtistsDTOs = new ArrayList<>();
-        for(SongModel song:songs) {
+        for (SongModel song : songs) {
             SongWithArtistsDTO songWithArtistsDTO = new SongWithArtistsDTO();
             songWithArtistsDTO.setId(song.getId());
             songWithArtistsDTO.setName(song.getName());
@@ -83,61 +81,82 @@ public class SongController {
     }
 
     @PostMapping("/uploadSong")
-    public SongModel uploadSong(
+    public ResponseEntity<?> uploadSong(
             @RequestBody SongModel songModel,
             @RequestParam("generic_id") int generic_id,
-            @RequestParam("artist_id") int artist_id
-    ) {
-        ArtistModel artistModel = artistRepo.findById(artist_id).get();
-        GenreModel genreModel = genreRepo.findById(generic_id).get();
-        artistModel.songs(songModel);
-        genreModel.songs(songModel);
-        songRepo.save(songModel);
-        artistRepo.save(artistModel);
-        genreRepo.save(genreModel);
-        return songModel;
+            @RequestParam("artist_id") int artist_id) {
+
+        
+        ArtistModel artistModel = artistRepo.findById(artist_id)
+                .orElseThrow(() -> new RuntimeException("Artist not found"));
+        GenreModel genreModel = genreRepo.findById(generic_id)
+                .orElseThrow(() -> new RuntimeException("Genre not found"));
+
+        // Check if song already exists in the database
+        List<SongModel> songsToCheck = songRepo.findAll();
+
+        for (SongModel s : songsToCheck) {
+            if (songModel.equals(s)) { // Using the overridden equals method
+                ErrorMessage errorMessage = new ErrorMessage("Song already exists");
+                return ResponseEntity.badRequest().body(errorMessage);
+            }
+        }
+
+        // Add song to artist and genre
+        artistModel.songs(songModel); // Add song to artist
+        genreModel.songs(songModel); // Add song to genre
+
+        // Add artist and genre to song (to update bidirectional relationship)
+        songModel.getArtists().add(artistModel); // Add artist to song
+        songModel.getGenre().add(genreModel); // Add genre to song
+
+        // Save song, artist, and genre
+        songRepo.save(songModel); // Save the song with the updated relationships
+        artistRepo.save(artistModel); 
+        genreRepo.save(genreModel); 
+
+        Message message = new Message("Song inserted successfully");
+        return ResponseEntity.ok(message);
     }
 
-    //delete by id
+    // delete by id
     @DeleteMapping("/delete/{id}")
     ResponseEntity<Object> deleteSong(@PathVariable int id) {
         Optional<SongModel> optionalSong = songRepo.findById(id);
-        if(optionalSong.isPresent()){
-            SongModel songModel= optionalSong.get();
+        if (optionalSong.isPresent()) {
+            SongModel songModel = optionalSong.get();
             Optional<Integer> authIdOptional = songModel.getArtists().stream()
                     .map(ArtistModel::getId)
                     .findFirst();
             int authId = authIdOptional.orElse(-1);
             List<Integer> genreIds = songModel.getGenre().stream().map(GenreModel::getId).collect(Collectors.toList());
-            //artist full details
-            Optional<ArtistModel> artistModel =  artistRepo.findById(authId);
+            // artist full details
+            Optional<ArtistModel> artistModel = artistRepo.findById(authId);
             artistRepo.deleteSongById(id);
             genreRepo.deleteSongById(id);
             songRepo.deleteById(id);
-            Map<String,Object> response = new HashMap<>();
-            response.put("message","Deleted Song");
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Deleted Song");
             return ResponseEntity.ok().body(response);
-         }
-        else {
+        } else {
             return ResponseEntity.notFound().build();
         }
 
     }
 
-
     @DeleteMapping("/delete")
-    ResponseEntity<Object> deleteAllSong(){
-        try{
+    ResponseEntity<Object> deleteAllSong() {
+        try {
             long count = songRepo.count();
-            if(count == 0){
+            if (count == 0) {
                 ErrorMessage errorMessage = new ErrorMessage("Nothing to delete");
                 return ResponseEntity.badRequest().body(errorMessage);
-            }else{
+            } else {
                 songRepo.deleteAll();
                 Message message = new Message("Deleted all songs");
                 return ResponseEntity.ok(count);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ErrorMessage errorMessage = new ErrorMessage("Something went wrong");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
@@ -145,25 +164,24 @@ public class SongController {
 
     @PutMapping("/updateSong")
     public ResponseEntity<?> updateSong(
-        @RequestBody SongModel songModel,
-        @RequestParam("generic_id") int generic_id,
-        @RequestParam("artist_id") int artist_id,
-        @RequestParam("song_id") int song_id
-    ) {
+            @RequestBody SongModel songModel,
+            @RequestParam("generic_id") int generic_id,
+            @RequestParam("artist_id") int artist_id,
+            @RequestParam("song_id") int song_id) {
         Optional<SongModel> songOptional = songRepo.findById(song_id);
         Optional<ArtistModel> artistOptional = artistRepo.findById(artist_id);
         Optional<GenreModel> genreOptional = genreRepo.findById(generic_id);
-    
+
         Integer songIdArtistDelete = songRepo.findSongIdFromArtistSong(song_id);
         Integer songIdGenreDelete = songRepo.findSongFromGenereSongModel(song_id);
-        System.out.println("Id of artist "+ songIdArtistDelete);
-        System.out.println("Id of genre "+ songIdGenreDelete);
+        System.out.println("Id of artist " + songIdArtistDelete);
+        System.out.println("Id of genre " + songIdGenreDelete);
 
-        if(songIdArtistDelete == null){
+        if (songIdArtistDelete == null) {
             ErrorMessage errorMessage = new ErrorMessage("Cannot edit as it contains same rtist id");
             return ResponseEntity.badRequest().body(errorMessage);
         }
-        if( songIdGenreDelete == null ){
+        if (songIdGenreDelete == null) {
             ErrorMessage errorMessage = new ErrorMessage("Cannot edit as it contains same generic id");
             return ResponseEntity.badRequest().body(errorMessage);
         }
@@ -171,31 +189,30 @@ public class SongController {
             SongModel song = songOptional.get();
             ArtistModel artist = artistOptional.get();
             GenreModel genre = genreOptional.get();
-            if(songModel.getName() !=null && !songModel.getName().isEmpty()){
+            if (songModel.getName() != null && !songModel.getName().isEmpty()) {
                 song.setName(songModel.getName());
             }
-            if(songModel.getAutoPath() !=null && !songModel.getAutoPath().isEmpty()){
+            if (songModel.getAutoPath() != null && !songModel.getAutoPath().isEmpty()) {
                 song.setAutoPath(songModel.getAutoPath());
             }
-            if(songModel.getLyrics() !=null && !songModel.getLyrics().isEmpty()){
+            if (songModel.getLyrics() != null && !songModel.getLyrics().isEmpty()) {
                 song.setLyrics(songModel.getLyrics());
             }
 
-            if(songModel.getImgPath() !=null && !songModel.getImgPath().isEmpty()){
+            if (songModel.getImgPath() != null && !songModel.getImgPath().isEmpty()) {
                 song.setImgPath(songModel.getImgPath());
             }
-            
 
             songRepo.deleteSongInArtistSongModel(songIdArtistDelete);
             songRepo.deleteSongInGenreSongModel(songIdGenreDelete);
 
             artist.songs(song);
             genre.songs(song);
-            
+
             genreRepo.save(genre);
             artistRepo.save(artist);
             songRepo.save(song);
-    
+
             Message message = new Message("Updated song");
             return ResponseEntity.ok(message);
         } else {
@@ -203,6 +220,5 @@ public class SongController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
         }
     }
-
 
 }

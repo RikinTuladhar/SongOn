@@ -37,7 +37,7 @@ public class ArtistModel {
             joinColumns = @JoinColumn(name = "artist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id")
     )
-    private List<SongModel> songs= new ArrayList();
+    private Set<SongModel> songs= new HashSet<>();
 
     public void songs(SongModel songModel) {
         songs.add(songModel);

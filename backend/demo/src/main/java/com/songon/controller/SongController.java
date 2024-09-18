@@ -1,134 +1,37 @@
-package com.songon.controller;
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class SongModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String name;
+    private String autoPath;
+    private String imgPath;
+    @Column(name = "lyrics", length =5000)
+    private String lyrics;
 
-import org.hibernate.Hibernate;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "songs")
+    private List<ArtistModel> artists = new ArrayList<>();
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "songs")
+    private List<GenreModel> genre = new ArrayList<>();
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
-import com.songon.dto.SongWithArtistsDTO;
-import com.songon.model.ArtistModel;
-import com.songon.model.GenreModel;
-import com.songon.model.SongModel;
-import com.songon.repo.ArtistRepo;
-import com.songon.repo.GenreRepo;
-import com.songon.repo.SongRepo;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-@RestController
-@CrossOrigin
-public class SongController {
-
-    @Autowired
-    SongRepo songRepo;
-    // Method to retrieve all songs
-    @Autowired
-    ArtistRepo artistRepo;
-    
-    @Autowired
-    GenreRepo genreRepo;
-    
-    @GetMapping("/songs")
-    @ResponseBody
-    public List<SongModel> getSongs() {
-        List<SongModel> songs = songRepo.findAll();
-
-        return songs;
-    }
-    @GetMapping("/songs/{id}")
-    public List<SongModel> getSongById(@PathVariable int id){
-    	
-    	 Optional<SongModel> optionalSong = songRepo.findById(id);
-    	 if(optionalSong.isPresent()) {
-    		 return Collections.singletonList(optionalSong.get());
-    	 }
-    	 else {
-			return Collections.emptyList();
-		}
-    }
-    
-    @GetMapping("/with-artists")
-    public List<SongModel> getSongsWithArtists() {
-        return songRepo.findAllWithArtists();
-    }
-    
-    @GetMapping("/by-artist/{artistId}")
-    public List<SongModel> getSongsByArtistId(@PathVariable int artistId){
-    	return songRepo.findSongsByArtistId(artistId);
-    }
-    
-    @GetMapping("/by-genre/{genre_id}")
-    public List<SongWithArtistsDTO> getSongByGenreId(@PathVariable int genre_id) {
-        List<SongModel> songs = songRepo.findSongsByGenreId(genre_id);
-        
-        List<SongWithArtistsDTO> songWithArtistsDTOs = new ArrayList<>();
-        for(SongModel song:songs) {
-        	SongWithArtistsDTO songWithArtistsDTO = new SongWithArtistsDTO();
-        	songWithArtistsDTO.setId(song.getId());
-        	songWithArtistsDTO.setName(song.getName());
-        	songWithArtistsDTO.setAutoPath(song.getAutoPath());
-        	songWithArtistsDTO.setArtist(new ArrayList<>(song.getArtists()));
-        	songWithArtistsDTOs.add(songWithArtistsDTO);
-        }
-        
-        
-        return songWithArtistsDTOs;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SongModel songModel = (SongModel) o;
+        return Objects.equals(name, songModel.name) && 
+               Objects.equals(autoPath, songModel.autoPath);
     }
 
-    
- 
-
-    // Method to handle file upload
-//    @PostMapping("/uploadSong")
-//    @ResponseBody
-//    public SongModel uploadSong(@RequestBody SongModel songModel) {
-//    	songRepo.save(songModel);
-//    	return songModel;
-//    }
-    
-    @PostMapping("/uploadSong/{generic_id}/{artist_id}")
-    @ResponseBody
-    public SongModel uploadSong(
-    		@RequestBody SongModel songModel,
-    		@PathVariable int generic_id,
-    		@PathVariable int artist_id
-    		) {
-    	
-    	ArtistModel artistModel = artistRepo.findById(artist_id).get();
-    	GenreModel genreModel = genreRepo.findById(generic_id).get();
-    	
-    	artistModel.songs(songModel);
-    	genreModel.songs(songModel);
-        songRepo.save(songModel);
-
-    	artistRepo.save(artistModel);
-    	genreRepo.save(genreModel);
-    	
-    
-        return songModel;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, autoPath);
     }
-
-
 }
