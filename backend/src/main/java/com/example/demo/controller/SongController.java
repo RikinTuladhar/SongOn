@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/song")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class SongController {
 
     @Autowired
