@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { app } from "../firebase";
 import GenreApi from "../Apis/GenreApi";
 import { IoIosSend } from "react-icons/io";
@@ -19,11 +19,13 @@ const db = getFirestore(app);
 const GroupChat = () => {
   const user = useSelector((state) => state?.user?.userDetails);
   const { getGenre, getSongByGenreId } = GenreApi();
-  console.log(user);
 
-  //all the messages
+  // Reference for the message box
+  const messageBoxRef = useRef(null);
+
+  // All the messages
   const [message, setMessages] = useState([]);
-  //current message send
+  // Current message to send
   const [newMessage, setNewMessage] = useState("");
   const [genres, setGenres] = useState([]);
   const [chatGenre, setChatGenre] = useState("message");
@@ -34,7 +36,7 @@ const GroupChat = () => {
     name: "",
     autoPath: "",
   });
-  // console.log(audioToSend);
+
   useEffect(() => {
     const q = query(collection(db, chatGenre), orderBy("timestamp"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -49,12 +51,9 @@ const GroupChat = () => {
     return unsubscribe;
   }, [chatGenre]);
 
-  // console.log(genres);
-
   useEffect(() => {
     getGenre()
       .then((res) => {
-        console.log(res);
         setGenres(res);
       })
       .catch((err) => console.log(err));
@@ -64,8 +63,6 @@ const GroupChat = () => {
     setPlayList("");
     getSongByGenreId(chatGenreId)
       .then((res) => {
-        setPlayList("");
-        console.log(res);
         setPlayList(res);
       })
       .catch((err) => {
@@ -74,41 +71,37 @@ const GroupChat = () => {
       });
   }, [chatGenre]);
 
-  // console.log(message);
+  // Automatically scroll to the bottom of the message box whenever a new message is added
+  useEffect(() => {
+    if (messageBoxRef.current) {
+      messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
+    }
+  }, [message]);
+
   const sendMessage = async (e) => {
     e.preventDefault();
-    var data = {
-      //from google auth
+    const data = {
       uid: user.id,
       displayName: user.username,
-      //recently typed message
       text: newMessage,
       timestamp: serverTimestamp(),
       audio: false,
     };
-    //to store in database
-    //database name , data to send
     await addDoc(collection(db, chatGenre), data);
     setNewMessage("");
   };
 
-  //sending with audio
   const sendAudio = async (e) => {
     e.preventDefault();
-    var data = {
-      //from google auth
+    const data = {
       uid: user.id,
       displayName: user.username,
-      //recently typed message
       text: newMessage,
       audioName: audioToSend.name,
       url: audioToSend.autoPath,
       timestamp: serverTimestamp(),
       audio: true,
     };
-    //to store in database
-    //database name , data to send
-
     await addDoc(collection(db, chatGenre), data);
     setShowPlayList(false);
     setNewMessage("");
@@ -116,26 +109,21 @@ const GroupChat = () => {
 
   const changeChatGroup = (id, chatName) => {
     setChatGenre(chatName);
-    // console.log(id);
     setChatGenreId(id);
   };
 
-  // console.log(user);
   return (
     <>
       <Navbar />
-      <div className="w-full px-52  h-[100vh] text-white bg-[#080808] flex justify-center items-center">
-        <div className="w-[30%]  rounded-tl-2xl rounded-bl-2xl h-[80vh] bg-[#161616] p-5">
-          {/* left side */}
+      <div className="w-full px-52 h-[100vh] text-white bg-[#080808] flex justify-center items-center">
+        <div className="w-[30%] rounded-tl-2xl rounded-bl-2xl h-[80vh] bg-[#161616] p-5">
+          {/* Left side */}
           <div className="flex flex-col w-full p-2 rounded-2xl h-[75vh] overflow-y-auto bg-[#0f0f0f]">
-            {/* <span className="pl-2 mt-1 text-xl font-bold">
-              Logged In as {user?.username}{" "}
-            </span> */}
             <div className="flex flex-col mt-5 ml-2 gap-y-5">
               <div className="text-2xl font-bold">List of Groups</div>
               <div className="w-full h-[0.1rem] bg-slate-50"></div>
               <div
-                className="text-base font-bold cursor-pointer "
+                className="text-base font-bold cursor-pointer"
                 onClick={(e) => {
                   setChatGenre("message");
                   changeChatGroup(0, "message");
@@ -166,27 +154,30 @@ const GroupChat = () => {
             </div>
           </div>
         </div>
-        {/* right side  */}
+        {/* Right side */}
         <div className="w-[70%] rounded-tr-2xl rounded-br-2xl px-3 h-[80vh] bg-[#0f0f0f]">
           <div className="relative w-full">
             <div className="py-2 text-2xl text-center">
               <h3>Group Chat: #{chatGenre}</h3>
               <div className="w-full mt-2 h-[0.1rem] bg-slate-50"></div>
             </div>
-            <div className="w-full relative space-y-3 pb-5 px-2 pt-3 h-[62vh] overflow-y-auto message-box">
+            <div
+              ref={messageBoxRef} // Reference the message box container
+              className="w-full relative space-y-3 pb-5 px-2 pt-3 h-[62vh] overflow-y-auto message-box"
+            >
               {message.length > 0 ? (
                 <div className="space-y-3">
                   {message.map((msg) => (
-                    //other message
+                    // other message
                     <div
                       key={msg.id}
-                      className={`flex gap-3 message px-3 py-2 rounded-xl  ${
+                      className={`flex gap-3 message px-3 py-2 rounded-xl ${
                         user?.username === msg?.data?.displayName
                           ? "justify-start flex-row-reverse bg-[#222222]"
                           : "justify-start bg-[#516aa8]"
                       }`}
                     >
-                      {/* self message  */}
+                      {/* self message */}
                       <div className="font-extrabold">
                         {user?.username === msg.data.displayName
                           ? ""
@@ -210,7 +201,7 @@ const GroupChat = () => {
                 </div>
               )}
             </div>
-            <div className="flex w-full pb-2 mt-1 space-x-3 justify-evenly ">
+            <div className="flex w-full pb-2 mt-1 space-x-3 justify-evenly">
               <button
                 onClick={(e) => setShowPlayList(!showPlayList)}
                 className="px-2 py-2 mx-1 border rounded-full m-[10px]"
@@ -255,7 +246,7 @@ const GroupChat = () => {
                 />{" "}
                 <button
                   type="submit"
-                  className="px-3 py-3 rounded-2xl bg-slate-600"
+                  className="border px-2 py-2 bg-[#2b2b2b] text-white rounded-full"
                 >
                   <IoIosSend size={20} />
                 </button>

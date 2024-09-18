@@ -6,6 +6,9 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { CiCircleRemove } from "react-icons/ci";
 import { GiCheckMark } from "react-icons/gi";
 import { handleSetSongIndex } from "../Apis/SongSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const LibraryRight = ({ songs, artistName }) => {
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.userDetails);
@@ -53,12 +56,12 @@ const LibraryRight = ({ songs, artistName }) => {
     console.log(selectedIdPlayListFromSelect + " " + songId);
     addSongToPlayList(selectedIdPlayListFromSelect, songId)
       .then((res) => {
-        alert(res.message);
-        console.log(res);
+        toast.success(res.message);
+        // console.log(res);
         setActiveFormIndex(null);
       })
       .catch((err) =>
-        console.log(
+        toast.error(
           err + " Error when posting playlist by song id and playlist id"
         )
       );
@@ -66,6 +69,19 @@ const LibraryRight = ({ songs, artistName }) => {
 
   return (
     <div className="w-full md:w-[70%] h-[100vh] overflow-y-auto mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+
       <div className="flex flex-wrap justify-between px-10 space-y-5">
         <h1 className="text-lg md:text-2xl text-[#E5E7EB]">
           Songs List {artistName ? `: ${artistName}` : ""}
