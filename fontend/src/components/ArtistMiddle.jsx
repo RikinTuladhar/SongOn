@@ -80,17 +80,19 @@ const ArtistMiddle = ({ songsArray, artist, showArtistFunc }) => {
 
   return (
     <div className="w-full md:w-[80%] h-[100vh] overflow-y-auto  mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
-      <div className="flex items-center justify-between px-5 text-lg text-white md:text-2xl ">
-        <span>Songs List</span>
-        <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r animate-pulse from-slate-100 to-gray-300 ">
+      <div className="flex flex-wrap items-center justify-between px-5 text-lg text-white md:text-2xl ">
+        <span className="w-full md:w-[auto] text-center mb-2 md:mb-0 font-bold order-3 md:order-1 md:text-left">
+          Songs List
+        </span>
+        <span className="text-center w-full md:w-[auto]text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r animate-pulse from-slate-100 to-gray-300">
           <button onClick={(e) => showArtistFunc(true)}>{artist?.name} </button>
         </span>
-        <span>
+        <span className="w-full md:w-[auto] flex justify-center items-center my-5 md:my-0">
           <input
             type="search"
             onChange={handleSearch}
             placeholder="search"
-            className="px-2 text-black "
+            className="px-5 py-1 text-black rounded-3xl"
           />
         </span>
       </div>
@@ -110,13 +112,9 @@ const ArtistMiddle = ({ songsArray, artist, showArtistFunc }) => {
                   key={i}
                   className="text-[#E5E7EB] hover:cursor-pointer  md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] gap-2 flex justify-around md:justify-between"
                 >
-                  <div
-                    key={song.id}
-                    className="md:w-[20%] text-base md:text-lg text-left  font-bold"
-                  >
-                    {" "}
-                    {i + 1}
-                  </div>
+                  {/* number  */}
+                  <div>{i + 1}</div>
+                  {/* name of song  */}
                   <div
                     key={song.id}
                     className="text-base font-bold text-center md:w-full md:text-lg"
@@ -125,6 +123,7 @@ const ArtistMiddle = ({ songsArray, artist, showArtistFunc }) => {
                       ? song?.name
                       : song?.name.slice(0, 60) + "..."}
                   </div>
+                  {/* playlist button  */}
                   {userDetails.role == "USER" && (
                     <div className="relative">
                       <button
