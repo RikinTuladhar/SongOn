@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import BaseURL from "../BaseUrl";
 // const base = "https://songon.onrender.com";
-const base = "http://localhost:8080";
+const base = BaseURL;
 const initialState = {
   userDetails: {
-    id:"",
-    firstName:"",
-    lastname:"",
-    role:"",
-    username:"" 
+    id: "",
+    firstName: "",
+    lastname: "",
+    role: "",
+    username: "",
   },
   status: "idle",
   error: null,
@@ -20,11 +20,11 @@ export const getUser = createAsyncThunk(
   "getUser",
   async (_, { rejectWithValue }) => {
     try {
-      const userDetails = JSON.parse(localStorage.getItem("user"))
+      const userDetails = JSON.parse(localStorage.getItem("user"));
       const userName = userDetails.username;
       const endpoint = `${base}/getUser/${userName}`;
       const res = await axios.get(endpoint);
-      console.log(res.data)
+      console.log(res.data);
       return res.data;
     } catch (error) {
       return rejectWithValue(
@@ -46,7 +46,7 @@ export const signIn = createAsyncThunk("signin", async (value) => {
     const data = await response.data;
     console.log(data);
     localStorage.setItem("user", JSON.stringify(data));
-    console.log(data)
+    console.log(data);
     return data;
   } catch (error) {
     console.log(error.response.data.errorMessage);

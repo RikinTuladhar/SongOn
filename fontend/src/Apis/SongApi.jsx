@@ -1,11 +1,10 @@
 import axios from "axios";
 import React from "react";
-
+import BaseURL from "../BaseUrl";
 const SongApi = () => {
   // const baseUrl = "https://songon.onrender.com/song";
-  const baseUrl = "http://localhost:8080/song";
+  const baseUrl = BaseURL + "/song";
   // const token= localStorage.getItem("token");
-
 
   async function getSong() {
     const URL = baseUrl;
@@ -33,7 +32,7 @@ const SongApi = () => {
     }
   }
 
-  async function addSong(gId,aId,song) {
+  async function addSong(gId, aId, song) {
     const URL = baseUrl + `/uploadSong?generic_id=${gId}&artist_id=${aId}`;
     console.log(URL);
     try {
@@ -46,18 +45,19 @@ const SongApi = () => {
     }
   }
 
-  async function editSong(genre_id,artist_id,song_id,value){
-    const URL = baseUrl + `/updateSong?generic_id=${genre_id}&artist_id=${artist_id}&song_id=${song_id}`;
-  console.log(URL)
-    try{
-      const res = await axios.put(URL,value);
-      const  data = await res.data;
-      console.log(data)
-      return data
-    }catch(e){
+  async function editSong(genre_id, artist_id, song_id, value) {
+    const URL =
+      baseUrl +
+      `/updateSong?generic_id=${genre_id}&artist_id=${artist_id}&song_id=${song_id}`;
+    console.log(URL);
+    try {
+      const res = await axios.put(URL, value);
+      const data = await res.data;
+      console.log(data);
+      return data;
+    } catch (e) {
       console.log(error);
     }
-    
   }
 
   async function deleteSong(id) {
@@ -73,7 +73,7 @@ const SongApi = () => {
     }
   }
 
-  return { getSong, deleteSong,getSongById,addSong,editSong };
+  return { getSong, deleteSong, getSongById, addSong, editSong };
 };
 
 export default SongApi;

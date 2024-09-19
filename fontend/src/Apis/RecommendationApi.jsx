@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "axios";
-
+import BaseURL from "../BaseUrl";
 const RecommendationApi = () => {
   // const BASE = "https://songon.onrender.com";
-  const BASE = "http://localhost:8080";
+  const BASE = BaseURL;
 
   async function getRecommendation(username) {
     try {

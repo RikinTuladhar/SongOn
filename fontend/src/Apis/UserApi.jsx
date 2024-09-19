@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useContext } from "react";
 import { User } from "../contextprovider/UserProvider";
+import BaseURL from "../BaseUrl";
 const UserApi = () => {
   // const { setToken } = useContext(User);
   // const baseUrl = "https://songon.onrender.com";
-  const baseUrl = "http://localhost:8080";
+  const baseUrl = BaseURL;
 
   // async function SignIn(value) {
   //   const endpoint = `${baseUrl}/login`;
@@ -48,7 +49,6 @@ const UserApi = () => {
       }
     }
   }
-  
 
   // async function getUser() {
   //   try {

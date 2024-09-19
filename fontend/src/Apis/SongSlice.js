@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
+import BaseURL from "../BaseUrl";
 // const base = "https://songon.onrender.com";
-const base = "http://localhost:8080";
+const base = BaseURL;
 const initialState = {
   songs: [],
   status: "pending",
@@ -49,7 +49,7 @@ const songSlice = createSlice({
   initialState,
   reducers: {
     handleSetSongIndex: (state, action) => {
-    //   console.log(action.payload);
+      //   console.log(action.payload);
       state.songIndex = action.payload;
     },
     handleSongArray: (state, action) => {
