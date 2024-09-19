@@ -115,10 +115,10 @@ const GroupChat = () => {
   return (
     <>
       <Navbar />
-      <div className="w-full px-16 md:px-52  pb-20 md:pb-0 flex-wrap h-[auto] min-h-min gap-10 md:gap-0 md:h-[100vh] text-white bg-[#080808] flex justify-center items-center">
-        <div className="w-full md:w-[30%] rounded-tl-2xl rounded-bl-2xl h-[80vh] bg-[#161616] p-5">
+      <div className="w-full px-5 md:px-52  pb-20 md:pb-0 flex-wrap h-[auto] min-h-min gap-10 md:gap-0 md:h-[100vh] text-white bg-[#080808] flex justify-center items-center">
+        <div className="w-full md:w-[30%] rounded-tl-2xl rounded-br-2xl md:rounded-br-0  rounded-tr-2xl md:rounded-tr-0 rounded-bl-2xl md:h-[80vh] bg-[#161616] p-5">
           {/* Left side */}
-          <div className="flex flex-col w-full p-2 rounded-2xl h-[75vh] overflow-y-auto bg-[#0f0f0f]">
+          <div className="flex flex-col w-full p-5 md:p-2 rounded md:h-[75vh] overflow-y-auto bg-[#0f0f0f]">
             <div className="flex flex-col mt-5 ml-2 gap-y-5">
               <div className="text-2xl font-bold">List of Groups</div>
               <div className="w-full h-[0.1rem] bg-slate-50"></div>
@@ -155,15 +155,15 @@ const GroupChat = () => {
           </div>
         </div>
         {/* Right side */}
-        <div className="w-full  md:w-[70%] rounded-tr-2xl rounded-br-2xl px-3  md:h-[80vh] bg-[#0f0f0f]">
+        <div className="w-full  md:w-[70%] rounded-tr-2xl rounded-bl-2xl md:rounded-bl-0 rounded-tl-2xl md:rounded-tl-0 rounded-br-2xl px-3  md:h-[80vh] bg-[#0f0f0f]">
           <div className="relative w-full">
-            <div className="py-2 text-2xl text-center">
+            <div className="py-5 text-2xl text-center md:py-2">
               <h3>Group Chat: #{chatGenre}</h3>
               <div className="w-full mt-2 h-[0.1rem] bg-slate-50"></div>
             </div>
             <div
               ref={messageBoxRef} // Reference the message box container
-              className="w-full relative space-y-3 pb-5 px-2 pt-3 h-[62vh] overflow-y-auto message-box"
+              className="w-full relative space-y-3 pb-5 px-2 pt-3  md:h-[62vh] overflow-y-auto message-box"
             >
               {message.length > 0 ? (
                 <div className="space-y-3">
