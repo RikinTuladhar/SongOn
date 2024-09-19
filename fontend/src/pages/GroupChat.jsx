@@ -115,8 +115,8 @@ const GroupChat = () => {
   return (
     <>
       <Navbar />
-      <div className="w-full px-52 h-[100vh] text-white bg-[#080808] flex justify-center items-center">
-        <div className="w-[30%] rounded-tl-2xl rounded-bl-2xl h-[80vh] bg-[#161616] p-5">
+      <div className="w-full px-16 md:px-52  pb-20 md:pb-0 flex-wrap h-[auto] min-h-min gap-10 md:gap-0 md:h-[100vh] text-white bg-[#080808] flex justify-center items-center">
+        <div className="w-full md:w-[30%] rounded-tl-2xl rounded-bl-2xl h-[80vh] bg-[#161616] p-5">
           {/* Left side */}
           <div className="flex flex-col w-full p-2 rounded-2xl h-[75vh] overflow-y-auto bg-[#0f0f0f]">
             <div className="flex flex-col mt-5 ml-2 gap-y-5">
@@ -155,7 +155,7 @@ const GroupChat = () => {
           </div>
         </div>
         {/* Right side */}
-        <div className="w-[70%] rounded-tr-2xl rounded-br-2xl px-3 h-[80vh] bg-[#0f0f0f]">
+        <div className="w-full  md:w-[70%] rounded-tr-2xl rounded-br-2xl px-3  md:h-[80vh] bg-[#0f0f0f]">
           <div className="relative w-full">
             <div className="py-2 text-2xl text-center">
               <h3>Group Chat: #{chatGenre}</h3>
@@ -171,7 +171,7 @@ const GroupChat = () => {
                     // other message
                     <div
                       key={msg.id}
-                      className={`flex gap-3 message px-3 py-2 rounded-xl ${
+                      className={`flex  flex-wrap gap-3 message px-3 py-2 rounded-xl ${
                         user?.username === msg?.data?.displayName
                           ? "justify-start flex-row-reverse bg-[#222222]"
                           : "justify-start bg-[#516aa8]"
@@ -183,10 +183,10 @@ const GroupChat = () => {
                           ? ""
                           : msg.data.displayName}
                       </div>
-                      <div className="flex flex-col gap-2 text-center">
+                      <div className="flex flex-col flex-wrap gap-2 text-center">
                         <div className="font-semibold">{msg?.data?.text}</div>
                         {msg.data.audio === true && (
-                          <div className="flex items-center justify-center space-x-5">
+                          <div className="flex flex-wrap items-center justify-center gap-5 space-x-5">
                             <span>Song Name : {msg.data.audioName}</span>{" "}
                             <audio controls src={`${msg.data.url}`}></audio>
                           </div>
@@ -243,6 +243,7 @@ const GroupChat = () => {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   className="text-black w-[90%] px-2 py-2 rounded-lg border"
+                  required
                 />{" "}
                 <button
                   type="submit"

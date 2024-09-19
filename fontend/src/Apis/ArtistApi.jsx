@@ -2,7 +2,8 @@ import axios from "axios";
 // import React from "react";
 
 const ArtistApi = () => {
-  const baseUrl = "https://songon.onrender.com";
+  // const baseUrl = "https://songon.onrender.com";
+  const baseUrl = "http://localhost:8080";
 
   async function getArtist() {
     const URL = baseUrl + "/artist";

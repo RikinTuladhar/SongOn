@@ -29,6 +29,7 @@ const UserLibrary = () => {
     deletePlayList,
     deleteSongFromPlayList,
   } = UserLibraryApi();
+  
   const { reload, setReload } = useContext(ReloadContext);
 
   //show pop up
@@ -37,8 +38,6 @@ const UserLibrary = () => {
 
   const [nowPlayingList, setNowPlayingList] = useState("");
   // console.log(nowPlayingList);
-
-  const [message, setMessage] = useState("");
 
   function displayPlaylistSongs(id) {
     displayPlayListByPlaylistId(id)
@@ -97,7 +96,7 @@ const UserLibrary = () => {
         })
         .catch((err) => {
           console.log(err + " Error when trying to delete playlist");
-          setMessage("Failed to delete the playlist.");
+          toast.error("Failed to delete the playlist.");
         });
     }
   }
@@ -138,6 +137,7 @@ const UserLibrary = () => {
                 type="text"
                 className="w-[90%] text-black px-3 py-2 text-xl border rounded-2xl "
                 placeholder="Enter playlist name"
+                required
               />
               <div className="flex justify-around w-full">
                 <button
