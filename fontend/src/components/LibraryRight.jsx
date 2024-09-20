@@ -218,7 +218,7 @@ const LibraryRight = ({ songs, artistName }) => {
               </div>
             ) : (
               (searchFocus ? filteredSong : songs)?.map((song, i) =>
-                userDetails.role == "USER" ? (
+                userDetails?.role == "USER" ? (
                   <div
                     onClick={() => {
                       handleSong(song?.id, i); // Trigger handleSong when the song is selected
@@ -249,7 +249,7 @@ const LibraryRight = ({ songs, artistName }) => {
                           onClick={handleLikeSong}
                           className="flex items-center justify-center cursor-pointer"
                         >
-                          {userInteractionsAll.find(
+                          {userInteractionsAll?.find(
                             (i) =>
                               i.song_id === song.id &&
                               i.user_id === userDetails.id
