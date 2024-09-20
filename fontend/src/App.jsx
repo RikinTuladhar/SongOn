@@ -51,9 +51,9 @@ function App() {
         ,
         { path: "/library/:id", element: <Library /> },
         { path: "/artist/:id", element: <Artist /> },
-        {path:"/algorithm", element:<Recommendation/>}
       ],
     },
+    { path: "/algorithm", element: <Recommendation /> },
     //solo components
     { path: "/p", element: <Practice /> },
     { path: "/addSongs", element: <AddSongPage /> },

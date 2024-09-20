@@ -8,13 +8,14 @@ import { GrCaretPrevious } from "react-icons/gr";
 import { MdForward10 } from "react-icons/md";
 import { MdReplay10 } from "react-icons/md";
 // import {songClickedId} from "../Apis/SongSlice"
+
 const SongPlayer = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const songClickedId = useSelector((state) => state.song?.songIndex);
   const songs = useSelector((state) => state.song.songs);
-  // console.log(songs)
-  const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
   const [lyricsClicked, setLyricsClicked] = useState(false);
+  // console.log(songs)
 
   const playAudio = () => {
     const playPromise = audioRef.current.play();
@@ -70,7 +71,7 @@ const SongPlayer = () => {
     setCurrentIndex(songClickedId);
     audioRef.current.load();
     playAudio();
-  }, [songClickedId]);
+  }, [songClickedId, songs]);
 
   useEffect(() => {
     // Trigger the animation after the component mounts
@@ -79,7 +80,7 @@ const SongPlayer = () => {
     } else {
       setIsVisible(false);
     }
-  }, [songs?.length]);
+  }, [songs?.length, songs]);
 
   const [iconShowButtons, setIconsShowButton] = useState(false);
 
@@ -379,4 +380,4 @@ const SongPlayer = () => {
   );
 };
 
-export default memo(SongPlayer);
+export default SongPlayer;
