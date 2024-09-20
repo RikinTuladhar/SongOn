@@ -27,19 +27,11 @@ const LibraryRight = ({ songs, artistName }) => {
   const [selectedIdPlayListFromSelect, setSelectedIdPlayListFromSelect] =
     useState(0);
 
-  const [songIdUsedForLike, setSongIdUsedForLike] = useState("");
-
-  // console.log(songIdUsedForLike);
-  useEffect(() => {
-    // console.log("Updated songIdUsedForLike:", songIdUsedForLike);
-  }, [songIdUsedForLike]);
-
   const handleSong = async (songId, songIndex) => {
     setSongId(songId);
     // console.log(songId);
     // console.log(songIndex);
 
-    setSongIdUsedForLike(songId);
     dispatch(handleSetSongIndex(songIndex));
   };
 
@@ -95,9 +87,9 @@ const LibraryRight = ({ songs, artistName }) => {
       .catch((err) => console.log(err));
   }, [reloadInteractions]);
 
-  async function handleLikeSong() {
-    if (!songIdUsedForLike) {
-      // console.log(songIdUsedForLike);
+  async function handleLikeSong(song_id) {
+    if (!song_id) {
+      // console.log(song_id);
       toast.error("Please select a song first.");
       return;
     }
@@ -105,7 +97,7 @@ const LibraryRight = ({ songs, artistName }) => {
     try {
       const res = await getSongLikesByIds(
         userDataFromLocalStoreage.id,
-        songIdUsedForLike
+        song_id
       );
 
       const timesListened =
@@ -117,7 +109,7 @@ const LibraryRight = ({ songs, artistName }) => {
       // Creating the object with incremented timesListened
       const object = {
         userId: userDataFromLocalStoreage.id,
-        songId: songIdUsedForLike,
+        songId: song_id,
         liked: !liked, // Toggle like status
         timesListened: timesListened,
       };
@@ -138,7 +130,7 @@ const LibraryRight = ({ songs, artistName }) => {
 
   async function handleTimesListen(song_id, i) {
     handleSong(song_id, i);
-    if (!songIdUsedForLike) {
+    if (!song_id) {
       // console.log(songIdUsedForLike);
       toast.error("Please select a song first.");
       return;
@@ -146,7 +138,7 @@ const LibraryRight = ({ songs, artistName }) => {
     try {
       const res = await getSongLikesByIds(
         userDataFromLocalStoreage.id,
-        songIdUsedForLike
+        song_id
       );
       // console.log(res);
 
@@ -161,7 +153,7 @@ const LibraryRight = ({ songs, artistName }) => {
       // Creating the object with incremented timesListened
       const object = {
         userId: userDataFromLocalStoreage.id,
-        songId: songIdUsedForLike,
+        songId: song_id,
         liked: liked, // Toggle like status
         timesListened: timesListened + 1,
       };
@@ -220,9 +212,9 @@ const LibraryRight = ({ songs, artistName }) => {
               (searchFocus ? filteredSong : songs)?.map((song, i) =>
                 userDetails?.role == "USER" ? (
                   <div
-                    onClick={() => {
-                      handleSong(song?.id, i); // Trigger handleSong when the song is selected
-                    }}
+                    // onClick={() => {
+                    //   handleSong(song?.id, i); // Trigger handleSong when the song is selected
+                    // }}
                     key={i}
                     className="text-[#E5E7EB] text-sm md:text-xl  px-5 hover:cursor-pointer md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
                   >
@@ -246,7 +238,7 @@ const LibraryRight = ({ songs, artistName }) => {
                       {/* Like button */}
                       <div className="flex items-center justify-center">
                         <button
-                          onClick={handleLikeSong}
+                          onClick={() => handleLikeSong(song?.id)}
                           className="flex items-center justify-center cursor-pointer"
                         >
                           {userInteractionsAll?.find(
