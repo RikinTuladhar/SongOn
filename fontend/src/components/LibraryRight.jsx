@@ -4,11 +4,12 @@ import UserLibraryApi from "../Apis/UserLibraryApi";
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { CiCircleRemove } from "react-icons/ci";
-import { GiCheckMark } from "react-icons/gi";
+import { GiCheckMark, GiCloakDagger } from "react-icons/gi";
 import {
   handleSetSongIndex,
   songLike,
   getSongLikesByIds,
+  getAllUserSongInteractions,
 } from "../Apis/SongSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,15 +27,20 @@ const LibraryRight = ({ songs, artistName }) => {
   const [selectedIdPlayListFromSelect, setSelectedIdPlayListFromSelect] =
     useState(0);
 
-  const [songIdUsedForLike, setSongIdUsedForLike] = useState();
+  const [songIdUsedForLike, setSongIdUsedForLike] = useState("");
 
-  // console.log(selectedIdPlayListFromSelect);
+  // console.log(songIdUsedForLike);
+  useEffect(() => {
+    // console.log("Updated songIdUsedForLike:", songIdUsedForLike);
+  }, [songIdUsedForLike]);
 
   const handleSong = async (songId, songIndex) => {
     setSongId(songId);
-    // setSongClickedId(songIndex);
-    dispatch(handleSetSongIndex(songIndex));
+    // console.log(songId);
+    // console.log(songIndex);
+
     setSongIdUsedForLike(songId);
+    dispatch(handleSetSongIndex(songIndex));
   };
 
   const handleSearch = (e) => {
@@ -60,8 +66,8 @@ const LibraryRight = ({ songs, artistName }) => {
 
   function handleAddUserSongToPlayList(e, songId) {
     e.preventDefault();
-    console.log(e);
-    console.log(selectedIdPlayListFromSelect + " " + songId);
+    // console.log(e);
+    // console.log(selectedIdPlayListFromSelect + " " + songId);
     addSongToPlayList(selectedIdPlayListFromSelect, songId)
       .then((res) => {
         toast.success(res.message);
@@ -75,43 +81,103 @@ const LibraryRight = ({ songs, artistName }) => {
       );
   }
 
-  const [songAttributes, setSongAttributes] = useState({
-    liked: "",
-    timesListened: "",
-  });
-
-  console.log(songAttributes);
-
   const userDataFromLocalStoreage = JSON.parse(localStorage.getItem("user"));
 
+  const [userInteractionsAll, setuserInteractionsAll] = useState([]);
+  // console.log(userInteractionsAll);
+  const [reloadInteractions, setReloadInteractions] = useState(false);
   useEffect(() => {
-    getSongLikesByIds(userDataFromLocalStoreage.id, songIdUsedForLike)
+    getAllUserSongInteractions()
       .then((res) => {
-        const timesListened = res[0]?.timesListened ?? 0;
-        const liked = res[0]?.liked ?? false;
-
-        // Combine both liked and timesListened in a single setState call
-        setSongAttributes({
-          liked: liked,
-          timesListened: timesListened,
-        });
+        // console.log(res);
+        setuserInteractionsAll(res);
       })
       .catch((err) => console.log(err));
-  }, [songIdUsedForLike]);
+  }, [reloadInteractions]);
 
-  function handleLikeSong() {
-    const object = {
-      userId: userDataFromLocalStoreage.id,
-      songId: songIdUsedForLike,
-      liked: !songAttributes?.liked,
-      timesListened: Int32Array.parse(songAttributes?.timesListened + 1),
-    };
-    console.log(object);
-    songLike(object)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+  async function handleLikeSong() {
+    if (!songIdUsedForLike) {
+      // console.log(songIdUsedForLike);
+      toast.error("Please select a song first.");
+      return;
+    }
+
+    try {
+      const res = await getSongLikesByIds(
+        userDataFromLocalStoreage.id,
+        songIdUsedForLike
+      );
+
+      const timesListened =
+        res[0]?.timesListened == 0 || res[0]?.timesListened == undefined
+          ? 0
+          : res[0]?.timesListened;
+      const liked = res[0]?.liked ?? false;
+
+      // Creating the object with incremented timesListened
+      const object = {
+        userId: userDataFromLocalStoreage.id,
+        songId: songIdUsedForLike,
+        liked: !liked, // Toggle like status
+        timesListened: timesListened,
+      };
+
+      // console.log(object);
+
+      // Call the songLike API with the updated object
+      const likeResponse = await songLike(object);
+
+      // console.log(likeResponse);
+      setReloadInteractions((prev) => !prev);
+      toast.success("Song liked status updated!");
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to update like status.");
+    }
+  }
+
+  async function handleTimesListen(song_id, i) {
+    handleSong(song_id, i);
+    if (!songIdUsedForLike) {
+      // console.log(songIdUsedForLike);
+      toast.error("Please select a song first.");
+      return;
+    }
+    try {
+      const res = await getSongLikesByIds(
+        userDataFromLocalStoreage.id,
+        songIdUsedForLike
+      );
+      // console.log(res);
+
+      const timesListened =
+        res[0]?.timesListened == 0 || res[0]?.timesListened == undefined
+          ? 0
+          : res[0]?.timesListened;
+      const liked = res[0]?.liked;
+
+      // console.log("from api" + timesListened);
+
+      // Creating the object with incremented timesListened
+      const object = {
+        userId: userDataFromLocalStoreage.id,
+        songId: songIdUsedForLike,
+        liked: liked, // Toggle like status
+        timesListened: timesListened + 1,
+      };
+
+      // console.log(object);
+
+      // Call the songLike API with the updated object
+      const likeResponse = await songLike(object);
+
+      // console.log(likeResponse.data);
+      setReloadInteractions((prev) => !prev);
+      toast.success("Song Listen status updated!");
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to update like status.");
+    }
   }
 
   return (
@@ -151,43 +217,54 @@ const LibraryRight = ({ songs, artistName }) => {
                 No Songs Available
               </div>
             ) : (
-              (searchFocus ? filteredSong : songs)?.map((song, i) => (
-                <div
-                  onClick={() => handleSong(song?.id, i)}
-                  key={i}
-                  className="text-[#E5E7EB] text-sm md:text-xl  px-5 hover:cursor-pointer md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
-                >
-                  <div className="text-center md:w-full">{i + 1}</div>
-                  <div className="text-center md:w-full">{song?.name}</div>
-                  <div className="text-center md:w-full">
-                    {song?.artist?.slice(0, 3)?.map((artist, i) => (
-                      <span className="ml-3 mr-3" key={i}>
-                        {artist?.name}
-                      </span>
-                    ))}
-                  </div>
-                  {userDetails.role == "USER" && (
-                    <div className="flex items-center justify-center">
-                      <div className="flex gap-x-5">
-                        {songIdUsedForLike == song.id &&
-                        songAttributes?.liked == true ? (
-                          <button
-                            onClick={handleLikeSong}
-                            className="flex items-center justify-center"
-                          >
-                            <FcDislike />
-                            Dislike
-                          </button>
-                        ) : (
-                          <button
-                            onClick={handleLikeSong}
-                            className="flex items-center justify-center"
-                          >
-                            <FcLike />
-                            Like
-                          </button>
-                        )}
+              (searchFocus ? filteredSong : songs)?.map((song, i) =>
+                userDetails.role == "USER" ? (
+                  <div
+                    onClick={() => {
+                      handleSong(song?.id, i); // Trigger handleSong when the song is selected
+                    }}
+                    key={i}
+                    className="text-[#E5E7EB] text-sm md:text-xl  px-5 hover:cursor-pointer md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
+                  >
+                    <div className="text-center md:w-full">{i + 1}</div>
+                    <div className="text-center md:w-full">{song?.name}</div>
+                    <div className="text-center md:w-full">
+                      {song?.artist?.slice(0, 3)?.map((artist, i) => (
+                        <span className="ml-3 mr-3" key={i}>
+                          {artist?.name}
+                        </span>
+                      ))}
+                    </div>
+                    {/* play & like & playlist */}
+                    <div className="flex items-center w-full justify-evenly gap-x-5">
+                      <button
+                        onClick={() => handleTimesListen(song?.id, i)}
+                        className="text-white"
+                      >
+                        Play
+                      </button>
+                      {/* Like button */}
+                      <div className="flex items-center justify-center">
+                        <button
+                          onClick={handleLikeSong}
+                          className="flex items-center justify-center cursor-pointer"
+                        >
+                          {userInteractionsAll.find(
+                            (i) =>
+                              i.song_id === song.id &&
+                              i.user_id === userDetails.id
+                          )?.liked ? (
+                            <>
+                              <FcDislike />
+                            </>
+                          ) : (
+                            <>
+                              <FcLike />
+                            </>
+                          )}
+                        </button>
                       </div>
+                      {/* playlist  */}
                       <div className="relative">
                         <button
                           onClick={() =>
@@ -240,9 +317,27 @@ const LibraryRight = ({ songs, artistName }) => {
                         </div>
                       </div>
                     </div>
-                  )}
-                </div>
-              ))
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      handleSong(song?.id, i);
+                    }}
+                    key={i}
+                    className="text-[#E5E7EB] text-sm md:text-xl  px-5 hover:cursor-pointer md:px-10 w-full h-20 items-center bg-[#090909] hover:bg-[#1b1b1bd3] flex justify-between"
+                  >
+                    <div className="text-center md:w-full">{i + 1}</div>
+                    <div className="text-center md:w-full">{song?.name}</div>
+                    <div className="text-center md:w-full">
+                      {song?.artist?.slice(0, 3)?.map((artist, i) => (
+                        <span className="ml-3 mr-3" key={i}>
+                          {artist?.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )
+              )
             )}
           </div>
         </div>

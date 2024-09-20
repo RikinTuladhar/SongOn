@@ -60,15 +60,27 @@ export const getSongLikesByIds = async (user_id, song_id) => {
 
 export const songLike = async (value) => {
   const URL = base + "/user-song-interactions";
-  console.log(URL)
-  console.log(value)
+  console.log(URL);
+  console.log(value);
   try {
     const response = await axios.post(URL, value);
     const data = await response.data;
-    console.log(data);
+    console.log("Post Request" + data);
     return data;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const getAllUserSongInteractions = async () => {
+  const URL = base + "/user-song-interactions/all";
+  try {
+    const res = await axios.get(URL);
+    const data = await res.data;
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
   }
 };
 

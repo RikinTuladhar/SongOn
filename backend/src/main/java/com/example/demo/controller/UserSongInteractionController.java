@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.UserSongInteractionRequest;
+import com.example.demo.dto.UserSongInteractionResponse;
 import com.example.demo.models.SongModel;
 import com.example.demo.models.User;
 import com.example.demo.models.UserSongInteraction;
@@ -37,13 +39,44 @@ public class UserSongInteractionController {
         this.songRepository = songRepository;
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUserSongInteraction() {
+
+        List<UserSongInteraction> userSongInteractions = userSongInteractionRepository.findAll();
+        List<UserSongInteractionResponse> userSongInteractionResponses = new ArrayList();
+        for (UserSongInteraction u : userSongInteractions) {
+            UserSongInteractionResponse userSongInteractionResponse = new UserSongInteractionResponse();
+            userSongInteractionResponse.setId(u.getId());
+
+            userSongInteractionResponse.setUser_id(u.getUser().getId());
+            userSongInteractionResponse.setSong_id(u.getSong().getId());
+            userSongInteractionResponse.setLiked(u.isLiked());
+            userSongInteractionResponse.setTimesListened(u.getTimesListened());
+            userSongInteractionResponses.add(userSongInteractionResponse);
+        }
+
+        return ResponseEntity.status(200).body(userSongInteractionResponses);
+
+    }
+
     @GetMapping
     public ResponseEntity<?> getUserSongInteraction(@RequestParam("user_id") int user_id,
             @RequestParam("song_id") int song_id) {
 
         List<UserSongInteraction> interactions = userSongInteractionRepository.findDetailsByIds(user_id, song_id);
+        List<UserSongInteractionResponse> userSongInteractionResponses = new ArrayList();
+        for (UserSongInteraction u : interactions) {
+            UserSongInteractionResponse userSongInteractionResponse = new UserSongInteractionResponse();
+            userSongInteractionResponse.setId(u.getId());
 
-        return ResponseEntity.ok(interactions);
+            userSongInteractionResponse.setUser_id(u.getUser().getId());
+            userSongInteractionResponse.setSong_id(u.getSong().getId());
+            userSongInteractionResponse.setLiked(u.isLiked());
+            userSongInteractionResponse.setTimesListened(u.getTimesListened());
+            userSongInteractionResponses.add(userSongInteractionResponse);
+        }
+
+        return ResponseEntity.ok(userSongInteractionResponses);
     }
 
     // POST request to add a new user-song interaction
