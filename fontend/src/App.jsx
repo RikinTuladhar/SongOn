@@ -31,6 +31,7 @@ import EditSongPanel from "./pages/Admin/subpage/EditSongPanel";
 import EditGenrePanel from "./pages/Admin/subpage/EditGenrePanel";
 import GroupChat from "./pages/GroupChat";
 import Recommendation from "./pages/Recommendation";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   const router = createBrowserRouter([
@@ -54,6 +55,7 @@ function App() {
       ],
     },
     { path: "/algorithm", element: <Recommendation /> },
+    { path: "/user-profile", element: <UserProfile /> },
     //solo components
     { path: "/p", element: <Practice /> },
     { path: "/addSongs", element: <AddSongPage /> },

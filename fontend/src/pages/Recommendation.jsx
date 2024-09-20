@@ -15,7 +15,7 @@ const Recommendation = () => {
 
   useEffect(() => {
     // removing all songs from state redux
-   
+
     dispatch(handleEmptySongArray());
     getRecommendation(user.username)
       .then((res) => {
@@ -48,7 +48,7 @@ const Recommendation = () => {
           Recommended Songs
         </h1>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {songs.map((song, index) => (
+          {songs?.map((song, index) => (
             <div
               key={index}
               className="relative h-64 overflow-hidden transition-all duration-300 ease-in-out rounded-2xl group hover:shadow-xl"

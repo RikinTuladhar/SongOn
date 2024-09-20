@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.UserLikedSong;
 import com.example.demo.dto.UserSongInteractionRequest;
 import com.example.demo.dto.UserSongInteractionResponse;
 import com.example.demo.models.SongModel;
@@ -77,6 +78,12 @@ public class UserSongInteractionController {
         }
 
         return ResponseEntity.ok(userSongInteractionResponses);
+    }
+
+    @GetMapping("/user-liked-song")
+    public ResponseEntity<?> getUserLikedSongs(@RequestParam("user_id") int user_id) {
+        List<UserLikedSong> songs = userSongInteractionRepository.findUserLikeSongs(user_id);
+        return ResponseEntity.ok(songs);
     }
 
     // POST request to add a new user-song interaction

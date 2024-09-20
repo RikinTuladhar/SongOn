@@ -58,6 +58,20 @@ export const getSongLikesByIds = async (user_id, song_id) => {
   }
 };
 
+export const getUserLikedSongByName = async (user_id) => {
+
+  const URL = base + `/user-song-interactions/user-liked-song?user_id=${user_id}`;
+  console.log(URL);
+  try {
+    const response = await axios.get(URL);
+    const data = await response.data;
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const songLike = async (value) => {
   const URL = base + "/user-song-interactions";
   console.log(URL);

@@ -44,8 +44,12 @@ const Navbar = () => {
       {mobileView ? (
         // Mobile view
         <nav className="flex flex-col py-5 items-center justify-around w-full h-auto gap-10 bg-[#090909]">
-          <GiHamburgerMenu className="w-5 h-5 text-white" onClick={toggleMenu} />
+          <GiHamburgerMenu
+            className="w-5 h-5 text-white"
+            onClick={toggleMenu}
+          />
           {menuOpen && (
+            // mobile view
             <ul className="flex flex-col gap-4">
               <li>
                 <Link to="/" className="text-white">
@@ -55,7 +59,10 @@ const Navbar = () => {
               {userDetails?.username && (
                 <>
                   <li>
-                    <Link to={`/userlibrary/${userDetails.username}`} className="text-white">
+                    <Link
+                      to={`/userlibrary/${userDetails.username}`}
+                      className="text-white"
+                    >
                       Your Library
                     </Link>
                   </li>
@@ -67,6 +74,11 @@ const Navbar = () => {
                   <li>
                     <Link to="/algorithm" className="text-white">
                       Recommendations
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/user-profile" className="text-white">
+                      Your Profile
                     </Link>
                   </li>
                   <li>
@@ -103,7 +115,10 @@ const Navbar = () => {
               {userDetails?.role === "USER" && (
                 <>
                   <li>
-                    <Link to={`/userlibrary/${userDetails.username}`} className="text-white">
+                    <Link
+                      to={`/userlibrary/${userDetails.username}`}
+                      className="text-white"
+                    >
                       Your Library
                     </Link>
                   </li>
@@ -115,6 +130,11 @@ const Navbar = () => {
                   <li>
                     <Link to="/algorithm" className="text-white">
                       Recommendations
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/user-profile" className="text-white">
+                      Your Profile
                     </Link>
                   </li>
                 </>
