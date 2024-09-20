@@ -8,7 +8,8 @@ import { signIn } from "../Apis/UserSlice";
 import { handleEmptySongArray } from "../Apis/SongSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 const SignIn = () => {
   const dispatch = useDispatch();
   // const songs = useSelector((state) => state.song.songs);
@@ -64,6 +65,11 @@ const SignIn = () => {
       }
     }, 2000);
   };
+  const [isShowPassword, showIsShowPassword] = useState(false);
+
+  const handleShowPassword = () => {
+    showIsShowPassword(!isShowPassword);
+  };
 
   return (
     <main className="flex h-auto min-h-[100vh]   md:py-10 md:px-10 text-white items-center bg-[#000000] justify-center  ">
@@ -110,7 +116,7 @@ const SignIn = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="space-y-2">
+            <div className="relative z-20 w-full space-y-2">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 htmlFor="password"
@@ -121,10 +127,20 @@ const SignIn = () => {
                 className="flex w-full h-10 px-3 py-2 text-sm text-black border rounded-md border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="password"
                 required
-                type="password"
+                type={isShowPassword ? "text" : `password`}
                 name="password"
                 onChange={handleChange}
               />
+              <div
+                onClick={handleShowPassword}
+                className="absolute z-30 text-black right-5 top-8"
+              >
+                {isShowPassword ? (
+                  <FaRegEyeSlash size={28} />
+                ) : (
+                  <FaRegEye size={28} />
+                )}
+              </div>
             </div>
           </div>
           <div className="flex flex-col items-center gap-5 p-6">

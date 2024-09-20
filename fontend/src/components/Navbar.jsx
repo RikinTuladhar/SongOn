@@ -23,7 +23,7 @@ const Navbar = () => {
     setHiden(!hiden);
   };
 
-  const [mobileView, setMobileView] = useState(true);
+  const [mobileView, setMobileView] = useState(false);
 
   useEffect(() => {
     // toast(
@@ -34,10 +34,10 @@ const Navbar = () => {
     //     : "Welcome User"
     // );
   }, [userDetails]);
-  
+
   useEffect(() => {
     const updateView = () => {
-      if (window.innerWidth <= 825) {
+      if (window.innerWidth <= 525) {
         setMobileView(true);
       } else {
         setMobileView(false);
@@ -45,7 +45,6 @@ const Navbar = () => {
     };
 
     window.addEventListener("resize", updateView);
-    return () => window.removeEventListener("resize", updateView);
   }, [window.innerWidth]);
 
   return (

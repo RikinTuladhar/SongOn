@@ -1,16 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import RecommendationApi from "../Apis/RecommendationApi";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { handleEmptySongArray } from "../Apis/SongSlice";
 const Recommendation = () => {
   const { getRecommendation } = RecommendationApi();
   const [songs, setSongs] = useState([]);
   const user = useSelector((state) => state?.user?.userDetails);
-  
+  const dispatch = useDispatch();
+
   // Create a ref array for the audio elements
   const audioRefs = useRef([]);
 
   useEffect(() => {
+    // removing all songs from state redux
+    dispatch(handleEmptySongArray());
     getRecommendation(user.username)
       .then((res) => {
         setSongs(res);
@@ -18,7 +21,7 @@ const Recommendation = () => {
       .catch((err) => console.log(err));
   }, [user.username]);
 
-  console.log(audioRefs)
+  // console.log(audioRefs);
 
   const playSong = (index) => {
     // Pause all other audios

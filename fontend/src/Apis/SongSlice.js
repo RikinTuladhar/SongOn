@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import BaseURL from "../BaseUrl";
+import axios from "axios";
 // const base = "https://songon.onrender.com";
 const base = BaseURL;
 const initialState = {
@@ -31,7 +32,7 @@ export const getAllSongs = createAsyncThunk(
 export const getSongById = createAsyncThunk(
   "getSongById",
   async function getSongById(id) {
-    const URL = baseUrl + `/song/${id}`;
+    const URL = base + `/song/${id}`;
     console.log(URL);
     try {
       const response = await axios.get(URL);
@@ -43,6 +44,33 @@ export const getSongById = createAsyncThunk(
     }
   }
 );
+
+export const getSongLikesByIds = async (user_id, song_id) => {
+  const URL =
+    base + `/user-song-interactions?user_id=${user_id}&song_id=${song_id}`;
+  try {
+    const response = await axios.get(URL);
+    const data = await response.data;
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const songLike = async (value) => {
+  const URL = base + "/user-song-interactions";
+  console.log(URL)
+  console.log(value)
+  try {
+    const response = await axios.post(URL, value);
+    const data = await response.data;
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const songSlice = createSlice({
   name: "SongSlice",
@@ -96,6 +124,9 @@ const songSlice = createSlice({
         state.error = true;
         state.songs = action.payload;
       });
+    // .addCase(songLike.pending, (state) => {})
+    // .addCase(songLike.fulfilled, (state) => {})
+    // .addCase(songLike.rejected, (state) => {});
   },
 });
 

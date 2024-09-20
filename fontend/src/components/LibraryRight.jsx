@@ -5,10 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { CiCircleRemove } from "react-icons/ci";
 import { GiCheckMark } from "react-icons/gi";
-import { handleSetSongIndex } from "../Apis/SongSlice";
+import {
+  handleSetSongIndex,
+  songLike,
+  getSongLikesByIds,
+} from "../Apis/SongSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { FcLike } from "react-icons/fc";
+import { FcDislike } from "react-icons/fc";
 const LibraryRight = ({ songs, artistName }) => {
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.userDetails);
@@ -21,12 +26,15 @@ const LibraryRight = ({ songs, artistName }) => {
   const [selectedIdPlayListFromSelect, setSelectedIdPlayListFromSelect] =
     useState(0);
 
-  console.log(selectedIdPlayListFromSelect);
+  const [songIdUsedForLike, setSongIdUsedForLike] = useState();
+
+  // console.log(selectedIdPlayListFromSelect);
 
   const handleSong = async (songId, songIndex) => {
     setSongId(songId);
     // setSongClickedId(songIndex);
     dispatch(handleSetSongIndex(songIndex));
+    setSongIdUsedForLike(songId);
   };
 
   const handleSearch = (e) => {
@@ -65,6 +73,45 @@ const LibraryRight = ({ songs, artistName }) => {
           err + " Error when posting playlist by song id and playlist id"
         )
       );
+  }
+
+  const [songAttributes, setSongAttributes] = useState({
+    liked: "",
+    timesListened: "",
+  });
+
+  console.log(songAttributes);
+
+  const userDataFromLocalStoreage = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    getSongLikesByIds(userDataFromLocalStoreage.id, songIdUsedForLike)
+      .then((res) => {
+        const timesListened = res[0]?.timesListened ?? 0;
+        const liked = res[0]?.liked ?? false;
+
+        // Combine both liked and timesListened in a single setState call
+        setSongAttributes({
+          liked: liked,
+          timesListened: timesListened,
+        });
+      })
+      .catch((err) => console.log(err));
+  }, [songIdUsedForLike]);
+
+  function handleLikeSong() {
+    const object = {
+      userId: userDataFromLocalStoreage.id,
+      songId: songIdUsedForLike,
+      liked: !songAttributes?.liked,
+      timesListened: Int32Array.parse(songAttributes?.timesListened + 1),
+    };
+    console.log(object);
+    songLike(object)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -120,56 +167,77 @@ const LibraryRight = ({ songs, artistName }) => {
                     ))}
                   </div>
                   {userDetails.role == "USER" && (
-                    <div className="relative">
-                      <button
-                        onClick={() =>
-                          setActiveFormIndex(activeFormIndex === i ? null : i)
-                        }
-                      >
-                        {activeFormIndex === i ? (
-                          <CiCircleRemove size={25} />
-                        ) : (
-                          <IoIosAddCircleOutline size={25} />
-                        )}
-                      </button>
-                      <div className="absolute right-0 z-50 top-10">
-                        {activeFormIndex === i && (
-                          <form
-                            onSubmit={(e) =>
-                              handleAddUserSongToPlayList(e, song.id)
-                            }
-                            className="px-5 space-y-3  bg-[#000000] py-2 rounded-2xl"
+                    <div className="flex items-center justify-center">
+                      <div className="flex gap-x-5">
+                        {songIdUsedForLike == song.id &&
+                        songAttributes?.liked == true ? (
+                          <button
+                            onClick={handleLikeSong}
+                            className="flex items-center justify-center"
                           >
-                            <div>
-                              <h1 className="text-xl text-center">
-                                Select Playlist
-                              </h1>
-                            </div>
-                            <div className="flex gap-5 ">
-                              <select
-                                onChange={(e) =>
-                                  setSelectedIdPlayListFromSelect(
-                                    e.target.value
-                                  )
-                                }
-                                className="flex items-center justify-between h-8 text-black hover:cursor-pointer md:px-10"
-                              >
-                                <option value="" disabled>
-                                  Select
-                                </option>
-                                {playlist?.map((item) => (
-                                  <option key={item?.id} value={item?.id}>
-                                    {item.name}
-                                  </option>
-                                ))}
-                              </select>
-
-                              <button type="submit">
-                                <GiCheckMark />
-                              </button>
-                            </div>
-                          </form>
+                            <FcDislike />
+                            Dislike
+                          </button>
+                        ) : (
+                          <button
+                            onClick={handleLikeSong}
+                            className="flex items-center justify-center"
+                          >
+                            <FcLike />
+                            Like
+                          </button>
                         )}
+                      </div>
+                      <div className="relative">
+                        <button
+                          onClick={() =>
+                            setActiveFormIndex(activeFormIndex === i ? null : i)
+                          }
+                        >
+                          {activeFormIndex === i ? (
+                            <CiCircleRemove size={25} />
+                          ) : (
+                            <IoIosAddCircleOutline size={25} />
+                          )}
+                        </button>
+                        <div className="absolute right-0 z-50 top-10">
+                          {activeFormIndex === i && (
+                            <form
+                              onSubmit={(e) =>
+                                handleAddUserSongToPlayList(e, song.id)
+                              }
+                              className="px-5 space-y-3  bg-[#000000] py-2 rounded-2xl"
+                            >
+                              <div>
+                                <h1 className="text-xl text-center">
+                                  Select Playlist
+                                </h1>
+                              </div>
+                              <div className="flex gap-5 ">
+                                <select
+                                  onChange={(e) =>
+                                    setSelectedIdPlayListFromSelect(
+                                      e.target.value
+                                    )
+                                  }
+                                  className="flex items-center justify-between h-8 text-black hover:cursor-pointer md:px-10"
+                                >
+                                  <option value="" disabled>
+                                    Select
+                                  </option>
+                                  {playlist?.map((item) => (
+                                    <option key={item?.id} value={item?.id}>
+                                      {item.name}
+                                    </option>
+                                  ))}
+                                </select>
+                                <button type="submit">
+                                  <GiCheckMark />
+                                </button>
+                              </div>
+                            </form>
+                          )}
+                        </div>
                       </div>
                     </div>
                   )}

@@ -29,7 +29,7 @@ const UserLibrary = () => {
     deletePlayList,
     deleteSongFromPlayList,
   } = UserLibraryApi();
-  
+
   const { reload, setReload } = useContext(ReloadContext);
 
   //show pop up
@@ -124,7 +124,7 @@ const UserLibrary = () => {
       {showAddPlayList && (
         <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center bg-transparent backdrop-blur-sm">
           {/* creating playlist form  */}
-          <div className="w-[50rem]  h-[20rem] top-1/4 rounded-3xl bg-[#080808] left-[25%]">
+          <div className="w-[50rem]  h-[20rem] top-1/4 rounded-3xl bg-[#080808] ">
             <form
               onSubmit={handleSubmit}
               className="flex flex-col items-center justify-center w-full h-full gap-8 "
@@ -161,10 +161,10 @@ const UserLibrary = () => {
       <h1 className="text-3xl text-center text-white ">
         {userDetails?.username.toUpperCase()}'s Library
       </h1>
-      <div className="flex h-full px-20 mt-5 rounded-3xl gap-x-10">
+      <div className="flex flex-wrap h-full px-5 mt-5 gap-y-10 md:gap-y-0 md:px-20 rounded-3xl gap-x-10">
         {/* left  */}
-        <div className="w-[30%] rounded-3xl px-5 py-10 bg-[#161616] h-full">
-          <div className="w-full px-5 h-[90vh] overflow-y-auto pb-32 bg-[#0F0F0F] ">
+        <div className="w-full md:w-[25%] rounded-3xl px-2 md:px-5 py-10 bg-[#161616] h-full">
+          <div className="w-full px-5 md:h-[90vh] overflow-y-auto md:pb-0 pb-32 bg-[#0F0F0F] ">
             <div className="flex justify-between w-full ">
               <h2 className="px-5 py-5 text-2xl font-bold">Playlists</h2>
               <button className="mr-5">
@@ -192,13 +192,13 @@ const UserLibrary = () => {
         </div>
 
         {/* right  */}
-        <div className="w-[70%] rounded-3xl  px-5 py-10 bg-[#161616] h-full">
+        <div className="w-full md:w-[70%] rounded-3xl  pb-8  px-5 py-10 bg-[#161616] h-full">
           <div className="w-full h-[auto]  bg-[#0F0F0F] ">
             <h2 className="px-5 py-5 text-2xl font-bold">
               List of songs : {nowPlayingList}
             </h2>
             <div className="w-[95%] mx-2 h-[5px] bg-black"></div>
-            <div className="w-full px-10 py-10 h-[78vh]  gap-10 overflow-y-auto bg-[#0F0F0F]">
+            <div className="w-full px-10 py-10 md:h-[78vh]  gap-10 overflow-y-auto bg-[#0F0F0F]">
               {/* cards */}
               {songs.map((song, i) => (
                 <div
@@ -206,6 +206,7 @@ const UserLibrary = () => {
                   key={i}
                   className="hover:bg-[#161616] cursor-pointer w-[100%] flex justify-around items-center   h-[5rem] bg-[#090909]"
                 >
+                  <span>{i + 1}</span>
                   <span>{song.name}</span>
                   <button
                     onClick={(e) => handleDeleteSongFromPlayList(song.id)}
