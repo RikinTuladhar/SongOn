@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Entity
 @Getter
 @Setter
@@ -26,7 +27,7 @@ public class SongModel {
     private String name;
     private String autoPath;
     private String imgPath;
-    @Column(name = "lyrics", length =5000)
+    @Column(name = "lyrics", length = 5000)
     private String lyrics;
 
     @JsonIgnore
@@ -39,8 +40,10 @@ public class SongModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         SongModel songModel = (SongModel) o;
         return Objects.equals(name, songModel.name);
     }
@@ -49,4 +52,5 @@ public class SongModel {
     public int hashCode() {
         return Objects.hash(name, autoPath);
     }
+
 }
