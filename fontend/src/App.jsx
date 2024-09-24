@@ -32,6 +32,7 @@ import EditGenrePanel from "./pages/Admin/subpage/EditGenrePanel";
 import GroupChat from "./pages/GroupChat";
 import Recommendation from "./pages/Recommendation";
 import UserProfile from "./pages/UserProfile";
+import Dashboard from "./pages/Admin/pages/Dashboard"
 
 function App() {
   const router = createBrowserRouter([
@@ -73,6 +74,10 @@ function App() {
       element: <Admin />,
 
       children: [
+        {
+          path: "/admin",
+          element: < Dashboard/>,
+        },
         {
           path: "/admin/addSongs",
           element: <AddSongs />,

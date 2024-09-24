@@ -57,7 +57,7 @@ const Artist = () => {
   return (
     <div className="w-full relative h-[120vh] pt-5 bg-[#000000] ">
       {showArtist && (
-        <div className="absolute z-50 w-full h-[100%] bg-transparent backdrop-blur-md">
+        <div className="absolute z-50 w-full h-[100%] bg-transparent backdrop-blur-xl">
           <div className="text-white justify-center border-4 items-center pr-10 flex bg-[#000000] rounded-lg  absolute top-10 left-[50%] -translate-x-[50%] translate-y-[20%]   ">
             <div
               className="absolute right-5 top-5"

@@ -32,6 +32,32 @@ const SongApi = () => {
     }
   }
 
+  async function getTotalSong() {
+    const URL = `${baseUrl}/getTotal`;
+    try {
+      const res = await axios.get(URL);
+      const data = await res.data;
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getTopSongs() {
+    const URL = `${BaseURL}/user-song-interactions/top-songs`;
+    try {
+      const res = await axios.get(URL);
+      const data = await res.data;
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  
+
   async function addSong(gId, aId, song) {
     const URL = baseUrl + `/uploadSong?generic_id=${gId}&artist_id=${aId}`;
     console.log(URL);
@@ -73,7 +99,7 @@ const SongApi = () => {
     }
   }
 
-  return { getSong, deleteSong, getSongById, addSong, editSong };
+  return { getSong, deleteSong, getSongById, getTotalSong,getTopSongs, addSong, editSong };
 };
 
 export default SongApi;

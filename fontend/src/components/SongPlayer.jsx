@@ -206,7 +206,7 @@ const SongPlayer = () => {
                   </li>
                   <li className="flex items-center justify-center order-1 w-full mx-auto my-0 md:w-auto md:block md:px-0 md:order-3">
                     <audio
-                      className="bg-black h-[30px] md:h-[10vh] text-white rounded"
+                      className="text-white bg-black rounded"
                       ref={audioRef}
                       controls
                       width="600px"

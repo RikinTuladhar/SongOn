@@ -14,7 +14,7 @@ const LibraryLeft = () => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="md:w-[25%] md:h-[100vh] pb-10 mt-3 overflow-y-auto px-5 py-10 p-5 text-2xl bg-[#11111182] rounded-xl">
+      <div className="md:w-[25%] md:h-[100vh]    pb-10 mt-3 overflow-y-auto px-5  py-10  text-2xl bg-[#11111182] rounded-xl">
         <h1 className="text-2xl text-[#E5E7EB]">Brief</h1>
         <div className="w-full mt-3 h-[2px] bg-black"></div>
         <div className="w-full md:h-[110vh] md:pb-[200px] mt-9 justify-between md:flex-nowrap flex flex-col gap-10">
@@ -28,14 +28,18 @@ const LibraryLeft = () => {
                 className="w-full h-full rounded"
               />
             </div>
-            <div className="text-2xl text-[#FFFFFF]">{song ? song.name : ""}</div>
-            <div className="text-lg text-[#E5E7EB]">Artist</div>
+            <div className="text-2xl text-[#FFFFFF]">
+              {song ? song.name : ""}
+            </div>
+            <div className="text-lg text-[#E5E7EB]">Song Name</div>
           </div>
           {/* bottom card */}
           <div className="md:w-full pb-5 rounded-lg bg-[#111827] flex flex-col gap-5">
             <div className="w-full">
               <img
-                src={artist?.imgArtist ? artist.imgArtist : "/Artist/future.jpg"}
+                src={
+                  artist?.imgArtist ? artist.imgArtist : "/Artist/future.jpg"
+                }
                 onError={(e) => (e.target.src = "/Artist/future.jpg")}
                 alt="artist"
                 className="w-full h-full rounded-md"

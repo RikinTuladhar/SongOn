@@ -56,6 +56,18 @@ const ArtistApi = () => {
     }
   }
 
+  async function getTotalArtist() {
+    const URL = `${baseUrl}/artist/getTotal`;
+    try {
+      const res = await axios.get(URL);
+      const data = await res.data;
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function addArtist(artist) {
     const URL = baseUrl + "/artist";
 
@@ -111,6 +123,7 @@ const ArtistApi = () => {
     getArtistBySongId,
     getSongByArtistId,
     getArtistById,
+    getTotalArtist,
     addArtist,
     editArtist,
     putSongOnArtist,

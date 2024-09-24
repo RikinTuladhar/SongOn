@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.UserLikedSong;
-import com.example.demo.dto.UserSongInteractionRequest;
-import com.example.demo.dto.UserSongInteractionResponse;
 import com.example.demo.models.SongModel;
 import com.example.demo.models.User;
 import com.example.demo.models.UserSongInteraction;
@@ -85,6 +83,20 @@ public class UserSongInteractionController {
         List<UserLikedSong> songs = userSongInteractionRepository.findUserLikeSongs(user_id);
         return ResponseEntity.ok(songs);
     }
+
+    @GetMapping("/top-songs")
+    ResponseEntity<?> getTopSongs() {
+        List<TopSongs> topSongs = userSongInteractionRepository.findTopSongs();
+        return ResponseEntity.ok(topSongs);
+    }
+
+    @GetMapping("/top-users")
+    ResponseEntity<?> getTopUsers() {
+        List<TopUser> topSongs = userSongInteractionRepository.findTopUser();
+        return ResponseEntity.ok(topSongs);
+    }
+
+
 
     // POST request to add a new user-song interaction
     @PostMapping

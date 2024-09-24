@@ -20,7 +20,7 @@ const ArtistMiddle = ({ songsArray, artist, showArtistFunc }) => {
   const { addSongToPlayList, displayPlayListByUserId } = UserLibraryApi();
   const [songs, setSongs] = useState([]);
 
-  console.log(songs);
+  // console.log(songs);
   // console.log(songsArray)
   useEffect(() => {
     if (songsArray) {
@@ -76,18 +76,18 @@ const ArtistMiddle = ({ songsArray, artist, showArtistFunc }) => {
 
     console.log(searching);
   }
-  console.log(artist);
+  // console.log(artist);
 
   return (
     <div className="w-full md:w-[80%] h-[100vh] overflow-y-auto  mt-10 md:mt-3 px-5 md:px-10 py-10 bg-[#090909] rounded-xl">
       <div className="flex flex-wrap items-center justify-between px-5 text-lg text-white md:text-2xl ">
-        <span className="w-full md:w-[auto] text-center mb-2 md:mb-0 font-bold order-3 md:order-1 md:text-left">
+        <span className="w-full md:w-[auto] order-3 text-center mb-2 md:mb-0 font-bold  md:order-1  md:text-left">
           Songs List
         </span>
-        <span className="text-center w-full md:w-[auto]text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r animate-pulse from-slate-100 to-gray-300">
+        <span className="text-center w-full    md:w-[auto]text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r animate-pulse from-slate-100 to-gray-300">
           <button onClick={(e) => showArtistFunc(true)}>{artist?.name} </button>
         </span>
-        <span className="w-full md:w-[auto] flex justify-center items-center my-5 md:my-0">
+        <span className="w-full md:w-[auto] order-1 md:order-3 flex justify-center items-center my-5 md:my-0">
           <input
             type="search"
             onChange={handleSearch}

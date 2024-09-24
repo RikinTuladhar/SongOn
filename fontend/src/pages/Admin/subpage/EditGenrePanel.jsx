@@ -176,7 +176,7 @@ const EditGenrePanel = () => {
                 class="bg-blue-600  hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-full"
                 ref={stopPost}
               >
-                <span>Add Genre</span>
+                <span>Edit Genre</span>
               </button>
             </div>
           </form>

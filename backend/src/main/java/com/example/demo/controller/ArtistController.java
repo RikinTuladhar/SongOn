@@ -50,6 +50,13 @@ public class ArtistController {
         return artistRepo.findArtistBySongId(song_id);
     }
 
+    @GetMapping("/getTotal")
+    ResponseEntity<?> getArtistTotal() {
+        Long count = artistRepo.count();
+        Message message = new Message(count.toString());
+        return ResponseEntity.ok(message);
+    }
+
     @PostMapping
     ArtistModel createArtist(@RequestBody ArtistModel artistModel) {
         return artistRepo.save(artistModel);

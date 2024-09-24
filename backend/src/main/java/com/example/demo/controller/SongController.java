@@ -79,6 +79,12 @@ public class SongController {
         }
         return songWithArtistsDTOs;
     }
+    @GetMapping("/getTotal")
+    ResponseEntity<?> getSongTotal() {
+        Long count = songRepo.count();
+        Message message = new Message(count.toString());
+        return ResponseEntity.ok(message);
+    }
 
     @PostMapping("/uploadSong")
     public ResponseEntity<?> uploadSong(

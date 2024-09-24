@@ -15,11 +15,11 @@ const HomeLeft = () => {
   }, []);
 
   return (
-    <div className=" w-full md:w-[30%]  md:h-auto mt-3 overflow-y-auto  mx-5 md:m-0 px-5 py-10 p-5 text-2xl bg-[#11111182] rounded-xl">
+    <div className=" w-full md:w-[30%]  md:h-auto mt-3  overflow-y-auto  mx-5 md:m-0 px-5 py-12 p-5 text-2xl bg-[#11111182] rounded-xl">
       <h1 className=" text-[#E5E7EB]"> Artist List</h1>
       <div className="w-full mt-10 bg-black rounded-lg">
         {artist?.length === 0
-          ? Array(10)
+          ? Array(6)
               .fill()
               .map((data, i) => (
                 <div

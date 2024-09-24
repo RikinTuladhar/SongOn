@@ -46,6 +46,13 @@ public class GenreController {
         return ResponseEntity.ok().body(genreList);
     }
 
+    @GetMapping("/getTotal")
+    ResponseEntity<?> getGenreTotal() {
+        Long count = genreRepo.count();
+        Message message = new Message(count.toString());
+        return ResponseEntity.ok(message);
+    }
+
     @PostMapping
     public ResponseEntity<?> addGenre(@RequestBody GenreModel genreModel) {
         if (containAllFields(genreModel)) {
