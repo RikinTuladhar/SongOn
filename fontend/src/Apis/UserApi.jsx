@@ -50,6 +50,26 @@ const UserApi = () => {
     }
   }
 
+  async function getTopUsers() {
+    const endpoint = `${baseUrl}/user-song-interactions/top-users`;
+    console.log(endpoint)
+    try {
+      const response = await axios.get(endpoint);
+      const data = response.data;
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+      if (error.response) {
+        throw new Error(error.response.data.errorMessage); // Throwing an error with the error message
+      } else {
+        throw new Error("An unexpected error occurred"); // Handling unexpected errors
+      }
+    }
+  }
+
+
+
   // async function getUser() {
   //   try {
   //     const token = localStorage.getItem("token");
@@ -74,7 +94,7 @@ const UserApi = () => {
   //   }
   // }
 
-  return { SignUp };
+  return { SignUp,getTopUsers };
 };
 
 export default UserApi;
