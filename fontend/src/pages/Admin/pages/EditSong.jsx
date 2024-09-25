@@ -3,7 +3,10 @@ import SongApi from "../../../Apis/SongApi";
 import SongCard from "../components/SongCard";
 import { ReloadContext } from "../../../contextprovider/ReloadProvider";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 const EditSong = () => {
+  const user = useSelector((state) => state.user.userDetails);
+
   const { getSong, deleteSong } = SongApi();
   const [data, setData] = useState([]);
   const { reload, setReload } = useContext(ReloadContext);
@@ -26,27 +29,37 @@ const EditSong = () => {
     }
   };
   return (
-    <div>
-      <div>
-        <p className="text-3xl font-bold text-center">Song List</p>
-      </div>
-      <div className="relative flex justify-between w-full px-5 ">
-        <div></div>
-        <div></div>
-        <Link to="/admin/addSongs">
-          <button className="px-5 py-2 text-white transition delay-100 bg-black border hover:scale-125 rounded-2xl">
-            Add
-          </button>
-        </Link>
-      </div>
-      <div className="mt-16 ">
-        <div className="grid w-full gap-10 justify-items-center md:grid-cols-3">
-          {data?.map((song) => (
-            <SongCard key={song?.id} song={song} handleDelete={handleDelete} />
-          ))}
+    <>
+      {user.role == "ADMIN" ? (
+        <div>
+          <div>
+            <p className="text-3xl font-bold text-center">Song List</p>
+          </div>
+          <div className="relative flex justify-between w-full px-5 ">
+            <div></div>
+            <div></div>
+            <Link to="/admin/addSongs">
+              <button className="px-5 py-2 text-white transition delay-100 bg-black border hover:scale-125 rounded-2xl">
+                Add
+              </button>
+            </Link>
+          </div>
+          <div className="mt-16 ">
+            <div className="grid w-full gap-10 justify-items-center md:grid-cols-3">
+              {data?.map((song) => (
+                <SongCard
+                  key={song?.id}
+                  song={song}
+                  handleDelete={handleDelete}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <div>{(window.location.href = "/")}</div>
+      )}
+    </>
   );
 };
 

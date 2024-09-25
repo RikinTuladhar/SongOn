@@ -4,6 +4,7 @@ import UserApi from "../Apis/UserApi";
 import OvalLoader from "../components/OvalLoader";
 import { handleEmptySongArray } from "../Apis/SongSlice";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 const SignUp = () => {
   useEffect(() => {
     dispatch(handleEmptySongArray());
@@ -57,7 +58,8 @@ const SignUp = () => {
     SignUp(data)
       .then((res) => {
         setClicked(false);
-        alert(res); // Successful registration message
+        toast.success(res)
+        // alert(res); // Successful registration message
         navigate("/signIn");
       })
       .catch((err) => {

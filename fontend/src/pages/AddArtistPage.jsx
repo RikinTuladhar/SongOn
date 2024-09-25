@@ -1,15 +1,14 @@
-
-import React, { useContext, useRef, useState } from "react";
-import axios from "axios";
-import { SongContext } from "../contextprovider/SongProvider";
+import React from "react";
 import Navbar from "../components/Navbar";
 import AddArtist from "../components/AddArtist";
+
 const AddArtistPage = () => {
+  console.log(user);
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div>
-       <AddArtist/>
+        <AddArtist />
       </div>
     </div>
   );
