@@ -148,7 +148,7 @@ const AddArtist = () => {
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-300">
-                      Femal:
+                      Female:
                     </span>
                     <input
                       className="w-10 h-5"

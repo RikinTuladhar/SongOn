@@ -42,7 +42,7 @@ const HomeRight = () => {
     <div className=" w-[100%] mb-32 md:mb-0 mx-5 mt-10 md:mx-0  md:w-[80%] h-auto  md:mt-3  py-10 bg-[#11111182] rounded-xl ">
       <div className="flex flex-wrap items-center justify-between w-full px-10 space-y-5">
         <h1 className="text-center md:ml-10 md:text-left text-2xl text-[#E5E7EB] ">
-          Librarys
+          Genres
         </h1>
         <div className="flex items-center justify-center gap-2 text-white">
           <div>

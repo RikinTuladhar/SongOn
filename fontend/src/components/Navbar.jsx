@@ -63,7 +63,7 @@ const Navbar = () => {
                       to={`/userlibrary/${userDetails.username}`}
                       className="text-white"
                     >
-                      Your Library
+                      Your Playlist
                     </Link>
                   </li>
                   <li>
@@ -119,7 +119,7 @@ const Navbar = () => {
                       to={`/userlibrary/${userDetails.username}`}
                       className="text-white"
                     >
-                      Your Library
+                      Your Playlist
                     </Link>
                   </li>
                   <li>

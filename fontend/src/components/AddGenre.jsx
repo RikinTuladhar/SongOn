@@ -147,7 +147,7 @@ const AddGenre = () => {
                       } else {
                         setGenreImage(null);
                         stopPost.current.disabled = false;
-                        toast.error("valid image extension");
+                        toast.error("invalid image extension");
                       }
                     }}
                   />

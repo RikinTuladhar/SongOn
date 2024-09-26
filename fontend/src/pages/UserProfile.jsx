@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import { getUserLikedSongByName } from "../Apis/SongSlice";
 import { useSelector } from "react-redux";
-
+import ErrorBoundary from "./Admin/components/ErrorBoundary";
 const UserProfile = () => {
   const user = useSelector((state) => state.user.userDetails);
   console.log(user);
@@ -27,9 +27,18 @@ const UserProfile = () => {
       ref.current.play(); // Play after a short delay to ensure re-render completes
     }, 0);
   };
+  useEffect(() => {
+    if (user?.id) {
+      getUserLikedSongByName(user?.id)
+        .then((res) => {
+          setlikedSongs(res ?? []);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
 
   return (
-    <>
+    <ErrorBoundary>
       <Navbar />
       <div className="flex flex-col w-full px-16 py-5 text-black bg-black gap-y-10">
         <div className="w-full px-10 py-5 bg-[#090909] text-white rounded-2xl">
@@ -49,10 +58,14 @@ const UserProfile = () => {
               <audio
                 className="hidden"
                 ref={ref}
-                key={likedSongs[currentIndex]?.auto_path}
+                key={ likedSongs && likedSongs[currentIndex]?.auto_path}
                 controls
-                src={likedSongs[currentIndex]?.auto_path}
-              ></audio>
+                src={
+                  likedSongs?.length > 0 && likedSongs[currentIndex]?.auto_path
+                    ? likedSongs[currentIndex]?.auto_path
+                    : ""
+                }
+              />
             </div>
           </div>
         </div>
@@ -62,7 +75,7 @@ const UserProfile = () => {
             <h1 className="text-4xl">List of songs you liked</h1>
           </div>
           <div className="flex flex-col w-full px-10 py-5 mt-5 h-[60vh] overflow-y-auto bg-[#0f0f0f] rounded-xl gap-y-5 ">
-            {likedSongs.length > 0 ? (
+            {likedSongs?.length > 0 ? (
               likedSongs?.map((i, index) =>
                 currentIndex == index ? (
                   <div
@@ -93,7 +106,7 @@ const UserProfile = () => {
                         textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)",
                       }}
                     >
-                      {i.name}
+                      {i?.name}
                     </div>
                   </div>
                 ) : (
@@ -117,7 +130,7 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
-    </>
+    </ErrorBoundary>
   );
 };
 
