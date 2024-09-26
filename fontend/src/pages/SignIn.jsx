@@ -136,9 +136,9 @@ const SignIn = () => {
                 className="absolute z-30 text-black right-5 top-8"
               >
                 {isShowPassword ? (
-                  <FaRegEyeSlash size={28} />
+                  <FaRegEyeSlash size={20} md:size={28} />
                 ) : (
-                  <FaRegEye size={28} />
+                  <FaRegEye size={20} md:size={28} />
                 )}
               </div>
             </div>

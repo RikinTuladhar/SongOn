@@ -27,7 +27,7 @@ const HomePage = () => {
       {/* <h1 className="text-2xl my-3  md:my-0 md:text-3xl font-extrabold text-center text-[#E5E7EB] ">
         Welcome to my songs list
       </h1> */}
-      <div className="container flex flex-wrap items-center w-full h-full gap-10 px-10 md:flex-nowrap">
+      <div className="container flex flex-wrap items-center w-full h-full gap-10 px-2 md:px-10 md:flex-nowrap">
         <HomeLeft /> 
         <HomeRight />
       </div>
