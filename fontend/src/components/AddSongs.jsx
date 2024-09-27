@@ -103,9 +103,9 @@ const AddSongs = () => {
         setReload(true);
         toast.success("Song added successfully");
         setReload(false);
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
+        //setTimeout(() => {
+        //  window.location.reload();
+        //}, 3000);
         stopPost.current.disabled = false;
       })
       .catch((error) => {
