@@ -50,4 +50,11 @@ public interface UserSongInteractionRepository extends JpaRepository<UserSongInt
                 "ORDER BY SUM(ui.timesListened) DESC")
         List<TopUser> findTopUser();
 
+        @Modifying
+        @Transactional
+        @Query(value = "DELETE FROM user_song_interaction WHERE song_id = :id", nativeQuery = true)
+        void deleteSongById(@Param("id") int id);
+
+
+
 }

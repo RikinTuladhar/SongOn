@@ -9,6 +9,7 @@ import com.example.demo.others.Message;
 import com.example.demo.repo.ArtistRepo;
 import com.example.demo.repo.GenreRepo;
 import com.example.demo.repo.SongRepo;
+import com.example.demo.repo.UserSongInteractionRepository;
 import jakarta.persistence.EntityManager;
 
 import java.util.*;
@@ -34,6 +35,9 @@ public class SongController {
 
     @Autowired
     GenreRepo genreRepo;
+
+    @Autowired
+    UserSongInteractionRepository userSongInteractionRepository;
 
     @GetMapping
     public List<SongModel> getSongs() {
@@ -141,6 +145,8 @@ public class SongController {
             Optional<ArtistModel> artistModel = artistRepo.findById(authId);
             artistRepo.deleteSongById(id);
             genreRepo.deleteSongById(id);
+
+            userSongInteractionRepository.deleteSongById(id);
             songRepo.deleteById(id);
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Deleted Song");
@@ -175,6 +181,7 @@ public class SongController {
             @RequestParam("generic_id") int generic_id,
             @RequestParam("artist_id") int artist_id,
             @RequestParam("song_id") int song_id) {
+
         Optional<SongModel> songOptional = songRepo.findById(song_id);
         Optional<ArtistModel> artistOptional = artistRepo.findById(artist_id);
         Optional<GenreModel> genreOptional = genreRepo.findById(generic_id);
@@ -184,18 +191,21 @@ public class SongController {
         System.out.println("Id of artist " + songIdArtistDelete);
         System.out.println("Id of genre " + songIdGenreDelete);
 
-        if (songIdArtistDelete == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Cannot edit as it contains same rtist id");
+        // Null checks before comparison
+        if (songIdArtistDelete != null && songIdArtistDelete > 0) {
+            ErrorMessage errorMessage = new ErrorMessage("Cannot edit as it contains the same artist id");
             return ResponseEntity.badRequest().body(errorMessage);
         }
-        if (songIdGenreDelete == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Cannot edit as it contains same generic id");
+        if (songIdGenreDelete != null && songIdGenreDelete > 0) {
+            ErrorMessage errorMessage = new ErrorMessage("Cannot edit as it contains the same genre id");
             return ResponseEntity.badRequest().body(errorMessage);
         }
+
         if (songOptional.isPresent() && artistOptional.isPresent() && genreOptional.isPresent()) {
             SongModel song = songOptional.get();
             ArtistModel artist = artistOptional.get();
             GenreModel genre = genreOptional.get();
+
             if (songModel.getName() != null && !songModel.getName().isEmpty()) {
                 song.setName(songModel.getName());
             }
@@ -205,13 +215,9 @@ public class SongController {
             if (songModel.getLyrics() != null && !songModel.getLyrics().isEmpty()) {
                 song.setLyrics(songModel.getLyrics());
             }
-
             if (songModel.getImgPath() != null && !songModel.getImgPath().isEmpty()) {
                 song.setImgPath(songModel.getImgPath());
             }
-
-            songRepo.deleteSongInArtistSongModel(songIdArtistDelete);
-            songRepo.deleteSongInGenreSongModel(songIdGenreDelete);
 
             artist.songs(song);
             genre.songs(song);
@@ -227,5 +233,6 @@ public class SongController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
         }
     }
+
 
 }
