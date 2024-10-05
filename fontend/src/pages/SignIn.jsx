@@ -1,7 +1,5 @@
 import React, { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User } from "../contextprovider/UserProvider";
-import UserApi from "../Apis/UserApi";
 import OvalLoader from "../components/OvalLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../Apis/UserSlice";
@@ -20,7 +18,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const buttonRef = useRef();
   const [clicked, setClicked] = useState(false);
-  const { SignIn } = UserApi();
+  
   const [data, setData] = useState({
     username: "",
     password: "",

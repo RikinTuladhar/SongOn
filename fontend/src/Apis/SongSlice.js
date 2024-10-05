@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import BaseURL from "../BaseUrl";
 import axios from "axios";
-// const base = "https://songon.onrender.com";
+
 const base = BaseURL;
 const initialState = {
   songs: [],
@@ -11,8 +11,8 @@ const initialState = {
   songById: {},
   songIndex: 0,
 };
-console.log(initialState.songs);
-console.log(initialState.songIndex);
+// console.log(initialState.songs);
+// console.log(initialState.songIndex);
 export const getAllSongs = createAsyncThunk(
   "getSongs",
   async function getSong() {
